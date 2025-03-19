@@ -35,7 +35,7 @@
     "start": "astro dev"
   },
   "dependencies": {
-    "@astrojs/mdx": "^3.1.5",
+    "@astrojs/mdx": "^4.2.1",
     "@astrojs/react": "^3.6.2",
     "@astrojs/starlight": "^0.32.2",
     "@astrojs/tailwind": "^5.1.0",
