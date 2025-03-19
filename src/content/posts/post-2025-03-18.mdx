@@ -1,0 +1,119 @@
+---
+slug: "2025-03-18"
+title: "Thinking about cooking recipes"
+description: "Thinking about ways to communicate and relay information"
+startDate: 2025-03-18
+tags: ["cooking", "diagramming", "user interfaces"]
+canonical: https://tcheiner.com
+---
+I wanted to to add a portion of my website for my favorite recipes so I have them in the event they get taken down,
+or moved around during acquisition.  I referenced a few sites that I do like:
+- nyt cooking
+- bon appetite
+- just one cookbook
+
+Printable inspirations:
+- pandacub chinese recipes
+
+What is fascinating to me is the way information for a collection of recipes is massaged and diced per needs for the
+general public.  What features would I need in my recipe collection?
+- I sort by diet
+- I sort by cooking duration or method
+- I sort by main ingredients, cuisine and course of the meal
+- I have different recipes for age groups
+- I need to print my recipes sometimes
+
+Breaking down the problem, let's just dump a few recipes in there that I am cooking this week and will reduce/categorize,
+sort and, filter as we have the data.
+
+Like all engineers, the biggest pain point is art and graphics.
+
+This is how I typically scribble out my recipes when I cook:
+![Scribble of how I do a recipe](/images/recipes/leftover-noodles-hand.png)
+
+How would you do that in Node.js/css using whatever forms of technology out there?
+
+I remember reading about DiagramsAsCode from ByteByteGo, what a perfect opportunity to try implement this!
+![Architectural Diagram of a recipe](/images/recipes/leftover-noodles-quick.png)
+I ended up using the Custom features to implement custom icons in place of what is available for systems components.
+I wanted custom edges and cluster declarations as well, dug into the python code and did not find a quick way to extend
+it.  Dug into the lib it extended, GraphViz, and it is probably possible there.
+
+There is the code for the diagram:
+```
+<code>
+# shortened for visibility by removing filepaths in
+# original code.
+
+from diagrams import Diagram, Cluster, Edge
+from diagrams.custom import Custom
+
+
+with ((Diagram("leftover-noodles",
+                show=False,
+                filename="leftover-noodles-quick",
+                direction="LR"))):
+    with Cluster("Prep"):
+        with Cluster("Fry"):
+           stepOne = [Custom("2 tbs cooking oil",
+                            "cookingOil.png"),
+                      Custom("4 cups cabbage,chopped",
+                            "cabbage.png")]
+        source = stepOne
+
+        with Cluster("Boil"):
+            stepTwo = [Custom("14 oz noodles",
+                                "noodles.png"),
+                       Custom("6 cups water",
+                                "water.png")]
+            stepTwo[0]  << Edge(label="drain and toss")
+                        << Custom("2 tsp sesame oil",
+                                    "sesameOil.png")
+    with Cluster("Mix 2"):
+        cabbageNoodlesMix = [Custom("Cabbage + Noodle",
+                                    "noodles.png")]
+    stepOne[1] - Edge(label="+") - stepTwo[0]
+    stepTwo[0]  >> Edge(label="=")
+                >> cabbageNoodlesMix[0]
+
+    with Cluster("Fry"):
+        stepThree = [Custom("8 oz meat, sliced or ground",
+                            "meat.png")]
+    with Cluster("Additions"):
+        with Cluster("Mix 1"):
+            stepFour = [Custom("5 scallions, chopped, white parts",
+                                "scallions.png"),
+                        Custom("2 tsp ginger, grated",
+                                "ginger.png"),
+                        Custom("1 tsp red pepper, flaked",
+                                "redPeppers.png")]
+        with Cluster("Mix 3"):
+            stepFive = [Custom("1/3 cup mirin",
+                                "mirin.png"),
+                        Custom("1/3 cup soy sauce",
+                                "soySauce.png")]
+        stepFour - Edge(color="blue") - stepFive[0]
+
+    with Cluster("Plate"):
+        plate = [Custom("Plate",
+                        "plate.png")]
+    with Cluster("Optional Toppings"):
+        stepSix = [ Custom("1 tbs sesame seeds, toasted",
+                            "sesameSeeds.png"),
+                    Custom("scallions, chopped, green parts",
+                            "scallions.png")]
+
+    stepThree[0] << Edge(label=" Step 1") << stepFour[0]
+    cabbageNoodlesMix >> Edge(label="Step 2") >>stepThree[0]
+    stepThree[0] << Edge(label="Step 3") << stepFive[0]
+    stepThree[0] >> Edge(label="Step 4") >> plate[0]
+    plate[0] << Edge(label="Step 5") << stepSix[0]
+</code>
+```
+
+I pivoted and looked into how far pdf libs for code have come along (quite far) and it may be easier throwing together
+an image in adobe, and along with css/html, export it to a pdf for a fancy printable version or straight text for home
+printing.
+
+Okay, tabling this.  I could go deep if I didn't have anything else going in my life.  Wil pick this up again as
+inspiration strikes!

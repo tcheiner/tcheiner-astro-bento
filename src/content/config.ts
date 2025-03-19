@@ -43,7 +43,7 @@ const postCollection = defineCollection({
   schema: z.object({
     title: z.string(),
     startDate: z.date(),
-    description: z.string(),
+    description: z.string().optional(),
     image: z
       .object({
         url: z.string(),
@@ -55,10 +55,32 @@ const postCollection = defineCollection({
   }),
 });
 
+const recipesCollection = defineCollection({
+  type: "content",
+  schema: z.object({
+    title: z.string(),
+    description: z.string(),
+    postDate: z.date(),
+    course: z.array(z.string()),
+    cuisine: z.array(z.string()),
+    duration: z.number(),
+    yields: z.array(z.number()),
+    ingredients: z.array(z.string()),
+    image: z.object({
+      url: z.string(),
+      alt: z.string(),
+    })
+      .optional(),
+    sourceUrl: z.string().optional(),
+    canonical: z.string().optional(),
+  }),
+});
+
 // Export a single `collections` object to register your collection(s)
 export const collections = {
   projects: projectCollection,
   experiences: experienceCollection,
   books: bookCollection,
   posts: postCollection,
+  recipes: recipesCollection,
 };

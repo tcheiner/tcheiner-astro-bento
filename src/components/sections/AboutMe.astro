@@ -5,7 +5,7 @@ import { PROFILE } from "../../content/profileData";
 
 const tagsMap = await getAndGroupUniqueTags();
 
-const skills = PROFILE.skills;
+const skills = PROFILE.preferredTools;
 ---
 
 <div class="flex flex-col gap-2 animate-appear">
@@ -20,7 +20,7 @@ const skills = PROFILE.skills;
   <hr/>
 
   <p class="text-sm font-light">
-    I use the following technologies:
+    Favorites tools:
   </p>
   <ul class="list-inside list-disc">
     {

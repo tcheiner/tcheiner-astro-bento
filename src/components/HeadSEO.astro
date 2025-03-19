@@ -1,5 +1,6 @@
 ---
 import '@/styles/globals.css'
+import '@/styles/tc-custom.css'
 
 interface Props {
   title?: string
@@ -21,7 +22,7 @@ const canonical = canonicalURL? canonicalURL: new URL(Astro.url.pathname, Astro.
 <link
   rel="shortcut icon"
   type="image/svg+xml"
-  href={`${Astro.site}favicon.ico`}
+  href={`${Astro.site}/assets/favicon.ico`}
 />
 <title>{title}</title>
 <meta name="title" content={title}/>

@@ -36,3 +36,4 @@ yarn-error.log*
 /.astro/
 env.d.ts
 /dist/
+.aider*

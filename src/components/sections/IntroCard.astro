@@ -2,6 +2,10 @@
 import {Button} from '../ui/button'
 import {PROFILE} from "../../content/profileData";
 import {Linkedin, Github, Mail, Youtube, Twitter, Rss, Book, PanelsTopLeft} from 'lucide-react'
+import {getAndGroupUniqueTags} from "../../lib/utils";
+
+const tagsMap = await getAndGroupUniqueTags();
+const skills = PROFILE.skills;
 ---
 
 <div class="flex h-full w-full animate-appear">
@@ -28,6 +32,43 @@ import {Linkedin, Github, Mail, Youtube, Twitter, Rss, Book, PanelsTopLeft} from
           </>
         ))}
       </ul>
+      <br/>
+      <p class="m-0 text-sm font-light">
+        I have a knack for prototyping and bringing ideas to life. I thrive in the early stages of building products,
+        where speed and creativity matter most, and I specialize in backend development using Python and Java
+        - especially for banking, finance, and startups. While I’m all about getting things off the ground,
+        I’m equally happy managing teams to develop fully realized, scalable solutions.
+        When I’m not coding, I’m exploring something new—my curiosity often surprises people.
+        Let’s create something extraordinary together!
+      </p>
+      <!--<p class="m-0 text-l font-light">-->
+      <!--  At some point, I have used the following in my projects:-->
+      <!--</p>-->
+      <!--<ul class="pt-4">-->
+      <!--  {-->
+      <!--    skills.map((skill) => {-->
+      <!--      if (tagsMap.has(skill)) {-->
+      <!--        return (-->
+
+      <!--          <li>-->
+      <!--            <a href=`/tags/${skill}` class=" hover:font-bold">-->
+      <!--              {skill}-->
+      <!--            </a>-->
+      <!--          </li>-->
+      <!--        )-->
+      <!--      } else {-->
+      <!--        return (-->
+      <!--          <li>-->
+      <!--        <span>-->
+      <!--          {skill}-->
+      <!--        </span>-->
+      <!--          </li>-->
+      <!--        )-->
+      <!--      }-->
+
+      <!--    })-->
+      <!--  }-->
+      <!--</ul>-->
     </div>
     <div class="flex gap-4">
       <a href={PROFILE.links.github} aria-label="github profile" target="_blank">
@@ -36,39 +77,31 @@ import {Linkedin, Github, Mail, Youtube, Twitter, Rss, Book, PanelsTopLeft} from
           <span class="sr-only">GitHub Profile</span>
         </Button>
       </a>
-      {
-        PROFILE.links?.youtube && <a href={PROFILE.links.youtube} aria-label="youtube channel" target="_blank">
-          <Button aria-label="youtube channel">
-            <Youtube/>
-            <span class="sr-only">Youtube Channel TechTim42</span>
-          </Button>
-        </a>
-      }
-      {
-        PROFILE.links?.bluesky && <a href={PROFILE.links.bluesky} aria-label="bluesky profile" target="_blank">
-          <Button>
-            <PanelsTopLeft/>
-            <span class="sr-only">bluesky profile</span>
-          </Button>
-        </a>
-      }
-      {
-        PROFILE.links?.twitter && <a href={PROFILE.links.twitter} aria-label="twitter profile" target="_blank">
-          <Button>
-            <Twitter/>
-            <span class="sr-only">Twitter profile</span>
-          </Button>
-        </a>
-      }
+      <!--{-->
+      <!--  PROFILE.links?.bluesky && <a href={PROFILE.links.bluesky} aria-label="bluesky profile" target="_blank">-->
+      <!--    <Button>-->
+      <!--      <PanelsTopLeft/>-->
+      <!--      <span class="sr-only">bluesky profile</span>-->
+      <!--    </Button>-->
+      <!--  </a>-->
+      <!--}-->
+      <!--{-->
+      <!--  PROFILE.links?.twitter && <a href={PROFILE.links.twitter} aria-label="twitter profile" target="_blank">-->
+      <!--    <Button>-->
+      <!--      <Twitter/>-->
+      <!--      <span class="sr-only">Twitter profile</span>-->
+      <!--    </Button>-->
+      <!--  </a>-->
+      <!--}-->
 
-      {
-        PROFILE.links?.goodreads && <a href={PROFILE.links.goodreads} aria-label="goodreads profile" target="_blank">
-          <Button>
-            <Book/>
-            <span class="sr-only">Goodreads</span>
-          </Button>
-        </a>
-      }
+      <!--{-->
+      <!--  PROFILE.links?.goodreads && <a href={PROFILE.links.goodreads} aria-label="goodreads profile" target="_blank">-->
+      <!--    <Button>-->
+      <!--      <Book/>-->
+      <!--      <span class="sr-only">Goodreads</span>-->
+      <!--    </Button>-->
+      <!--  </a>-->
+      <!--}-->
     </div>
   </div>
   <img

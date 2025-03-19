@@ -1,52 +1,55 @@
 ---
-layout: ../../layouts/MarkdownPostLayout.astro
-title: 'Wrapping up Astro - Islands and Interactivity'
-pubDate: 2025-02-12
-description: 'This is the second post of my new Astro blog.'
-author: 'tcheiner'
-github_url: <a href="http://tcheinerblog.netlify.app">test blog app</a>
-tags: ['astro', 'blogging', 'javascript', 'react', 'rss']
+slug: "2025-02-12"
+title: "Customizing Astro Blog"
+description: "Lab 08-14"
+startDate: 2023-02-12
+image:
+    {
+    url: "https://astro.build/assets/press/astro-logo-light-gradient.svg",
+    alt: "Astro Blog",
+    }
+tags: ['astro', 'blogging', 'javascript', 'react', 'rss', "netlify"]
+canonical: https://github.com/tcheiner/blog
 ---
 # My Second Blog Post
 Wrapping up the tutorial today. Loving it, overall.
 
 ## Issues:
-1. There is a disconnect between astrojs/rss and the node version i have, so, running into a snag with tutorial on Unit 5.
+1. There is a disconnect between astrojs/rss and the node version I have, so, running into a snag with tutorial on Unit 5.
 2. In general, package version disconnect.
 
 ## What I've accomplished
 Intro is Astro completed!
-<a href="https://github.com/tcheiner/blog">Github</a>
 
 ## What's next
 Back to AI Agentic tutorials on the MS Generative AI Tutorial on Azure 
 
 ## Documented Steps:
-1. **Tried upgrading node**:<br/>
-        <code>  npm --version</code><br/>
-        <code>  npm install -g n<</code>br/>
-        <code>  n lts</code><br/>
-        <code>  sudo n lts</code><br/>
-        <code>  sudo n latest</code><br/>
-        <code>  sudo n prune</code><br/>
+1. **Tried upgrading node**:&lt;br/&gt;
+        &lt;code&gt;  npm --version&lt;/code&gt;&lt;br/&gt;
+        &lt;code&gt;  npm install -g n&lt;&lt;/code&gt;br/&gt;
+        &lt;code&gt;  n lts&lt;/code&gt;&lt;br/&gt;
+        &lt;code&gt;  sudo n lts&lt;/code&gt;&lt;br/&gt;
+        &lt;code&gt;  sudo n latest&lt;/code&gt;&lt;br/&gt;
+        &lt;code&gt;  sudo n prune&lt;/code&gt;&lt;br/&gt;
 2. **Wrong Node version**: ended up with node 21
-3. **Reset package cache**:looked at errors and added all packes with required versions in package.json. Ran the following in terminal:
-        <code>rm -rf node_modules</code><br/>
-        <code>rm package-lock.json</code><br/>
-        <code>rm yarn.lock</code><br/>
-        <code>npm install</code><br/>
-        <code>npm list --depth=0</code><br/>
-        <code>rm -rf .astro</code><br/>
-        <code>npm run dev</code><br/>
-4. **Fix did not work**: removing all versions of node and installing specifically:<br/>
-        <code>sudo rm -rf /usr/local/bin/node</code><br/>
-        <code>sudo rm -rf /usr/local/lib/node_modules</code><br/>
-        <code>sudo rm -rf ~/.npm</code><br/>
-        <code>sudo rm -rf ~/.nvm</code><br/>
-5. **install a specific version of node**:<br/>
-        <code>nvm install 20.3.0</code><br/>
-        <code>node -v<</code>br/>
-6. **Astro Islands** - Unit 6: Adding interactivity to site (UI framework, Preact, Astro Islands)<br/>
-<code>npx astro add preact</code><br/>
+3. **Reset package cache**:looked at errors and added all packages with required versions in package.json. Ran the following in terminal:
+        &lt;code&gt;rm -rf node_modules&lt;/code&gt;&lt;br/&gt;
+        &lt;code&gt;rm package-lock.json&lt;/code&gt;&lt;br/&gt;
+        &lt;code&gt;rm yarn.lock&lt;/code&gt;&lt;br/&gt;
+        &lt;code&gt;npm install&lt;/code&gt;&lt;br/&gt;
+        &lt;code&gt;npm list --depth=0&lt;/code&gt;&lt;br/&gt;
+        &lt;code&gt;rm -rf .astro&lt;/code&gt;&lt;br/&gt;
+        &lt;code&gt;npm run dev&lt;/code&gt;&lt;br/&gt;
+4. **Fix did not work**: removing all versions of node and installing specifically:&lt;br/&gt;
+        &lt;code&gt;sudo rm -rf /usr/local/bin/node&lt;/code&gt;&lt;br/&gt;
+        &lt;code&gt;sudo rm -rf /usr/local/lib/node_modules&lt;/code&gt;&lt;br/&gt;
+        &lt;code&gt;sudo rm -rf ~/.npm&lt;/code&gt;&lt;br/&gt;
+        &lt;code&gt;sudo rm -rf ~/.nvm&lt;/code&gt;&lt;br/&gt;
+5. **install a specific version of node**:&lt;br/&gt;
+        &lt;code&gt;nvm install 20.3.0&lt;/code&gt;&lt;br/&gt;
+        &lt;code&gt;node -v&lt;&lt;/code&gt;br/&gt;
+6. **Astro Islands** - Unit 6: Adding interactivity to site (UI framework, Preact, Astro Islands)&lt;br/&gt;
+&lt;code&gt;npx astro add preact&lt;/code&gt;&lt;br/&gt;
 7. **Updated packages**: in package.json
 8. **Complete**: and, it is all done! 
