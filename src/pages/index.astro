@@ -7,9 +7,10 @@ import TimeZoneCard from '../components/sections/TimeZoneCard.astro'
 import Books from '../components/sections/Books.astro'
 import ExperienceCard from '../components/sections/ExperienceCard.astro'
 import Projects from '../components/sections/Projects.astro'
-import StudyCard from '../components/sections/StudyCard.astro'
 import { PROFILE } from "../content/profileData";
 import BlogCard from '../components/sections/BlogCard.astro'
+import Recipe from '../components/sections/Recipe.astro'
+import DailyQuote from "../components/sections/DailyQuote.astro";
 const SITE = PROFILE.site
 ---
 
@@ -28,54 +29,61 @@ const SITE = PROFILE.site
     transition:animate="fade"
     class="relative m-auto grid w-full max-w-6xl gap-2 overflow-hidden p-2 sm:gap-2 sm:p-4 md:grid-cols-2 md:gap-3 md:p-6 lg:grid-cols-12 lg:gap-4"
   >
-    <Card colSpan="lg:col-span-9 md:col-span-2" rowSpan="md:row-span-1 lg:row-span-4">
+    <Card colSpan="lg:col-span-9 md:col-span-2" rowSpan="md:row-span-1 lg:row-span-2">
       <IntroCard/>
     </Card>
-    <Card colSpan="lg:col-span-3 md:col-span-1" rowSpan="md:row-span-3 lg:row-span-6" title="About me">
+    <Card colSpan="lg:col-span-3 md:col-span-1" rowSpan="md:row-span-1 lg:row-span-2" title="About me">
       <AboutMe/>
     </Card>
 
-    <Card colSpan="lg:col-span-3 md:col-span-1" rowSpan="md:row-span-3 lg:row-span-4" title="Projects">
+    <Card colSpan="lg:col-span-4 md:col-span-1" rowSpan="md:row-span-1 lg:row-span-1" title="Projects">
       <Projects/>
     </Card>
-
-    <Card colSpan="lg:col-span-3 md:col-span-1" rowSpan="md:row-span-1 lg:row-span-2" title="Your time">
-      <TimeZoneCard/>
+    <Card colSpan="md:col-span-1 lg:col-span-5" rowSpan="md:row-span-1 lg:row-span-1" title="Blog Posts">
+      <BlogCard/>
     </Card>
-    <Card colSpan="lg:col-span-3 md:col-span-1" rowSpan="md:row-span-1 lg:row-span-2" title="My time">
+    <Card colSpan="md:col-span-1 lg:col-span-3" rowSpan="md:row-span-1 lg:row-span-1" title="Experiences">
+      <ExperienceCard/>
+    </Card>
+
+    <Card colSpan="sm:col-span-1 md:col-span-2 lg:col-span-3" rowSpan="md:row-span-1 lg:row-span-2" title="What's cooking today">
+      <Recipe/>
+    </Card>
+    <Card colSpan="lg:col-span-3 md:col-span-1" rowSpan="md:row-span-1 lg:row-span-1" title="My time">
       <TimeZoneCard timezone={PROFILE.timezone} />
     </Card>
-
-
-    <Card colSpan="lg:col-span-4 md:col-span-1" rowSpan="md:row-span-1 lg:row-span-2">
+    <Card colSpan="lg:col-span-3 md:col-span-1" rowSpan="md:row-span-1 lg:row-span-1"  title="Now">
+      <div class="flex h-full flex-col justify-between">
+        <p class="mt-2 text-xs"> <a href="https://nownownow.com/about" target="_blank" rel="noopener noreferrer" class="mt-2 text-xs text-blue-500 hover:underline">
+          Learn more about "now"
+        </a></p>
+          “{PROFILE.now[0]}”
+        <p class="mt-2 text-xs"></p>
+      </div>
+    </Card>
+    <Card colSpan="lg:col-span-3 md:col-span-1" rowSpan="md:row-span-1 lg:row-span-1" title="Daily Quote">
       <div class="flex h-full flex-col justify-between">
         <blockquote class="mt-6 border-l-2 pl-6 italic">
-          “{PROFILE.words[0]}”
+          <DailyQuote />
         </blockquote>
         <p class="mt-2 text-xs"></p>
       </div>
     </Card>
-    <Card colSpan="md:col-span-1 lg:col-span-5" rowSpan="md:row-span-2 lg:row-span-2"
-          title="Education and Certificates">
-      <StudyCard/>
-    </Card>
+    <!--<Card colSpan="md:col-span-1 lg:col-span-5" rowSpan="md:row-span-2 lg:row-span-2"-->
+    <!--      title="Education and Certificates">-->
+    <!--  <StudyCard/>-->
+    <!--</Card>-->
 
-    <Card colSpan="md:col-span-1 lg:col-span-3" rowSpan="md:row-span-2 lg:row-span-2" title="Experiences">
-      <ExperienceCard/>
-    </Card>
-
-
-    <Card colSpan="md:col-span-1 lg:col-span-6" rowSpan="md:row-span-1 lg:row-span-1" title="Blog Posts">
-      <BlogCard/>
-    </Card>
-    <Card colSpan="md:col-span-1 lg:col-span-3" rowSpan="md:row-span-2 lg:row-span-2" title="Books I read">
+    <Card colSpan="md:col-span-1 lg:col-span-9" rowSpan="md:row-span-1 lg:row-span-1" title="Books I am reading">
       <Books/>
     </Card>
-    <Card colSpan="md:col-span-1 lg:col-span-6" rowSpan="md:row-span-2 lg:row-span-1" title="Contact">
+    <Card colSpan="md:col-span-2 lg:col-span-12" rowSpan="md:row-span-1 lg:row-span-1" title="Contact">
       <div class="flex h-full w-full items-center justify-center text-center text-sm">
         <i>
-          Please feel free to reach out to me through <a href={PROFILE.links.twitter} class="underline hover:font-bold">Twitter
-          message</a> or <a href={PROFILE.repo+'/issues'} class="underline hover:font-bold">Github issue</a>.
+          Please feel free to reach out to me through <a href={PROFILE.links.email} class="underline hover:font-bold">Email
+          </a>, or <a href={PROFILE.links.linkedin} class="underline hover:font-bold">LinkedIn</a>.<br/>
+          There is an option to calendly, but loosely gauges my schedule:
+          <a href={PROFILE.links.calendly} class="underline hover:font-bold">Calendly</a>
         </i>
       </div>
     </Card>

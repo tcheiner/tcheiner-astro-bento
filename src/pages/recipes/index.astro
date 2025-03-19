@@ -1,0 +1,61 @@
+---
+import { getCollection } from 'astro:content';
+import IndexPageLayout from "../../layouts/IndexPageLayout.astro";
+import RecipeCard from "../../components/RecipeCard.astro";
+
+const recipes = await getCollection('recipes');
+
+// Sort recipes by date (newest first)
+const recipesByDate = [...recipes].sort((a, b) => b.data.date - a.data.date);
+
+// Group recipes by course
+const recipesByCourse = {
+  breakfast: recipes.filter((r) => r.data.course === 'breakfast'),
+  lunch: recipes.filter((r) => r.data.course === 'lunch'),
+  dinner: recipes.filter((r) => r.data.course === 'dinner'),
+  desserts: recipes.filter((r) => r.data.course === 'desserts'),
+  snacks: recipes.filter((r) => r.data.course === 'snacks'),
+  starter: recipes.filter((r) => r.data.course === 'starter'),
+};
+
+const recipesByCuisine = recipes.reduce((acc, recipe) => {
+  // Ensure `recipe.data.cuisine` is an array
+  const cuisines = recipe.data.cuisine || [];
+
+  cuisines.forEach((cuisine) => {
+    if (!acc[cuisine]) {
+      acc[cuisine] = [];
+    }
+    acc[cuisine].push(recipe);
+  });
+
+  return acc;
+}, {});
+---
+
+<IndexPageLayout title="Recipes" description="What is cooking?" subTitle="tcheiner recipes">
+  <section>
+    <h2>What I am cooking today</h2>
+
+    <div class="grid grid-cols-3 gap-3">
+      {recipes.map((recipe) => {
+        // Combine course, ingredients, and cuisine into a single array of tags
+        const tags = [recipe.data.course, recipe.data.ingredients, recipe.data.cuisine];
+        return (
+          <RecipeCard
+              key={recipe.data.title}
+              href={'/recipes/' + recipe.data.slug}
+              heading={recipe.data.title}
+              imagePath={recipe.data.image.url}
+              postDate={recipe.data.postDate}
+              sourceUrl={recipe.data.sourceUrl}
+           />
+        );
+      })}
+
+    </div>
+  </section>
+
+
+</IndexPageLayout>
+

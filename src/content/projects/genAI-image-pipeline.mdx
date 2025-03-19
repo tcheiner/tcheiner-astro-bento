@@ -1,0 +1,55 @@
+---
+slug: "custom lora gen ai imagery"
+title: "stable diffusion image generation pipeline"
+description: "Extending the tech from ManaBurn."
+startDate: 2024-03-01
+image:
+    {
+        url: "/images/tcheina.png",
+        alt: "Sweaters By Hedgehog",
+    }
+tags: ["Python", "Runpod", "stable diffusion", "CivitAI", "HuggingFace", "Loras"]
+---
+When I worked on Manaburn, I worked with an extremely talented technical artist that figured a way to generate the
+assets for the game on his own.  The team needed someone to work on the storyline, find a way to generate content via
+AI as well.  I had the interest so I took it on.
+
+I set one of our founders to work on prompt engineering and refining our prompting, with guidelines on how to make it
+more efficient.  I worked on learning about AI, how best to do what we needed, at the lowest cost possible.  I decided
+against rag training and fine tuning as we lacked sufficient data to train, and I did not think it was necessary to
+prove out what the team believed the core business was. I made a plan for advancement, and where our breakpoints were
+in the event we had to re-evaluate.
+
+I systems architected the backend to provide the assets.  Since most of the assets is to be churned through and burnt,
+there was no point in running up thousands of dollars worth of tokens to generate assets that would be thrown away - we
+decided to cache them all and re-generate based on traffic and # of users we needed to support.
+
+I ended up porting the stable diffusion flow to serverless in order to demonstrate an end-to-end asset generation
+pipeline for 2023 GDC for the investors and pitches they had lined up.  I took on creating a frontend meme generator in
+Typescript to showcase our backend for the Google Accelerator program in 2024.
+
+The only portion I did not develop was the stable diffusion workflows.  I wanted to tackle that to round uout my
+understanding of the complete tech for Manaburn.
+
+I decided to experiment on Runpod, it was fairly non-commital and I wanted somewhere to just leverage GPUs to
+experiment with.  I experimented with different prompts and loras to get the art I needed.  As an engineer, we are
+always in desperate need of art to showcase our work and artists are exceedingly difficult to source (separate
+tangential topic on art and artists).
+
+Out of consideration for Manaburn, I cannot post the process.  Or, talk about the tech in any detail.
+But I can do a write up of results of my experiments and iterations.
+
+The text is all AI generated, along with the art.
+
+Banner art for my personal website - a mesh of San Francisco and Amsterdam canals.  I would add my Singaporean pride in
+there as well but I doubt AI is able to at this moment.  Generated off huggingface freebies.
+![Website Banner Art](/images/projects/genai-sd/main_banner_lg.png)
+An image of me - pixar style.
+![my pixar representation](/images/projects/genai-sd/tcheina_transparent.png)
+An image of me working - I am always working.
+![tc working](/images/projects/genai-sd/work.png)
+Always need something green to spice up the UI - not professionally artistic, I will take the cheap wins.
+![monstera](/images/projects/genai-sd/monstera_transparent.png)
+
+I spent a good amount of time designing and writing up a few concepts for possible art use.
+![concepts screen capture](/images/projects/genai-sd/concepts.png)

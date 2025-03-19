@@ -55,6 +55,7 @@ export const getAndGroupUniqueTags = async (): Promise<Map<string, any[]>> => {
   const allExperiences = await getCollection("experiences");
   const books = await getCollection("books");
   const posts = await getCollection("posts");
+  const recipes = await getCollection("recipes");
 
   const allItems = [...allProjects, ...allExperiences, ...books, ...posts];
 
@@ -64,6 +65,7 @@ export const getAndGroupUniqueTags = async (): Promise<Map<string, any[]>> => {
     ...new Set(allExperiences.map((post: any) => post.data.tags).flat()),
     ...new Set(books.map((post: any) => post.data.tags).flat()),
     ...new Set(posts.map((post: any) => post.data.tags).flat()),
+    ...new Set(recipes.map((post: any) => post.data.tags).flat()),
   ];
   const tagItemsMap = new Map<string, any[]>();
 

@@ -1,0 +1,11 @@
+ ---
+const { Content, headings } = Astro.props;
+import ContentTags from "../components/ContentTags.astro";
+import IndexPageLayout from "./IndexPageLayout.astro";
+
+const {frontmatter} = Astro.props;
+const {title, description, image, postDate, course, cuisine, yields, duration, ingredients, canonical} = frontmatter;
+ ---
+
+<IndexPageLayout>
+ </IndexPageLayout>
