@@ -1,0 +1,64 @@
+---
+slug: "2025-02-24"
+title: "Redo of Start of MS Generative AI tutorial- Agentic Agents Using Azure, Lab 07"
+description: "Lab 08-14"
+startDate: 2025-02-24
+image:
+    {
+        url: "https://microsoft.github.io/generative-ai-for-beginners/images/repo-thumbnailv4-fixed.png?WT.mc_id=academic-105485-koreyst",
+        alt: "MS Generative AI tutorial",
+    }
+tags: ["eiphany", "azure", "ai", "python", "typescript", lab15"]
+canonical: https://microsoft.github.io/generative-ai-for-beginners/#/
+---
+# Numpy Source:
+
+
+## Notes Lab15:
+&lt;ul&gt;
+    &lt;li&gt;What i had to do to get this to work: upgrade to Pay-As-You-Go subscription.  Spent hours trying to get it to work within Free Tier and kept running into quota limits even though I had $198/$200 left on my free account.  Count on Microsoft to properly draw you in to pay, even to learn.&lt;/li&gt;
+    &lt;li&gt;Microsoft wants you to run it in Jupyter (for Python), Typescript and as little support for just Python stubs&lt;/li&gt;
+    &lt;li&gt;The Azure ecosystem has OpenAI as their defacto API (chat, dalle and whisper endpoints that is shared by all the projects under it), you get the base models in every AI Hub that you create.  Within that hub, you can have many "projects" and within projects, you can deploy base models or fine tuned models that you get an endpoint for when you deploy it.&lt;/li&gt;
+    &lt;li&gt;I have not experimented with setting up separate dev/production environments that simulate a real-life prod cycle.  Neither have I routed custom DNS/VPC (AWS equivalent) in this ecosystem.&lt;/li&gt;
+    &lt;li&gt;You can also have resource groups that have different permissions for each project or hub.&lt;/li&gt;
+    &lt;li&gt;Microsoft makes it really simple for corporations or large dev teams to develop and support cloud/api/AI development but it will take some thought and planning to set up.  AWS (presumedly Google) will likely be more suited for startups that can quickly pivot but I can see it spiraling into a mess because these companies don't have the inherent ecosystem/knowledge base of Novell (network admin, systems admin, server admin) background. &lt;/li&gt;
+    &lt;li&gt;I have not compared logging metrics between the two ecosystems.  Although the AWS one is terrible from my experience.&lt;/li&gt;
+&lt;/ul&gt;
+
+### Which Cloud Provider Should You Use? A Quick Breakdown of AWS and Azure
+
+Choosing the right cloud provider depends on your needs, but based on what I've observed, here's a comparison of **AWS** and **Microsoft Azure**—leaving out Google Cloud for now (though it presumably follows similar patterns).
+
+---
+
+#### **AWS: Fast and Straightforward**
+Amazon Web Services (AWS) is the go-to platform if you want to quickly get something up and running. If you need a service, you set it up, and—boom—it’s there. AWS feels like working with stub code: you configure what you need, and you’re ready to go.
+
+Want to run some code? AWS makes it simple with services like **AWS Lambda**. With just a few clicks, you can set up serverless functions and start running your code (though you might have to configure DNS routing or other networking details). The process is straightforward and appeals to users who prefer simplicity and speed over intricate setups.
+
+---
+
+#### **Microsoft Azure: Comprehensive (But Complex)**
+Microsoft Azure, on the other hand, is geared toward enterprises with more structured and layered needs. It’s architected to encapsulate everything—from networking to system administration—under a unified framework. Azure emphasizes fine-grained permissions and role-based access control (RBAC), making it ideal for managing complex corporate structures.
+
+Azure’s approach allows you to design systems that align with your organization’s hierarchy—departments, groups, projects, and more. However, this level of granularity comes at a cost: the setup process can get very complicated. It’s a platform designed for enterprises that need to manage permissions and resources at scale, but it may feel overwhelming for smaller teams or solo developers.
+
+---
+
+#### **Command-Line Support Across the Board**
+All major cloud providers understand the importance of command-line tools for automation and scripting. AWS offers the **AWS CLI**, Azure has the **Azure CLI**, and (presumably) Google Cloud provides the **Google Cloud CLI**. These tools give you the flexibility to manage resources programmatically, which is essential for DevOps workflows.
+
+---
+
+### TL;DR
+- **AWS**: Great for quick setups, straightforward configurations, and flexibility. Perfect for developers who want to build and deploy without too much overhead.
+- **Azure**: Ideal for enterprises with complex needs, offering advanced permissions and architectural encapsulation. But expect a steeper learning curve.
+
+Each cloud provider has its strengths, and your choice should depend on the scale and complexity of your project. If you value simplicity, AWS might be the way to go. If you’re managing a corporate environment with intricate permission structures, Azure’s depth will shine.
+
+## Thoughts on Lab 07:
+
+
+## What's next
+- Redoing labs 06-08.
+

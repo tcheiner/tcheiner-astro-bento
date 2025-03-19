@@ -1,0 +1,105 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+ :root {
+    /* Primary Colors */
+    --primary-bg: #76afb8; /* Vintage blue */
+    --onfocus-primary-bg: #d0e4e7;
+    --primary-container-bg: #52959f; /* Light steel blue */
+    --on-primary-container-bg: #38646b; /* Dark blue-gray */
+    --primary-text: #4f3408; /* Brown */
+    --on-primary-text: #ece9c0;
+  
+    /* Secondary Colors */
+    --secondary-bg: #afcfab; /* Vintage green */
+    --onfocus-secondary-bg: #cce0c9;
+    --secondary-container-bg: #73ab6c; /* Light vintage green */
+    --on-secondary-container-bg: #395b34; /* Dark slate gray */
+    --secondary-text: #4f3408; /* Brown */
+    --on-secondary-text: #ece9c0;
+  
+    /* Tertiary Colors */
+    --tertiary-bg: #d38c15; /* Vintage purple */
+    --on-tertiary-bg: #8d8d00;
+    --tertiary-container-bg: #eaa42e; /* Light vintage purple */
+    --on-tertiary-container-bg: #9b6710; /* Dark gray */
+    --tertiary-text: #4f3408; /* Brown */
+    --on-tertiary-text: #FFFFFF;
+  
+    /* Error Colors */
+    --error-bg: #ece9c0;;
+    --on-error-bg: #FF5449;
+    --error-container-bg: #d38c15;
+    --on-error-container-bg: #410002;
+  
+    /* Background and Surface Colors */
+    --background: #ece9c0; /* Light beige for vintage feel */
+    --on-background: #5B3A29; /* Brown */
+    --surface: #ece9c0; /* Light khaki */
+    --on-surface: #5B3A29; /* Brown */
+    --surface-variant: #D0C4B0; /* Vintage tan */
+    --on-surface-variant: #5B3A29; /* Brown */
+  
+    /* Additional Colors */
+    --outline: #8B6F47; /* Brown */
+    --outline-variant: #A9927D; /* Light brown */
+    --shadow: #000000;
+    --scrim: #000000;
+    --inverse-surface: #5B3A29; /* Brown */
+    --inverse-on-surface: #F0EAD6; /* Light beige */
+    --inverse-primary: #A3C9A8; /* Light vintage green */
+    --primary-fixed: #A3C9A8; /* Light vintage green */
+    --on-primary-fixed: #2F4F4F; /* Dark slate gray */
+    --primary-fixed-dim: #6C8E68; /* Medium vintage green */
+    --on-primary-fixed-variant: #3B3A30; /* Dark brown */
+    --secondary-fixed: #B0C4DE; /* Light steel blue */
+    --on-secondary-fixed: #2E4053; /* Dark blue-gray */
+    --secondary-fixed-dim: #7BA7C9; /* Medium vintage blue */
+    --on-secondary-fixed-variant: #3B3A30; /* Dark brown */
+    --tertiary-fixed: #C4A7C5; /* Light vintage purple */
+    --on-tertiary-fixed: #3B3A3A; /* Dark gray */
+    --tertiary-fixed-dim: #9B799E; /* Medium vintage purple */
+    --on-tertiary-fixed-variant: #3B3A30; /* Dark brown */
+    --surface-dim: #D5DBDB;
+    --surface-bright: #F4FAFB;
+    --surface-container-lowest: #FFFFFF;
+    --surface-container-low: #EFF5F5;
+    --surface-container: #E9EFEF;
+    --surface-container-high: #E3E9EA;
+    --surface-container-highest: #DDE4E4;
+  }
+
+  .dark {
+    --background: 20 14.3% 4.1%;
+    --foreground: 60 9.1% 97.8%;
+    --card: 20 14.3% 4.1%;
+    --card-foreground: 60 9.1% 97.8%;
+    --popover: 20 14.3% 4.1%;
+    --popover-foreground: 60 9.1% 97.8%;
+    --primary: 20.5 90.2% 48.2%;
+    --primary-foreground: 60 9.1% 97.8%;
+    --secondary: 12 6.5% 15.1%;
+    --secondary-foreground: 60 9.1% 97.8%;
+    --muted: 12 6.5% 15.1%;
+    --muted-foreground: 24 5.4% 63.9%;
+    --accent: 12 6.5% 15.1%;
+    --accent-foreground: 60 9.1% 97.8%;
+    --destructive: 0 72.2% 50.6%;
+    --destructive-foreground: 60 9.1% 97.8%;
+    --border: 12 6.5% 15.1%;
+    --input: 12 6.5% 15.1%;
+    --ring: 20.5 90.2% 48.2%;
+  }
+}
+
+@layer base {
+  * {
+    border-color: var(--outline);
+  }
+  body {
+    background-color: var(--tertiary-bg);
+    color: var(--tertiary-text);
+  }
+}

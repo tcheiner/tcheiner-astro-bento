@@ -1,0 +1,38 @@
+---
+import { getCollection } from "astro:content";
+import Card from '../Card.astro'
+import { Button } from '../ui/button'
+import { formateLocalDate } from "../../lib/utils";
+
+
+let recipes = await getCollection('recipes');
+
+// sort projects by dateStart DESC
+recipes.sort((a: any, b: any) => {
+  return new Date(b.data.postDate) - new Date(a.data.postDate);
+});
+
+recipes = recipes.slice(0, 3);
+---
+
+
+<div class="mt-2 space-y-4">
+  {
+    recipes.slice(0, 3).map((recipe) => (
+      <div>
+        <h3 class="text-lg font-semibold text-primary">
+          <a href={`/recipes/${recipe.slug}`} class="hover:underline">
+            {recipe.data.title}
+          </a>
+        </h3>
+        <p class="text-sm">
+          <img src={recipe.data.image?.url} alt={recipe.data.image?.alt} />
+        </p>
+      </div>
+    ))
+  }
+  <a href="/recipes">
+    <Button variant="link" className="pl-0"> View More</Button>
+  </a>
+</div>
+

@@ -1,0 +1,41 @@
+---
+layout: ../../layouts/MarkdownPostLayout.astro
+title: Start of MS Generative AI tutorial- Agentic Agents Using Azure, Lab 06
+author: tcheiner
+description: "I had some challenges, but asking in the community really helped!"
+pubDate: 2025-02-12
+github_url: <a href="https://github.com/tcheiner/generative-ai/tree/main/06-text-generation-apps">Completed on Github</a>
+tags: ["azure", "ai agents", "python"]
+---
+## Lab 06: Back on Agentic AI in Azure!
+Spending the day working through a decent agentic ai tutorial.  It's my first time with Azure, having gone a round with AWS and GCP.
+
+## Source:
+https://github.com/microsoft/generative-ai-for-beginners/tree/main/06-text-generation-apps
+
+## Key URLs:
+1. **Login**: [ai.azure.com](http://ai.azure.com) at azure foundry
+2. **Learning Track Start**: https://microsoftlearning.github.io/mslearn-ai-studio/Instructions/01-Explore-ai-studio.html
+3. **AI Studio Tutorial**: https://learn.microsoft.com/en-us/azure/ai-studio/quickstarts/get-started-code?tabs=macos
+
+## Lab 06 Summary: Build a Recipe Generator by chaining AI responses
+- deploying an AI model in azure foundry, getting an api key and endpoint so your code can connect to openai through ms azure.
+- using dynamic variables for prompt, based on user input.
+- chain LLM responses for more output.
+- set up metrics monitoring in azure.
+
+Already did it for one of my startups, manaburn.  Not coming up with another random one for enhancement.
+
+## Thoughts on Lab 06:
+1. **Necessity**: Not worth using AI for it.  AI is prone to hallucinations, you don't want a garbage recipe.  Considering the energy costs (thus, climate) and company costs, it really isn't worth the overhead (technical headcount, and company costs) to do it through an API through Azure with a DB.  
+2. **Alternate**: Buy a DB of good recipes, write several parsers to parse out ingredients and filterable attributes and compliment your db, stick it on cloud storage (or not) and query that db.  Implement a caching and rate-limiting strategy when your site becomes popular.
+3. **Great tutorial**: For an intro AI lab.  The OpenAI apis are already out of date, the code will not run as-is.
+
+## What's next
+Switching to doing the 2024 Advent of Code, I have hit my rate limit on Azure for 24 hrs.  It is a terrible bummer.
+
+## What I am thinking about tangentially:
+**Astro blog**: i need a checklist of things. 
+- better toggle for light/dark scheme.
+- port my images, color theme over.
+- implement cards ui<.

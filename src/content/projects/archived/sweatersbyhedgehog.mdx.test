@@ -1,0 +1,26 @@
+---
+slug: "pelosi-trade"
+title: "Sweaters By Hedgehog"
+description: "discord bot game"
+startDate: 2025-03-11
+image:
+    {
+        url: "https://img.itch.zone/aW1hZ2UvMTE3MTU3OS8xMTY3MDUyMC5qcGc=/original/dgSRfY.jpg"
+        alt: "SweatersByHedgehog",
+    }
+tags: ["Node.js", "Python", "ngrok", "AWS", "REST"]
+---
+[Pelosi Trade](https://pelositrade.com) is a stock trading assistant that helps users get notified when congress members trade.
+
+![](https://ph-files.imgix.net/ccffa841-ebdf-433b-9e70-fd79da9d983e.png?auto=compress&codec=mozjpeg&cs=strip&auto=format&fm=pjpg&w=1100&h=613&fit=max&dpr=2)
+
+Ported a TTRPG (solo rpg) game that I found via itch.to: Sweaters By Hedgehog to discord as a bot using node.js and ngrok.
+Added localizations in en, cn, fr, es, de and kr
+Standardized logging
+Redesigned and ported to AWS in Python
+Streamlined deployment by using AWS CLI and Cloudformation
+
+<a
+    href="https://hauntedoak.itch.io/sweaters-by-hedgehog" target="_blank"
+>
+</a>

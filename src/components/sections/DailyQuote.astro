@@ -1,0 +1,25 @@
+---
+import quotes from "../content/quotes/quotes.json";
+
+const today = new Date().toISOString().split("T")[0];
+const hashDate = (date) => {
+  let hash = 0;
+  for (let i = 0; i < date.length; i++) {
+    hash = date.charCodeAt(i) + ((hash << 5) - hash);
+  }
+  return Math.abs(hash);
+};
+
+// Filter quotes by a specific tag (e.g., "motivational")
+const filteredQuotes = quotes.filter((quote) => quote.tags.includes("motivational"));
+
+// Select a quote from the filtered list
+const quoteIndex = hashDate(today) % filteredQuotes.length;
+const dailyQuote = filteredQuotes[quoteIndex] || {
+  quote: "It is impossible for a man to learn what he thinks he already knows!",
+  author: "Epictetus"
+};
+---
+{dailyQuote.quote}
+<p>- {dailyQuote.author}</p>
+
