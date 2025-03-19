@@ -1,0 +1,385 @@
+import React from 'react';
+import { Link } from 'react-router-dom';
+import '../css/Concepts.css';
+
+import main_starcat from '../assets/images/main-starcat.png';
+import girl_starcat from '../assets/images/girl_starcat.png';
+import warrior_starcat from '../assets/images/warrior_starcats.png';
+import jane_starcat from '../assets/images/jane_starcat.png';
+import duo_starcat from '../assets/images/duo_starcat.png';
+import male_starcat from '../assets/images/male_starcat.png';
+import picard_warrior_starcat from '../assets/images/picard_warrior_starcat.png';
+import luke_starcat from '../assets/images/luke_starcat.png';
+import forest_wokwarriors from '../assets/images/wokwarriors_village.png';
+import panda_wokwarriors from '../assets/images/panda_wokwarriors.png';
+import redpanda_wokwarriors from '../assets/images/redpanda_wokwarriors.png';
+import shiba_wokwarriors from '../assets/images/shiba_wokwarriors.png';
+import tabby_wokwarriors from '../assets/images/tabby_wokwarriors.png';
+import fox_wokwarriors from '../assets/images/fox_wokwarriors.png';
+const Concepts: React.FC = () => {
+    return (
+        <>
+            <section className="section-darkgrey" id="starcats-main">
+                <div className="two-column-container">
+                    <div className="column-concepts left-column" style={{ padding: '2%' }}>
+                        <h3>StarCats Concept</h3>
+                        <p>A cute, feline twist on a Star Trek-like theme.</p>
+                        <p>The Star Cats inhabit the Feliner Federation, a vast network of space stations and
+                            terraformed asteroids connected by cosmic hairball wormholes. Their society is a
+                            mix of advanced technology and feline instincts, where scratching posts double as
+                            computer terminals and anti-gravity litter boxes are standard issue. The backstory
+                            involves the cats evolving on a dying planet, developing space travel by knocking
+                            things off the edge of the world, and spreading across the galaxy in purr-suit of
+                            the perfect sunbeam.</p>
+                    </div>
+                    <div className="column-concepts right-column" style={{ padding: '2%' }}>
+                        <img src={main_starcat} alt="starcats_concept"/>
+                    </div>
+                </div>
+            </section>
+            <section className="section-darkgrey" id="starcats-picard">
+                <div className="two-column-container">
+                    <div className="column-concepts left-column-concepts " style={{ padding: '2%' }}>
+                        <img src={picard_warrior_starcat} alt="starcats_concept"/>
+                    </div>
+                    <div className="column-concepts right-column-concepts " style={{ padding: '2%' }}>
+                        <h3>Captain Whiskers</h3>
+                        <p>A brave but easily distracted tabby</p>
+                        <h4>TTRPG</h4>
+                        <p>"Star Cats: Cosmic Capers"
+                            Players create their own feline crew members, choosing from breeds that determine special
+                            abilities (e.g., Sphinx cats for telepathy, Maine Coons for strength). The game involves
+                            exploring strange new worlds, solving puzzles with cat logic, and engaging in space
+                            battles using a unique "knocking things off tables" combat system. Skills include
+                            Pouncing, Purr-suasion, and Quantum Entanglement Grooming. The GM (Galactic Meow-derator)
+                            guides players through adventures filled with cosmic catnip, alien hairballs, and the
+                            ever-present threat of space dogs.</p>
+                    </div>
+                </div>
+            </section>
+            <section className="section-darkgrey" id="story1_starcat">
+                <div className="two-column-container">
+                    <div className="column-concepts left-column-concepts " style={{ padding: '2%' }}>
+                        <h4>The Yarn Ball Incident</h4>
+                        <p>
+                            When a mysterious, giant ball of cosmic yarn appears near the S.S. Scratching Post,
+                            Captain Whiskers can't resist investigating, despite Commander Socks' warnings.
+                            As they approach, the yarn unravels, revealing a wormhole that sucks them in. T
+                            he crew must work together, using their unique feline skills to navigate this
+                            uncharted territory and find their way home, all while battling the urge to
+                            play with dangling space strings.
+                        </p>
+                    </div>
+                    <div className="column-concepts right-column-concepts ">
+                        <img src={duo_starcat} alt="commander_starcat"/>
+                    </div>
+                </div>
+            </section>
+            <section className="section-darkgrey" id="starcats-warrior">
+                <div className="two-column-container">
+                    <div className="column-concepts left-column-concepts " style={{ padding: '2%' }}>
+                        <img src={warrior_starcat} alt="starcats_concept"/>
+                    </div>
+                    <div className="column-concepts right-column-concepts " style={{ padding: '2%' }}>
+                        <h3>Commander Socks</h3>
+                        <p>The logical, sock-patterned first officer</p>
+                        <h4>Hygge Shop Concepts</h4>
+                        <ul>
+                            <li>The Cosmic Catnip Emporium</li>
+                            <li>Whisker's Wormhole Tavern</li>
+                            <li>Nine Lives Nebula Bar</li>
+                            <li>Paw-sitive Particle Boutique</li>
+                            <li>The Curious Quasar Café</li>
+                            <li>Mittens' Meteor Munchies</li>
+                            <li>The Purring Pulsar Parlor</li>
+                        </ul>
+                    </div>
+                </div>
+            </section>
+            <section className="section-darkgrey" id="starcats-girl">
+                <div className="two-column-container">
+                    <div className="column-concepts left-column-concepts " style={{ padding: '2%' }}>
+                        <h3>Dr Fluffles</h3>
+                        <p>Ship's medical officer with a fear of water</p>
+                        <h4>Puuur-fect Slogans</h4>
+                        <ol>
+                            <li>"To Boldly Meow Where No Cat Has Meowed Before"</li>
+                            <li>"Paw Me Up, Scotty!"</li>
+                            <li>"Captain's Log: Stardate Fur.2.0"</li>
+                            <li>"Live Long and Pawsper"</li>
+                            <li>"The Purr-nal Frontier"</li>
+                            <li>"Starfleet Aca-meow-my Graduate"</li>
+                            <li>"Set Phasers to Purr"</li>
+                            <li>"Resistance is Fertile (Spay and Neuter!)"</li>
+                            <li>"Feline-eration Starship"</li>
+                            <li>"Boldly Napping Across the Galaxy"</li>
+                            <li>"Catnip: The Final Frontier"</li>
+                            <li>"Warp Speed 9 Lives"</li>
+                            <li>"Claw-lingon Battle Cruiser"</li>
+                            <li>"Highly Illogical, Captain Fluffles"</li>
+                            <li>"Space: The Perfect Place to Knock Things Off"</li>
+                        </ol>
+                    </div>
+                    <div className="column-concepts right-column-concepts " style={{ padding: '2%' }}>
+                        <img src={girl_starcat} alt="starcats_concept"/>
+                    </div>
+                </div>
+            </section>
+            <section className="section-darkgrey" id="starcats_male">
+                <div className="two-column-container">
+                    <div className="column-concepts left-column-concepts " style={{ padding: '2%' }}>
+                        <img src={male_starcat} alt="starcats_concept"/>
+                    </div>
+                    <div className="column-concepts right-column-concepts " style={{ padding: '2%' }}>
+                        <h3>Engineer Pawdget</h3>
+                        <p>A genius Scottish Fold who can fix anything with a hairball</p>
+                        <h4>Game: Cosmic Catastro-purr</h4>
+                        <p>Players: 2-5</p>
+                        <p>Age: 8+</p>
+                        <p>Play Time: 15-20 minutes</p>
+                        <h5>Components:</h5>
+                        <ul>
+                            <li>60 Mission Cards (12 each of 5 colors: Red, Blue, Green, Yellow, Purple)</li>
+                            <li>20 Event Cards</li>
+                            <li>5 Spaceship Cards (one per player)</li>
+                            <li>5 Catnip Tokens (one per player)</li>
+                        </ul>
+                        <h5>Mission Cards:</h5>
+                        <p>Each Mission Card has a color and a point value (1-3). Some have special abilities:</p>
+                        <ul>
+                            <li>Red: Peek at another player's hand</li>
+                            <li>Blue: Draw an extra card next round</li>
+                            <li>Green: Flip an Event Card face-down</li>
+                            <li>Yellow: Use your Catnip Token twice</li>
+                            <li>Purple: Steal a Mission Card from another player's ship</li>
+                        </ul>
+                    </div>
+                </div>
+            </section>
+            <section className="section-darkgrey" id="starcats-jane">
+                <div className="two-column-container">
+                    <div className="column-concepts left-column-concepts " style={{ padding: '2%' }}>
+                        <h4>Event Cards:</h4>
+                        <p>These cards trigger when Mission Cards of matching colors are played. Examples:</p>
+                        <ul>
+                            <li>Meteor Shower: Discard a card from your ship</li>
+                            <li>Cosmic Catnip: Double points for matching color this round</li>
+                            <li>Wormhole: Swap a card with another player</li>
+                        </ul>
+
+                        <h4>Catnip Token:</h4>
+                        <p>Once per round, you can use your Catnip Token to play a second Mission Card.</p>
+
+                        <h4>Setup:</h4>
+                        <ol>
+                            <li>Each player gets a Spaceship Card and a Catnip Token.</li>
+                            <li>Shuffle the Mission Cards and Event Cards separately.</li>
+                            <li>Deal 5 Mission Cards to each player.</li>
+                            <li>Place 3 Event Cards face-up in the center.</li>
+                        </ol>
+                    </div>
+                    <div className="column-concepts right-column-concepts " style={{ padding: '2%' }}>
+                        <img src={jane_starcat} alt="starcats_concept"/>
+                    </div>
+                </div>
+            </section>
+            <section className="section-darkgrey" id="starcats-luke">
+                <div className="two-column-container">
+                    <div className="column-concepts left-column-concepts " style={{padding: '2%'}}>
+                        <img src={luke_starcat} alt="starcats_concept"/>
+                    </div>
+                    <div className="column-concepts right-column-concepts " style={{padding: '2%'}}>
+                        <h4>Gameplay:</h4>
+                        <p>The game is played over 5 rounds. In each round:</p>
+                        <ol>
+                            <li>Players simultaneously choose a Mission Card from their hand and place it face-down.
+                            </li>
+                            <li>Reveal all chosen cards.</li>
+                            <li>Resolve any Event Cards that match the color of played Mission Cards.</li>
+                            <li>Players add their played Mission Card to their Spaceship Card.</li>
+                            <li>Pass the remaining cards to the left.</li>
+                            <li>Draw new Event Cards to always have 3 face-up.</li>
+                        </ol>
+                        <h5>Scoring:</h5>
+                        <p>After 5 rounds, players score their ships:</p>
+                        <ul>
+                            <li>Points for Mission Cards</li>
+                            <li>Bonus points for color sets (3 of a color = 4 points, 4 of a color = 7 points, 5 of a
+                                color
+                                = 11 points)
+                            </li>
+                            <li>2 points for each color not represented on your ship</li>
+                        </ul>
+                        <p>The player with the most points wins and becomes the Supreme Capi-tail of the galaxy!</p>
+
+                        <p>This game combines simple mechanics with cute theme elements, offering strategic choices
+                            (which
+                            cards to play, when to use Catnip) and player interaction (through card effects and Events).
+                            The
+                            short playtime and easy-to-grasp rules make it accessible, while the variety of cards and
+                            scoring options provide replayability.</p>
+                    </div>
+                </div>
+                <div className="custom-shape-divider-middle-one"
+                     style={{'--divider-color': 'var(--on-tertiary-fixed)'}}>
+                    <svg data-name="Layer 1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 120"
+                         preserveAspectRatio="none">
+                        <path
+                            d="M321.39,56.44c58-10.79,114.16-30.13,172-41.86,82.39-16.72,168.19-17.73,250.45-.39C823.78,31,906.67,72,985.66,92.83c70.05,18.48,146.53,26.09,214.34,3V0H0V27.35A600.21,600.21,0,0,0,321.39,56.44Z"
+                            className="shape-fill"></path>
+                    </svg>
+                </div>
+            </section>
+            <section className="section-darkbrown" id="WokWarriors">
+                <div className="two-column-container">
+                    <div className="column-concepts left-column-concepts " style={{padding: '2%'}}>
+                        <h3>WokWarriors Concept </h3>
+                        <p>Gear Grove: A vibrant forest-city where brass cogs turn tree trunks, and
+                            steam-powered elevators run through massive hollowed-out redwoods. All the creatures that
+                            were once endangered have found a way to thrive.
+                        </p>
+                        <h3>Story Potential</h3>
+                        <ul>
+                            <li>Solving ecological imbalances caused by rogue inventions</li>
+                            <li>Discovering ancient steam-tech lore, mythics and artifacts</li>
+                            <li>Competing in friendly mech races and repair challenges</li>
+                            <li>Fending off the occasional misguided inventor with grandiose plans</li>
+                            <li>Finding a balance and tolerance between culture and an evolving mish-mashed</li>
+                            world
+                            <li>Characters balancing day jobs, side gigs with their secret heroics</li>
+                            <li>Unraveling conspiracies involving rogue AIs</li>
+                            <li>Upgrading his mech suit with unlikely cooking implements</li>
+                            <li>Learning ancient kung fu techniques to complement his mech skills</li>
+                        </ul>
+
+                    </div>
+                    <div className="column-concepts right-column-concepts " style={{ padding: '2%' }}>
+                        <img src={forest_wokwarriors} alt="wokwarriors_concept"/>
+                    </div>
+                </div>
+            </section>
+            <section className="section-darkbrown" id="panda_wokwarriors">
+                <div className="two-column-container">
+                    <div className="column-concepts left-column-concepts " style={{ padding: '2%' }}>
+                        <img src={panda_wokwarriors} alt="image of working panda"/>
+                    </div>
+                    <div className="column-concepts right-column-concepts " style={{ padding: '2%' }}>
+                        <h3>Characters</h3>
+                        <p>Bao - A clumsy but determined panda in a steam-powered mech suit. His suit is cobbled
+                            together from old woks, bamboo pipes, and salvaged tech. It's outdated but surprisingly
+                            effective against modern threats.
+                        </p>
+                        <p>Each animal's mech suit is uniquely designed to complement their natural abilities and
+                            personality. Suits are modular, allowing for creative problem-solving and upgrades.</p>
+                        <h3>Taverns and Shop Names</h3>
+                        <ol>
+                            <li>The Rusty Wok</li>
+                            <li>Gear Grub Pub</li>
+                            <li>The Whistling Kettle</li>
+                            <li>Sprocket's Noodle Nook</li>
+                            <li>The Tarnished Teapot</li>
+                            <li>Cogwheel Cuisine</li>
+                            <li>The Brass Bamboo Bazaar</li>
+                            <li>Steam & Spice Emporium</li>
+                        </ol>
+
+                    </div>
+                </div>
+            </section>
+            <section className="section-darkbrown" id="redpanda_fox_wokwarriors">
+                <div className="two-column-container">
+                <div className="column-concepts left-column-concepts" style={{ padding: '2%' }}>
+                    <h3>Cog</h3>
+                    <p>A clever red panda engineer; leader of the Steam Squad</p>
+                    <h3> MMORPG Concepts</h3>
+                    <ul>
+                        <li>Faction: The Order of the Brass Paw</li>
+                        <li>Raid Boss: The Grand Gear Golem</li>
+                        <li>PvP Arena: The Simmering Springs</li>
+                    </ul>
+                    <h3> TTRPG Ideas</h3>
+                    <ul>
+                        <li>Character classes: Steam Engineer, Wok Wizard, Gear Grinder, Noodle Ninja</li>
+                        <li>Skills: Pressure Cooking, Gear Tinkering, Steam Venting, Wok-Fu</li>
+                        <li>Items: Enchanted Chopsticks, Steam-Infused Tea Leaves, Gear-Shifting Dumplings</li>
+                    </ul>
+                </div>
+                <div className="column-concepts right-column-concepts" style={{ padding: '2%' }}>
+                    <img src={redpanda_wokwarriors} alt="image of red panda"/>
+                </div></div>
+            </section>
+            <section className="section-darkbrown" id="tabby_wokwarriors">
+                <div className="two-column-container">
+                <div className="column-concepts left-column-concepts" style={{ padding: '2%' }}>
+                        <img src={tabby_wokwarriors} alt="image of working tabby cat"/>
+                    </div>
+                    <div className="column-concepts right-column-concepts" style={{ padding: '2%' }}>
+                        <h3>Sprocket</h3>
+                        <p>A methodical orange tabby cat; heavy artillery expert</p>
+                        <h3>Music Game Ideas</h3>
+                        <ul>
+                            <li>Title: "Harmony Hiss: Panda's Steam-Whistle Symphony"</li>
+                            <li>Gameplay: Players create music by timing the release of steam from various parts of
+                                their mech suit
+                            </li>
+                            <li>Instruments: Steam Whistle, Gear Grinder, Piston Popper, Wok Drum</li>
+                            <li>Music Styles: Steampunk Jazz, Gear Grinding Groove, Wok 'n' Roll</li>
+                        </ul>
+                        <h3>Media Opportunities</h3>
+                        <ol>
+                            <li>Animated TV series blending 2D and 3D styles</li>
+                            <li>Video/Mobile games featuring mech suit customization</li>
+                            <li>Comic books exploring Neo Bamboo City's lore</li>
+                            <li>Toy line of buildable, steampunk mech suits</li>
+                            <li>VR experience of piloting Bao's mech</li>
+                            <li>Graphic Novel series</li>
+                            <li> Museum collabs - interactive, about simple machines and steam power</li>
+                        </ol>
+                    </div>
+                </div>
+            </section>
+            <section className="section-darkbrown" id="shiba_wokwarriors">
+                <div className="two-column-container">
+                    <div className="column-concepts left-column-concepts" style={{ padding: '2%' }}>
+                        <h3>Whistle</h3>
+                        <p>Whistle - An energetic shiba inu dog; specializes in sound-based gadgets</p>
+                        <h3>Promo Ideas</h3>
+                        <ol>
+                            <li>"Design Your Mechanimal" art contests</li>
+                            <li>Steampunk-themed escape rooms based on the show's scenarios</li>
+                            <li>Educational workshops on basic engineering principles</li>
+                            <li>Eco-friendly merchandise line made from recycled materials</li>
+                        </ol>
+                        <p>This concept offers a unique blend of animal characters, steampunk aesthetics, and
+                            environmental themes. It's distinct from Kung Fu Panda while still maintaining the
+                            potential for humor, action, and educational content.</p>
+                    </div>
+                    <div className="column-concepts right-column-concepts" style={{ padding: '2%' }}>
+                        <img src={shiba_wokwarriors} alt="image of working shiba inu"/>
+                    </div>
+                </div>
+            </section>
+            <section className="section-darkbrown" id="shiba_wokwarriors">
+                <div className="two-column-container">
+                    <div className="column-concepts left-column-concepts" style={{ padding: '2%' }}>
+                        <img src={fox_wokwarriors} alt="image of working arctic fox"/>
+                    </div>
+                    <div className="column-concepts right-column-concepts" style={{ padding: '2%' }}>
+                        <h3>Bolt</h3>
+                        <p>A graceful wicca arctic fox; expert in the occult</p>
+                        <h3>More Cool Ideas</h3>
+                        <ol>
+                            <li>Pop-up noodle shops styled like Bao's home base</li>
+                            <li>"Mod Your Wok" social media challenge</li>
+                            <li>Themed cooking classes combining tech and traditional cuisine</li>
+                            <li>Retro-futuristic fashion line inspired by the show's aesthetic</li>
+                        </ol>
+
+                    </div>
+                </div>
+            </section>
+        </>
+    );
+};
+
+export default Concepts;

@@ -1,0 +1,44 @@
+---
+layout: ../../layouts/MarkdownPostLayout.astro
+title: 'Redoing blog in Astro'
+pubDate: 2025-02-11
+description: 'This is the first post of my new Astro blog.'
+author: 'tcheiner'
+github_url: 'https://github.com/tcheiner/blog'
+tags: ['astro', 'blogging', 'javascript', 'react']
+---
+# My First Blog Post
+
+I wanted a dev journal, per se, to keep track of my learning and progress.  There is so much material out there that I lose track of what I have done.  I did not want the overhead of one more login on Blogger/WordPress with the ads and pricing structure - simple is best!  
+
+So, I looked around on Github to see if there was a way to simply host a blogging framework on Github and deploy it via Netlify and no surprise, there was!
+
+Astro looks for `.astro` or `.md` files in the `src/pages/` directory. Each page is exposed as a route based on its file name.  It works with React/Vue/Svelte/Preact components.
+
+Documenting steps for a straightforward <a href="https://astro.build/">Astro</a> build! 
+
+## What I like:
+1. **Component Based**: It works well organizationally for content.  It is straightforward and simple to organize.  It is well-designed for graceful code layouts.  The framework makes it easy to understand as well.
+2. **Easy dynamic routing**: Almost effortless.  Easiest way to dynamically generate pages, imagine all error and 404 errors are handled by default, out of box!
+3. **Uses the most common frontend frameworks**: Makes migration of current website fairly quick.  There is little to relearn and enables quick adaptability.
+4. **Solid online documentation and tutorial**: I had no issues till Unit 5.  It is updated. Taking about 3 hrs to cut through 5 units of the tutorial.
+
+## What I've accomplished
+1. **Installing Astro**: First, I created a new <a href="https://astro.build/">Astro</a>  project and set up my online accounts.
+2. **Making Pages**: I then learned how to make pages by creating new `.astro` files and placing them in the `src/pages/` folder.
+3. **Making Blog Posts**: This is my first blog post! I now have <a href="https://astro.build/">Astro</a>  pages and Markdown posts!
+
+## What's next
+I will finish the <a href="https://docs.astro.build/en/tutorial">Astro</a> tutorial, and then keep adding more posts. 
+
+## Documented Steps:
+1. Install Astro in a directory of your choice locally, select yes for Git integration
+	<code>npm create astro@latest -- --template minimal</code>
+2. Run the following in terminal<br/>
+    <code>cd blog</code><br/>
+    <code>npm run dev</code><br/>
+    <code>astro telemetry disable</code><br/>
+3. Test website via:  <code>http://localhost:4321/</code>
+4. Set up your <a href="https://app.netlify.com/login">Netlify</a> account if you do not have one
+5. Debug and fix tags not filtering and displaying properly
+6. Added formatted dates to tag filtering and blog posts.
