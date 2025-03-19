@@ -1,4 +1,4 @@
-# TC Heiners's Astro Bento Website
+# TC Heina's Astro Bento Website
 
 It started off trying to start a tech journaling blog but it has spiraled into so much more!
 
