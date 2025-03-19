@@ -1,9 +1,6 @@
-# TechTim's Astro Bento Portfolio
+# TC Heiners's Astro Bento Website
 
-This template helps you build a portfolio using Astro, Typescript, React, Tailwind CSS, and Shadcn UI.
-
-- [Live Demo](https://techtim42.com)
-- [GitHub Repo](https://github.com/tim-hub/techtim-astro-bento-portfolio)
+It started off trying to start a tech journaling blog but it has spiraled into so much more!
 
 ## Technologies Used
 
