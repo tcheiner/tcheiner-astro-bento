@@ -71,6 +71,7 @@ const recipesCollection = defineCollection({
       alt: z.string(),
     })
       .optional(),
+    tags: z.array(z.string()).optional(),
     sourceUrl: z.string().optional(),
     canonical: z.string().optional(),
   }),
