@@ -8,19 +8,25 @@ import { getAndGroupUniqueTags } from "../../lib/utils";
  * And then render the content for each tag
  **/
 export async function getStaticPaths() {
-  const tagItemsMap = await getAndGroupUniqueTags();
-  console.log('tagItemsMap', tagItemsMap);
+  try {
+    const tagItemsMap = await getAndGroupUniqueTags();
+    console.log('tagItemsMap', tagItemsMap);
 
-  const result = []
-  tagItemsMap.forEach(
-    (items, tag) => {
-      result.push({
-        params: {tag}, props: {items},
-      });
-    }
-  );
-  console.log('result', result, Object.keys(tagItemsMap));
-  return result;
+    const result = []
+    tagItemsMap.forEach(
+      (items, tag) => {
+        result.push({
+          params: {tag}, props: {items},
+        });
+      }
+    );
+    console.log('result', result, Object.keys(tagItemsMap));
+    return result;
+  }
+  catch (error) {
+    console.error('Error in getStaticPaths', error);
+    return [];
+  }
 }
 
 const {tag} = Astro.params;
