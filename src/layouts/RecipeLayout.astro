@@ -15,8 +15,12 @@ const {
   tags,
   ingredients, 
   preparation,
+  steps,
   canonical 
 } = frontmatter;
+
+// Handle different possible formats for preparation steps
+const prepSteps = preparation || steps || [];
 ---
 
 <IndexPageLayout title={title} description={description} image={image} subTitle={title} canonicalURL={canonical}>
@@ -58,15 +62,28 @@ const {
       <!-- Right column: Preparation -->
       <div class="border border-border p-4 rounded-lg shadow-sm">
         <h2 class="text-xl font-bold mb-4">Preparation</h2>
-        {preparation && Array.isArray(preparation) ? (
-          <ol class="list-decimal pl-5 space-y-3">
-            {preparation.map((step) => (
-              <li>{step}</li>
-            ))}
-          </ol>
-        ) : (
-          <p>No preparation steps listed</p>
-        )}
+        {(() => {
+          // Handle preparation data in different formats
+          if (Array.isArray(prepSteps) && prepSteps.length > 0) {
+            return (
+              <ol class="list-decimal pl-5 space-y-3">
+                {prepSteps.map((step) => <li>{step}</li>)}
+              </ol>
+            );
+          } else if (typeof preparation === 'string' && preparation.trim()) {
+            // If it's a single string, split by newlines or periods to create steps
+            const steps = preparation.split(/\.\s+|\n+/).filter(s => s.trim());
+            if (steps.length > 0) {
+              return (
+                <ol class="list-decimal pl-5 space-y-3">
+                  {steps.map((step) => <li>{step}</li>)}
+                </ol>
+              );
+            }
+          }
+          // Fall back to no steps
+          return <p>No preparation steps listed</p>;
+        })()}
       </div>
     </div>
   </div>
