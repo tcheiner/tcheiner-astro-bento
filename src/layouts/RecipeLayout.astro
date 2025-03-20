@@ -1,11 +1,73 @@
- ---
-const { Content, headings } = Astro.props;
+---
 import ContentTags from "../components/ContentTags.astro";
 import IndexPageLayout from "./IndexPageLayout.astro";
 
-const {frontmatter} = Astro.props;
-const {title, description, image, postDate, course, cuisine, yields, duration, ingredients, canonical} = frontmatter;
- ---
+const { frontmatter, Content } = Astro.props;
+const { 
+  title, 
+  description, 
+  image, 
+  postDate, 
+  course, 
+  cuisine, 
+  yields, 
+  duration, 
+  tags,
+  ingredients, 
+  preparation,
+  canonical 
+} = frontmatter;
+---
 
-<IndexPageLayout>
- </IndexPageLayout>
+<IndexPageLayout title={title} description={description} image={image} subTitle={title} canonicalURL={canonical}>
+  <div class="w-full justify-center flex flex-col">
+    {tags &&
+      <div class="pb-4 mx-auto">
+        <ContentTags tags={tags}/>
+      </div>}
+    
+    <!-- Recipe metadata -->
+    <div class="flex flex-wrap gap-4 justify-center mb-6 text-sm">
+      {course && <div><span class="font-semibold">Course:</span> {course}</div>}
+      {cuisine && <div><span class="font-semibold">Cuisine:</span> {cuisine}</div>}
+      {yields && <div><span class="font-semibold">Yields:</span> {yields}</div>}
+      {duration && <div><span class="font-semibold">Time:</span> {duration}</div>}
+    </div>
+
+    <!-- Content area (images, description, etc.) -->
+    <div class="prose mx-auto dark:prose-invert mb-8">
+      <Content />
+    </div>
+
+    <!-- Two-column layout for ingredients and preparation -->
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
+      <!-- Left column: Ingredients -->
+      <div class="bg-muted p-4 rounded-lg">
+        <h2 class="text-xl font-bold mb-4">Ingredients</h2>
+        {ingredients && Array.isArray(ingredients) ? (
+          <ul class="list-disc pl-5 space-y-2">
+            {ingredients.map((ingredient) => (
+              <li>{ingredient}</li>
+            ))}
+          </ul>
+        ) : (
+          <p>No ingredients listed</p>
+        )}
+      </div>
+
+      <!-- Right column: Preparation -->
+      <div class="bg-muted p-4 rounded-lg">
+        <h2 class="text-xl font-bold mb-4">Preparation</h2>
+        {preparation && Array.isArray(preparation) ? (
+          <ol class="list-decimal pl-5 space-y-3">
+            {preparation.map((step) => (
+              <li>{step}</li>
+            ))}
+          </ol>
+        ) : (
+          <p>No preparation steps listed</p>
+        )}
+      </div>
+    </div>
+  </div>
+</IndexPageLayout>
