@@ -66,21 +66,21 @@ const recipesByCuisine = recipes.reduce((acc, recipe) => {
     <h2>What I am cooking today</h2>
 
     <!-- Filter tags section -->
-    <div class="mb-6">
-      <div class="mb-2">
-        <h3 class="text-lg font-medium mb-1">Filter by Course:</h3>
-        <div class="flex flex-wrap gap-2" id="course-tags">
-          {allCourses.map(course => (
-            <button
-              class="px-3 py-1 rounded-full bg-gray-200 dark:bg-gray-700 hover:bg-primary/20 text-sm filter-tag"
-              data-type="course"
-              data-value={course}
-            >
-              {course}
-            </button>
-          ))}
-        </div>
-      </div>
+    <!--<div class="mb-6">-->
+    <!--  <div class="mb-2">-->
+    <!--    <h3 class="text-lg font-medium mb-1">Filter by Course:</h3>-->
+    <!--    <div class="flex flex-wrap gap-2" id="course-tags">-->
+    <!--      {allCourses.map(course => (-->
+    <!--        <button-->
+    <!--          class="px-3 py-1 rounded-full bg-gray-200 dark:bg-gray-700 hover:bg-primary/20 text-sm filter-tag"-->
+    <!--          data-type="course"-->
+    <!--          data-value={course}-->
+    <!--        >-->
+    <!--          {course}-->
+    <!--        </button>-->
+    <!--      ))}-->
+    <!--    </div>-->
+    <!--  </div>-->
 
       <div class="mb-2">
         <h3 class="text-lg font-medium mb-1">Filter by Cuisine:</h3>
