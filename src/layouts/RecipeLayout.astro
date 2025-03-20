@@ -42,7 +42,7 @@ const {
     <!-- Two-column layout for ingredients and preparation -->
     <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
       <!-- Left column: Ingredients -->
-      <div class="bg-muted p-4 rounded-lg">
+      <div class="border border-border p-4 rounded-lg shadow-sm">
         <h2 class="text-xl font-bold mb-4">Ingredients</h2>
         {ingredients && Array.isArray(ingredients) ? (
           <ul class="list-disc pl-5 space-y-2">
@@ -56,7 +56,7 @@ const {
       </div>
 
       <!-- Right column: Preparation -->
-      <div class="bg-muted p-4 rounded-lg">
+      <div class="border border-border p-4 rounded-lg shadow-sm">
         <h2 class="text-xl font-bold mb-4">Preparation</h2>
         {preparation && Array.isArray(preparation) ? (
           <ol class="list-decimal pl-5 space-y-3">
