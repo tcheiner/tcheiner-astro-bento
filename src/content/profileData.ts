@@ -14,7 +14,7 @@ export const PROFILE = {
   headLine2: "Bring the business, I will find the way.",
   website: "https://tcheiner.com",
   repo: "https://github.com/tcheiner",
-  avatarUrl: "https://tcheiner.com/assets/tcheina_transparent-QDsmNoSI.png",
+  avatarUrl: "/images/tcheina_transparent.png",
   shortIntros: [
     "💻 Founding Engineer | Self-starter",
     "☘️ Fueled by curiosity and how things work",
