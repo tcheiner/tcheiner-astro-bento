@@ -33,8 +33,16 @@ const prepSteps = preparation || steps || [];
 
     <!-- Recipe metadata -->
     <div class="flex flex-wrap gap-4 justify-center mb-6 text-sm">
-      <!-- {course && <div><span class="font-semibold">Course:</span> {course}</div>}
-      {cuisine && <div><span class="font-semibold">Cuisine:</span> {cuisine}</div>} -->
+      {course && <div><span class="font-semibold">Course:</span> {course}</div>}
+      {cuisine && (
+        <div>
+          <span class="font-semibold">Cuisine:</span> {
+            Array.isArray(cuisine) 
+              ? cuisine.join(', ') 
+              : cuisine
+          }
+        </div>
+      )}
       {yields && <div><span class="font-semibold">Yields:</span> {yields}</div>}
       {duration && <div><span class="font-semibold">Time:</span> {duration}</div>}
 
@@ -74,12 +82,14 @@ const prepSteps = preparation || steps || [];
       <!-- Left column: Ingredients -->
       <div class="md:col-span-5 border border-border p-4 rounded-lg shadow-sm">
         <h2 class="text-xl font-bold mb-4">Ingredients</h2>
-        {ingredients && Array.isArray(ingredients) ? (
+        {ingredients && Array.isArray(ingredients) && ingredients.length > 0 ? (
           <ul class="list-disc pl-5 space-y-2">
             {ingredients.map((ingredient) => (
               <li>{ingredient}</li>
             ))}
           </ul>
+        ) : ingredients && typeof ingredients === 'string' ? (
+          <div class="pl-5" set:html={ingredients} />
         ) : (
           <p>No ingredients listed</p>
         )}
@@ -106,6 +116,11 @@ const prepSteps = preparation || steps || [];
                 </ol>
               );
             }
+            // If we couldn't split it, just render it as HTML
+            return <div class="pl-5" set:html={preparation} />;
+          } else if (typeof steps === 'string' && steps.trim()) {
+            // Handle steps as a string if needed
+            return <div class="pl-5" set:html={steps} />;
           }
           // Fall back to no steps
           return <p>No preparation steps listed</p>;

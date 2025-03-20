@@ -40,3 +40,7 @@ env.d.ts
 
 # Local Netlify folder
 .netlify
+
+# Node version manager
+.nvmrc
+.npmrc
