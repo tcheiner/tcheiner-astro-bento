@@ -3,20 +3,20 @@ import ContentTags from "../components/ContentTags.astro";
 import IndexPageLayout from "./IndexPageLayout.astro";
 
 const { frontmatter, Content } = Astro.props;
-const { 
-  title, 
-  description, 
-  image, 
-  postDate, 
-  course, 
-  cuisine, 
-  yields, 
-  duration, 
+const {
+  title,
+  description,
+  image,
+  postDate,
+  course,
+  cuisine,
+  yields,
+  duration,
   tags,
-  ingredients, 
+  ingredients,
   preparation,
   steps,
-  canonical 
+  canonical
 } = frontmatter;
 
 // Handle different possible formats for preparation steps
@@ -29,7 +29,7 @@ const prepSteps = preparation || steps || [];
       <div class="pb-4 mx-auto">
         <ContentTags tags={tags}/>
       </div>}
-    
+
     <!-- Recipe metadata -->
     <div class="flex flex-wrap gap-4 justify-center mb-6 text-sm">
       {course && <div><span class="font-semibold">Course:</span> {course}</div>}
@@ -44,7 +44,7 @@ const prepSteps = preparation || steps || [];
     </div>
 
     <!-- Two-column layout for ingredients and preparation -->
-    <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-3 mb-6">
       <!-- Left column: Ingredients -->
       <div class="border border-border p-4 rounded-lg shadow-sm">
         <h2 class="text-xl font-bold mb-4">Ingredients</h2>
