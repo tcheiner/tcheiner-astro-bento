@@ -6,7 +6,11 @@ import RecipeCard from "../../components/RecipeCard.astro";
 const recipes = await getCollection('recipes');
 
 // Sort recipes by date (newest first)
-const recipesByDate = [...recipes].sort((a, b) => b.data.date - a.data.date);
+const recipesByDate = [...recipes].sort((a, b) => {
+  const dateA = new Date(b.data.date || b.data.postDate || new Date());
+  const dateB = new Date(a.data.date || a.data.postDate || new Date());
+  return dateA - dateB;
+});
 
 // Group recipes by course
 const recipesByCourse = {
@@ -20,9 +24,10 @@ const recipesByCourse = {
 
 const recipesByCuisine = recipes.reduce((acc, recipe) => {
   // Ensure `recipe.data.cuisine` is an array
-  const cuisines = recipe.data.cuisine || [];
+  const cuisines = Array.isArray(recipe.data.cuisine) ? recipe.data.cuisine : [recipe.data.cuisine].filter(Boolean);
 
   cuisines.forEach((cuisine) => {
+    if (!cuisine) return;
     if (!acc[cuisine]) {
       acc[cuisine] = [];
     }
@@ -37,25 +42,21 @@ const recipesByCuisine = recipes.reduce((acc, recipe) => {
   <section>
     <h2>What I am cooking today</h2>
 
-    <div class="grid grid-cols-3 gap-3">
-      {recipes.map((recipe) => {
-        // Combine course, ingredients, and cuisine into a single array of tags
-        const tags = [recipe.data.course, recipe.data.ingredients, recipe.data.cuisine];
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3">
+      {recipesByDate.map((recipe) => {
         return (
           <RecipeCard
               key={recipe.data.title}
-              href={'/recipes/' + recipe.data.slug}
+              href={'/recipes/' + recipe.slug}
               heading={recipe.data.title}
-              imagePath={recipe.data.image.url}
+              imagePath={recipe.data.image?.url}
+              altText={recipe.data.title}
               postDate={recipe.data.postDate}
               sourceUrl={recipe.data.sourceUrl}
            />
         );
       })}
-
     </div>
   </section>
-
-
 </IndexPageLayout>
 

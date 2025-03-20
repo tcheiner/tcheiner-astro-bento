@@ -2,7 +2,7 @@
 import ContentTags from "../components/ContentTags.astro";
 import IndexPageLayout from "./IndexPageLayout.astro";
 
-const { frontmatter, Content } = Astro.props;
+const { frontmatter } = Astro.props;
 const {
   title,
   description,
@@ -66,7 +66,7 @@ const prepSteps = preparation || steps || [];
 
     <!-- Content area (images, description, etc.) -->
     <div class="prose mx-auto dark:prose-invert mb-8">
-      <Content />
+      <slot />
     </div>
 
     <!-- Two-column layout for ingredients and preparation -->
