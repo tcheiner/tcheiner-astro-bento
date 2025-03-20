@@ -4,14 +4,10 @@ import RecipeLayout from "../../layouts/RecipeLayout.astro";
 
 export async function getStaticPaths() {
   const recipeEntries = await getCollection('recipes');
-  return recipeEntries.map(entry => {
-    // Ensure slug is properly formatted - if it's an array or object, convert to string
-    const slug = typeof entry.slug === 'string' ? entry.slug : entry.slug.toString();
-    return {
-      params: { slug },
-      props: { entry }
-    };
-  });
+  return recipeEntries.map(entry => ({
+    params: { slug: entry.slug },
+    props: { entry }
+  }));
 }
 
 const { entry } = Astro.props;
