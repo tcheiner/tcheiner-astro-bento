@@ -7,6 +7,7 @@ const {
   title,
   description,
   image,
+  quickImage,
   postDate,
   course,
   cuisine,
@@ -36,6 +37,30 @@ const prepSteps = preparation || steps || [];
       {cuisine && <div><span class="font-semibold">Cuisine:</span> {cuisine}</div>} -->
       {yields && <div><span class="font-semibold">Yields:</span> {yields}</div>}
       {duration && <div><span class="font-semibold">Time:</span> {duration}</div>}
+      
+      <div class="w-full flex justify-center mt-2">
+        <button 
+          id="quickReferenceToggle" 
+          class="text-sm font-medium underline cursor-pointer flex items-center gap-1"
+        >
+          Quick Reference
+          <span id="toggleIcon" class="inline-block transition-transform">▼</span>
+        </button>
+      </div>
+      
+      <div id="quickReferenceContent" class="w-full hidden transition-all duration-300 ease-in-out overflow-hidden">
+        {quickImage && (
+          <div class="flex justify-center mt-2">
+            <img 
+              src={quickImage} 
+              alt="Quick reference image" 
+              class="max-w-full rounded-md shadow-sm border border-border"
+              style="max-height: 300px;"
+            />
+          </div>
+        )}
+        {!quickImage && <p class="text-center text-muted-foreground">No quick reference image available</p>}
+      </div>
     </div>
 
     <!-- Content area (images, description, etc.) -->
@@ -88,3 +113,26 @@ const prepSteps = preparation || steps || [];
     </div>
   </div>
 </IndexPageLayout>
+
+<script>
+  // Add client-side JavaScript for the accordion functionality
+  document.addEventListener('DOMContentLoaded', () => {
+    const toggleButton = document.getElementById('quickReferenceToggle');
+    const contentDiv = document.getElementById('quickReferenceContent');
+    const toggleIcon = document.getElementById('toggleIcon');
+    
+    if (toggleButton && contentDiv && toggleIcon) {
+      toggleButton.addEventListener('click', () => {
+        // Toggle visibility
+        contentDiv.classList.toggle('hidden');
+        
+        // Rotate arrow icon
+        if (contentDiv.classList.contains('hidden')) {
+          toggleIcon.style.transform = 'rotate(0deg)';
+        } else {
+          toggleIcon.style.transform = 'rotate(180deg)';
+        }
+      });
+    }
+  });
+</script>
