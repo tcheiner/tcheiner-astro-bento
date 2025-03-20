@@ -66,6 +66,7 @@ const recipesCollection = defineCollection({
     duration: z.number(),
     yields: z.array(z.number()),
     ingredients: z.array(z.string()),
+    preparation: z.array(z.string()),
     image: z.object({
       url: z.string(),
       alt: z.string(),
