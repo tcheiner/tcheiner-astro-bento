@@ -1,0 +1,43 @@
+---
+slug: "2025-03-21"
+title: "Go & Modal"
+description: "Learning Go & Modal"
+startDate: 2025-03-22
+image: {
+    url: "/images/posts/modal-icon.png",
+    alt: "Modal"
+}
+tags: ["Go", "GoLand", "LLM Inference Server", "Modal"]
+canonical: https://tcheiner.com
+---
+Looked into learning Go, after reading an article that Microsoft is doing away with Typescript.
+It tickled me because it is derived from C++, Jon would love it.
+
+I want to develop some of my own stuff by training my own LLM.  Looking at recommended laptops and realized that it
+may be better if we set up an inference server at home to just run our LLMs and serve it to us.  Looked at that and it
+seems fairly easy.  Then I stumbled across Modal, which offers free credits per month if you want to try them out.
+
+So I signed up for it, walk through a tutorial and whoa.  SO EASY.  Documentation is great, which is always rare.
+Console view:
+![Modal Console](/images/posts/2025-03-21.png)
+Server view:
+![Modal Deploy](/images/posts/modal-test.png)
+
+Per reading the docs, and doing some sample runs and test code, Modal is quite awesome in terms of getting up and
+running quickly.  A few lines of python code and you have an API endpoint.  That makes testing any proof of concept
+quick fast. We can work out the breakpoints on when to move to a more efficient hosting solution if it ever comes to
+that.  Digging into Modal a bit further, it looks like it has a rate limit of 200/second.  It does api using FastAPI,
+and that is easier to pickup and develop then learning how to write AWS Lambdas and testing it locally.
+
+Quoting Modal's docs:
+
+How do web endpoints run in the cloud?
+Note that web endpoints, like everything else on Modal, only run when they need to. When you hit the web endpoint the
+first time, it will boot up the container, which might take a few seconds. Modal keeps the container alive for a short
+period in case there are subsequent requests. If there are a lot of requests, Modal might create more containers
+running in parallel.
+
+For the shortcut @modal.fastapi_endpoint decorator, Modal wraps your function in a FastAPI application. This means that
+the Image your Function uses must have FastAPI installed, and the Functions that you write need to follow its request
+and response semantics. Web endpoint Functions can use all of FastAPI’s powerful features, such as Pydantic models for
+    automatic validation, typed query and path parameters, and response types.

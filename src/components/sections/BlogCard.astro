@@ -10,7 +10,7 @@ let posts = await getCollection('posts');
 posts = posts.sort((a, b) => {
   return new Date(b.data.startDate) - new Date(a.data.startDate);
 });
-posts = posts.slice(0, 2);
+posts = posts.slice(0, 4);
 ---
 
 
