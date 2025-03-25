@@ -1,0 +1,72 @@
+---
+interface Props {
+  src: string;
+  alt: string;
+  width?: number;
+  height?: number;
+  class?: string;
+  position?: number;
+  total?: number;
+  caption?: string;
+  rounded?: boolean;
+}
+
+const {
+  src,
+  alt,
+  width,
+  height,
+  class: className = "",
+  position = 1,
+  total = 1,
+  caption,
+  rounded = false
+} = Astro.props;
+
+// Calculate the width percentage based on total images in row
+const widthPercentage = total > 1 ? `${Math.floor(100 / total) - 2}%` : "100%";
+
+// Determine if this is a full-width image
+const isFullWidth = total === 1;
+
+// Apply rounded corners if specified
+const roundedClass = rounded ? "rounded-lg overflow-hidden" : "";
+---
+
+<div class={`image-container ${isFullWidth ? 'w-full' : ''} ${className}`}>
+  <div class={`image-wrapper ${total > 1 ? 'inline-block' : ''}`} style={`width: ${widthPercentage}; ${position > 1 ? 'margin-left: 8px;' : ''}`}>
+    <div class={roundedClass}>
+      <img 
+        src={src} 
+        alt={alt} 
+        width={width} 
+        height={height}
+        class="max-w-full h-auto"
+        loading="lazy"
+      />
+    </div>
+    {caption && (
+      <p class="text-sm text-center text-gray-600 mt-1">{caption}</p>
+    )}
+  </div>
+</div>
+
+<style>
+  .image-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: 1rem 0;
+    flex-wrap: wrap;
+  }
+  
+  .image-wrapper {
+    display: inline-block;
+    vertical-align: top;
+  }
+  
+  img {
+    display: block;
+    max-width: 100%;
+  }
+</style>
