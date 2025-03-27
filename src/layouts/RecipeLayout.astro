@@ -33,12 +33,12 @@ const prepSteps = preparation || steps || [];
 
     <!-- Recipe metadata -->
     <div class="flex flex-wrap gap-4 justify-center mb-6 text-sm">
-      {course && <div><span class="font-semibold">Course:</span> {course}</div>}
+      <!--{course && <div><span class="font-semibold">Course:</span> {course}</div>}-->
       {cuisine && (
         <div>
           <span class="font-semibold">Cuisine:</span> {
-            Array.isArray(cuisine) 
-              ? cuisine.join(', ') 
+            Array.isArray(cuisine)
+              ? cuisine.join(', ')
               : cuisine
           }
         </div>
@@ -46,30 +46,34 @@ const prepSteps = preparation || steps || [];
       {yields && <div><span class="font-semibold">Yields:</span> {yields}</div>}
       {duration && <div><span class="font-semibold">Time:</span> {duration}</div>}
 
-      {quickImage && (
-        <>
-          <div class="w-full flex justify-center mt-2">
-            <button
-              id="quickReferenceToggle"
-              class="text-sm font-medium underline cursor-pointer flex items-center gap-1"
-            >
-              Quick Reference
-              <span id="toggleIcon" class="inline-block transition-transform">▼</span>
-            </button>
-          </div>
+      <!--{quickImage && (-->
+      <!--  <>-->
+      <!--    <div class="w-full flex justify-center mt-2">-->
+      <!--      <button-->
+      <!--        id="quickReferenceToggle"-->
+      <!--        class="text-sm font-medium underline cursor-pointer flex items-center gap-1"-->
+      <!--      >-->
+      <!--        Quick Reference-->
+      <!--        <span id="toggleIcon" class="inline-block transition-transform">▼</span>-->
+      <!--      </button>-->
+      <!--    </div>-->
 
-          <div id="quickReferenceContent" class="w-full hidden transition-all duration-300 ease-in-out overflow-hidden">
-            <div class="flex justify-center mt-2">
-              <img
-                src={quickImage}
-                alt="Quick reference image"
-                class="max-w-full rounded-md shadow-sm border border-border"
-                style="max-height: 200px;"
-              />
-            </div>
-          </div>
-        </>
-      )}
+      <!--    <div id="quickReferenceContent" class="w-full hidden transition-all duration-300 ease-in-out overflow-hidden">-->
+      <!--      <div class="flex justify-center mt-2">-->
+      <!--        <img-->
+      <!--          src={quickImage}-->
+      <!--          alt="Quick reference image"-->
+      <!--          class="max-w-full rounded-md shadow-sm border border-border"-->
+      <!--          style="max-height: 200px;"-->
+      <!--        />-->
+      <!--      </div>-->
+      <!--    </div>-->
+      <!--  </>-->
+      <!--)}-->
+    </div>
+
+    <div>
+      {image && <div><img src={image.url} alt={image.alt} width={image.width} height={image.height} /></div>}
     </div>
 
     <!-- Content area (images, description, etc.) -->
@@ -140,10 +144,10 @@ const prepSteps = preparation || steps || [];
     if (toggleButton && contentDiv && toggleIcon) {
       // Remove any existing event listeners to prevent duplicates
       toggleButton.replaceWith(toggleButton.cloneNode(true));
-      
+
       // Get the fresh reference after cloning
       const freshToggleButton = document.getElementById('quickReferenceToggle');
-      
+
       if (freshToggleButton) {
         freshToggleButton.addEventListener('click', () => {
           // Toggle visibility
@@ -162,10 +166,10 @@ const prepSteps = preparation || steps || [];
 
   // Initialize on DOMContentLoaded
   document.addEventListener('DOMContentLoaded', initAccordion);
-  
+
   // Also initialize on view transitions (for Astro's built-in transitions)
   document.addEventListener('astro:page-load', initAccordion);
-  
+
   // Backup for any custom navigation systems
   document.addEventListener('astro:after-swap', initAccordion);
 </script>

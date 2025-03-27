@@ -5,17 +5,38 @@ description: "Designing a chore boardgame for kids/teens"
 startDate: 2025-03-24
 image: {
             url: "/images/posts/heinerschoreboard-pass1.png",
-            alt: "chore board game"
+            alt: "chore board game",
+            width: 800,
+            height: 800
         }
 tags: ["board game", "kids", "chores"]
 canonical: https://tcheiner.com
+
 ---
+import ResponsiveImage from '../../components/ResponsiveImage.astro';
+
 Second pass of my chore board game.  It takes a while and finally settled on using illustrator, probably a bit heavy handed.
 ![board-pass1](/images/posts/heinerschoreboard-pass1.png)
 Took a pass at the cards as well, I will need to generate some landscapes.
-![cardback-pass1](/images/posts/heinerschoreboard-cardback-pass1.png)
-And the cardfront.
-![cardfront-pass1](/images/posts/heinerschoreboard-cardfront-pass1.png)
+<div style="display: flex; justify-content: center; flex-wrap: wrap;">
+    <ResponsiveImage
+        src="/images/posts/heinerschoreboard-cardback-pass1.png"
+        alt="Card Back"
+        width={300}
+        height={300}
+        position={1}
+        total={2}
+        rounded={true}
+    />
+    <ResponsiveImage
+        src="/images/posts/heinerschoreboard-cardfront-pass1.png"
+        alt="Card Front"
+        width={300}
+        height={300}
+        position={2}
+        total={2}
+    />
+</div>
 
 How would gameplay work?
 It should start simple - and the simplest I can come up with is the following.

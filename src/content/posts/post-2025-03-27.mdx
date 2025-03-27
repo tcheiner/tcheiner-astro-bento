@@ -1,0 +1,87 @@
+---
+slug: "2025-03-27"
+title: "Vibe Coding with Replit"
+description: "Experimenting with Vibe Coding - per deeplearning.ai"
+startDate: 2025-03-27
+image: {
+            url: "/images/posts/vibe-coding-test.png",
+            alt: "vibe coding session",
+            width: 800,
+            height: 800
+        }
+tags: ["vibe coding", "replit"]
+canonical: https://tcheiner.com
+---
+A newsletter came my way today that sparked an interest - vibe coding.  I am curious as to what everyone is raving
+about and what all programmers are screaming in terror of.  Might s well see what I am up against.
+
+I recently tagged along with a friend to take a look at the inner workings of the Dutch flower wholesaler.  I used her
+business as an inspiration for this project.  I know how much time it will take me to create something like this and
+wanted to know how long it would take if I vibe coded it.
+
+My prompt: (okay that scrolled off but it goes something like this)
+I need a website for my garden design business, I decorate gardens updated for each season in a year.  I would like to
+pull my instagram posts into a blog segment. I can be contacted via x, y, z.  I would like all the config for colors,
+custom text and images to be separate from the code.  Plus a small shop of less than 100 items to sell my overstocked
+items from my projects.  Make it fully seo taggable.
+
+I agreed to add a database and all enhancements.
+
+10 minutes in:
+![vibe-coding-replit](/images/posts/vibe-coding-test.png)
+
+I had it (reissued instructions) to pull the styling out into config.
+
+It is taking, what feels like 20 minutes to complete this, forever to get anything done now.
+
+I had it make it fully responsive,and change out banner image and title.  It is pretty much dying on me now, too much
+text to tokenize.  I still have a few broken images and lost my title.  Phone numbers look funky - all the signs that
+this is some sort of scam.  Plus, any further requests take between 30-60 minutes.
+
+If I try to edit the code, it says to work with the Replit Agent (i.e. AI), which means that I am not allowed to edit
+it.  I also have to deploy in Replit.
+
+It is pretty good/  I have been away from the frontend stuff for a while, it saved me a day and some to generate it this
+way.  Is it spaghetti code?  Absolutely.  Debugging (AI doing it) is shit?  Absolutely, it feels like it is straining.
+![vibe-coding-replit](/images/posts/vibe-coding-test2.png)
+
+I am able to download the code but not deploy it as I requested a db integration (which ist forgot about and is now
+redoing).
+
+Summary:
+It saves a lot of time.  As a hands-on developer, I hate to be tied to any single stack or technology or platform, it
+is one of my biggest strengths and I see from this exercise, Replit takes that away, it strats to take a lot of time
+for it to iterate through the files and the changes do not work for.. example, a shopping cart.
+
+It also takes away a lot of joy from figuring a problem out.  I mostly sit here and twiddle my thumbs while it toils
+away making new mistakes.  I don't know how this is replacing programmers but either it is doing throw-away code (for a
+sale of a house - static site, use once and tossed) or some startup (no heavy traffic, not many enhancements) or the
+developers it is replacing are not very good to begin with and they do not understand what production level code looks
+like.  Arguably, it is more work than working within Wix (if you know how to do it fast) and slapping together
+templatized sites. I would not use it for a business site, but I would use it for a throw-away site.  The searches for
+usable images and art is awesome but the links to 20-30% of the images are broken.
+
+Mostly waiting (replacing long build times, ha!) and this is the results deployed.
+Welp, removed the database components, stripped it down and got the downloaded zip to compile and deploy but it
+failed in Netlify.  It is utter garbage as a whole but I have no doubt that it will do UI and code snipplets well.
+
+Netlify Deploy Badge
+[![Netlify Status](https://api.netlify.com/api/v1/badges/e8bda465-6c19-49f3-9c6a-e388f75f6df3/deploy-status)](https://app.netlify.com/sites/gardenseasonal/deploys)
+
+Problem:
+We have a vite front end with a node.js server that also gets bundled in /dist.
+So we are now picking up Netlify serverless functions.  And I feel suss about that since serverless means cost.  Again,
+I am feeling a bit emasculated by the whole process of simplification.  It's a slippery slope.
+
+I guess the easy way is to deploy to Replit or write this a different way (by yourself).  Replacing developers?  No.
+Using it to write the basis of an algorithm, definitely.  It cannot piece together a big picture. A lot of work to fix
+startups that limped on vibe coding - sure!  I can already hear this conversation:
+business: "we just need this one small thing fixed, everything else worked perfectly."
+me: "I have to rewrite it.  I will spend more of your money paying me per hour than me just rewriting it."
+business: "but we spent so much time prompting it into perfection".
+me: "if you insist on paying by the hour."
+
+9/10 for web design with the UI.  It mostly works.
+1/10 for common sense.  It is a bit of a mess.
+
+You will just have to settle for a screenshot!
