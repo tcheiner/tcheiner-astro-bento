@@ -1,0 +1,33 @@
+---
+slug: "2025-03-28b"
+title: "Chunking, Vector DBs, Tokenizing"
+description: "Chunking, Vector DBs, Tokenizing"
+startDate: 2025-03-28
+image: {
+url: "https://images.ctfassets.net/kftzwdyauwt9/6a6dVWcGaLbuk6mMLevqfK/ec129d2ee4c60c9c3315c484409a2978/DON-T_use_the_Blossom_as_the_primary_branding_Dark.png?w=3840&q=80&fm=webp",
+alt: "OpenAI Logo"
+}
+tags: ["AI", "feature store", "vector databases"]
+canonical: https://tcheiner.com
+---
+One last tinker-ish thing I did today before bed: I had a friend reach out with some AI questions, she is really sharp
+and presumedly some idea to use AI to streamline some data/workflow processes and I believe that was along the lines of
+what she was asking me - as in, how it is done.
+
+Well, I know that every question you ask AI is tokenized and sent and run against this weighed graph of probalistic
+weights and they return what is likely the next correct token based on what was input.  I know you pay per token, no
+matter how miniscule the cost seems, it is likely higher than what the actual costs are in terms of cooling, powering
+the chips, jobs lost and all the secondary impacts.  I always ask myself if there is a better way than asking AI - or
+if I am just being lazy.
+
+I did some math on chunking data for her, and it turns out, I found a gap in chatting with GPT on my knowledge of AI,
+that no reading or tutorial covers because it is not in scope.  The focus is to learn how to wield it, who cares about
+cost efficiency?  Turns out, if you have 100million tokens of data that you want to consult against, we have already
+found more efficient ways to query against it.  You take your data, tokenize it and store it in a vector database.
+When you have a query, you can query against your vector database, pull out relevant components and send that off to
+the LLM.  I can see how the notion of agentic AIs stem from, the idea that you can chain from one knowledge base to
+another.  A database is not free but is essentially free, so is storage, and you reduce your query costs from $300-4000
+(depending on LLM model) to $0.15-0.30.  That is definitely more efficient.
+
+Speaking of which, I should look up the most efficient implementation of a feature store, vector database, is that is
+what is in use these days.
