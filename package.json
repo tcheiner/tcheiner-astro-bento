@@ -1,13 +1,13 @@
 {
   "site": "https://tcheiner.com",
-  "id": "TechTim42",
+  "id": "tcheiner",
   "name": "@tcheiner/tc",
   "version": "1.0.0",
   "fullName": "tcheiner",
   "description": "Learn, Share and Grow ❤️ -- Software Engineer | AWS Professional | Open Source Lover  --☘️ Be more productive, Better in communicating, Contribute more to community ",
   "author": {
-    "name": "Tech Tim",
-    "url": "https://TechTim42.com"
+    "name": "tcheiner",
+    "url": "https://tcheiner.com"
   },
   "repository": {
     "type": "git",

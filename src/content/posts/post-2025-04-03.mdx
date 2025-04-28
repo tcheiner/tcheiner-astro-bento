@@ -1,0 +1,38 @@
+---
+slug: "2025-04-03"
+title: "Rag training - OCR"
+description: "Rag Training - OCR"
+startDate: 2025-04-03
+image: {
+            url: "https://miro.medium.com/v2/resize:fit:1400/format:webp/1*SqjUOFL-w7YD83mder4rYw.png",
+            alt: "rag training - ocr"
+        }
+tags: ["rag training", "OCR", "AI", "embeddings"]
+canonical: https://tcheiner.com
+---
+Okay, I have given up waiting for the verification email from the U of Bern in Swizterland who owns the OCR handwriting
+dataset.
+
+Googling more (the internet is so noisy these days), I found it on Kaggle.
+https://www.kaggle.com/datasets/naderabdalghani/iam-handwritten-forms-dataset
+
+pip install kaggle
+
+Doh.  So obvious in hindsight.  Everything is.
+
+There are free tutorials on Kaggle, I refrained from delving into them because learning is optimal when you have a use
+case as a goal.  I have used pandas and roughly understood what sci-kit is for but this is the best time to delve
+into both of those.
+
+Finished the ML Learning tutorial.  Getting started on the pandas one.
+
+Okay the plan is this:
+1. check the kaggle OCR handwriting dataset
+2. select a pretrained model for vectorization, looking at llama or mistral or gpt model that is free currently
+3. select a platform: huggingface spaces, runpod (have used), together.ai
+3. set up a vector database: pinecone or weaviate or milvus
+4. implement the RAG pipeline
+5. regression test and train
+
+I should make life easy and do the shortcut route I found - train on openai, train on azure, click click done.
+

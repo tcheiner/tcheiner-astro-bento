@@ -1,0 +1,28 @@
+---
+slug: "2025-04-11"
+title: "Rag training - Intro - news articles"
+description: "Rag Training - Intro"
+startDate: 2025-04-11
+image: {
+        url: "/images/posts/arch-diagram-news-article.png",
+        alt: "rag training - rag training - news articles"
+    }
+tags: ["rag training", "text", "AI", "embeddings"]
+canonical: https://tcheiner.com
+---
+![arch-diagram-news-article](/images/posts/arch-diagram-news-article.png)
+Diagramming done via DiagramAsCode
+
+[Github Implementation](https://github.com/tcheiner/ragintro-newsarticle/tree/main)
+
+## Rag Training - Intro
+It takes about 21 news articles in text files,
+loads them into a simulated pipeline,
+splits text into chunks (specified chunk size and overlap as an array) into chunks,
+passing each chunk through an embedding model (text-embedding-3-small via OpenAI),
+which vectorizes it and then indexes it and stores it into a vector database.
+
+The subsequent queries will query the vector database.
+
+It is a simple exercise to code up a rag retrieval to query (using an LLM) a specific set of documents.
+

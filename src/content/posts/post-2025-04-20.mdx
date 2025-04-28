@@ -1,0 +1,30 @@
+---
+slug: "2025-04-20"
+title: "MCP - Model Context Protocol - AWS Serverless"
+description: "MCP - standard for connection AI Assistants to systems - Serverless Edition"
+startDate: 2025-04-20
+image: {
+url: "https://www.anthropic.com/_next/image?url=https%3A%2F%2Fwww-cdn.anthropic.com%2Fimages%2F4zrzovbb%2Fwebsite%2F3aabd8804251c0364cbde9d2e4be6dc8e8c2faec-2880x1620.png&w=3840&q=75",
+alt: "MCP image - claude"
+}
+tags: ["MCP", "Model Context Protocol", "AWS", "Serverless", "Typescript", "Lambda"]
+canonical: https://tcheiner.com
+---
+Deployed an AWS Serverless/Lambda version of a MCP server/client via SAM CLI.
+[AWS Community Tutorial](https://community.aws/content/2vzj07Wyk6Lw281Tvs1Lw7kJJNW/building-scalable-mcp-servers-on-aws-lambda-a-practical-guide?lang=en)
+
+Using SAM CLI by default these days and I greatly prefer it over the UI/web version.
+The tutorial had some flaws.  I prefer python code for backend, it is easier to transform and
+manipulate data using python libs compared to Typescript.
+
+After all tha troubleshooting, I see this section on the MCP website SPECIFICALLY for vibe coding:
+[MCP Vibe coding Prompts](https://modelcontextprotocol.io/tutorials/building-mcp-with-llms)
+
+I am all for pair programming with LLMs, it is because it of that I am more a polyglot these days and it gets me up and
+running really quick.  However, there is too many considerations for my generative chat sessions to keep in context to
+put up a simple page that preserves backend integrity, maintains speed and etc.  It still requires a lot more work to
+go in and fine tune it.  It is mildly disturbing to me that this is the ... presumed typical way so much so that it is a
+line item on the MCP website.
+
+Github code:
+[MCP - AWS Serverless](https://github.com/tcheiner/MCP/tree/main/aws-lambda)

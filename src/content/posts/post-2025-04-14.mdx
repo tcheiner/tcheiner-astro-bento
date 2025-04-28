@@ -1,0 +1,123 @@
+---
+slug: "2025-04-14"
+title: "MCP - Model Context Protocol"
+description: "MCP - standard for connection AI Assistants to systems"
+startDate: 2025-04-14
+image: {
+            url: "https://www.anthropic.com/_next/image?url=https%3A%2F%2Fwww-cdn.anthropic.com%2Fimages%2F4zrzovbb%2Fwebsite%2F3aabd8804251c0364cbde9d2e4be6dc8e8c2faec-2880x1620.png&w=3840&q=75",
+            alt: "MCP image - claude"
+        }
+tags: ["MCP", "Model Context Protocol"]
+canonical: https://tcheiner.com
+---
+#### Bait
+Found this article on [MCP](https://www.anthropic.com/news/model-context-protocol) - Model Context Protocol.
+
+#### Source
+It was introduced in Nov 2024 by Anthropic by David Parra and Justin Spahr-Summers.  It begun as a way to extend the
+capabilities of developer IDEs.  Origin story here [Latent Space podcast](https://www.latent.space/p/mcp)
+
+#### What
+An analogy to MCP is that it's a "USB-C port of AI Applications", in that it
+creates a universal extension point for LLMs and dev tools to connect to each other with; databases, ticketing systems,
+etc.  A good example if using MCP to "talk" to my database from my IDE.
+![MCP - Current](/images/posts/2025-04-14-latentspace-4-old.png)
+
+#### Source Design
+Many of the core ideas of MCP come from Microsoft's approach to make it easier for IDEs to add programming language
+support using LSP (Language Server Protocol) to understand MCP.  The MCP Architecture emcompasses slients and servers,
+where servers are often local processes.
+
+[Article on pluses and minuses of LSP](https://www.michaelpj.com/blog/2024/09/03/lsp-good-bad-ugly.html)
+
+Here is [A16z's take on MCP](https://a16z.com/a-deep-dive-into-mcp-and-the-future-of-ai-tooling/)
+
+The domain space is interesting. The problem that LSP was originally developed to solve:
+![Developer's IDE implementation of language features](/images/posts/2025-04-14-latentspace-1.png)
+Microsft's solution (OMG!  So NEAT!)
+![Microsoft's solution](/images/posts/2025-04-14-latentspace-2.png)
+
+Now apply Microsoft's LSP solution via MCP to AI-LLMs-APIs ecosystem:
+![MCP - Model Context Protocol](/images/posts/2025-04-14-latentspace-3.png)
+
+#### How does MCP work:
+It currently works with a client-server model.  Communication flow for MCP.
+![MCP - Current](/images/posts/2025-04-14-latentspace-4.png)
+
+
+#### MCP Servers
+They are the bridge/API between MCP world and external functionality (mostly a cache of relevant, pertinent data of sorts: database, files, etc).
+They are essentially wrappers that expose external capabilities to the LLMs.
+Server communication methods: HTTP via SSE (to be updated), stdio (stdin/stdout)
+Server languages: Python, Typescript, Java, Rust, etc
+There are quite a [few built already to be used](https://github.com/modelcontextprotocol/servers), for security purposes, I would study them as cookbook recipes but not use them in production necessarily.
+
+#### MCP Clients
+= Host Applications and they manage the communication with a sepcific MCP server
+Role: connection management, capabilities discovery, request forwarding, response handling
+
+#### MCP's Security, Updates, Authentication:
+It is currently a work in progress.  There is still evolving.
+It currently mandates OAuth2.1 framework for authenticating remote HTTP servers.
+The transport protocol is being replaced with a flexible Streamable HTTP transport and support for JSON-RPC batching
+New tool annotations about tool behavior.
+
+#### Sources
+- [Philschmid](https://www.philschmid.de/mcp-introduction)
+- [Pragmatic Engineer](https://newsletter.pragmaticengineer.com/p/mcp)
+- [Stackademic](https://blog.stackademic.com/model-context-protocol-mcp-in-ai-9858b5ecd9ce)
+- [LatentSpace](https://www.latent.space/p/mcp)
+- [MCP Spec](https://modelcontextprotocol.io/examples)
+- [MCP Guide](https://www.leanware.co/insights/model-context-protocol-guide)
+- [MCP Complete Tutorial](https://medium.com/@nimritakoul01/the-model-context-protocol-mcp-a-complete-tutorial-a3abe8a7f4ef) ** this one is quite good.
+
+#### Practical Uses:
+Companies would build MCP servers as an avenue the services they provide, and other MCP Clients "discover"
+and "use" services as needed.   I imagine there has to be another layer developed (to be developed) as sort of a
+discovery marketplace for services and the current evolution of MCP Servers simply provides you with a "menu" when
+a Client requests one.
+
+New take on an old solution, built upon foundations of RESTful, microservices and everything being API based.
+
+I assumed that companies to simply pass you pertinent data and your LLM can chunk and vectorize it
+for use.  I suppose companies do not want to lose control of the data they got for free, or want to monetize it, and
+you may require fresh data (which can be solved by versioning your vector store) and not continually balloon the
+knowledge base you are working off.  And, this is one way of passing pertinent data.
+
+
+Today, I will walk myself through building a weather MCP Server and Client using the Model Context Protocol (MCP)
+to connect Claude to a weather API.
+
+The goal is to create a simple weather app that can provide current weather information for a given location.
+
+[Github code](https://github.com/tcheiner/MCP)
+
+Geneeral Architecture of MCP: [MCP Archeitecture](/images/posts/2025-04-14-latentspace-6.png)
+
+Having an issue with the client tutorial.  Looking through sample tutorials, I should really install the Claude Desktop
+but I really hate an LLM rummaging through my data and possibly losing control of my personal data.
+
+>Claude Desktop, particularly in its newer features like "Computer Use" in the Claude 3.5 Sonnet model, incorporates privacy measures but also processes certain types of data that could raise privacy concerns. Here's an overview based on the search results:
+>
+> - **Encryption and Limited Access**: Data is encrypted both in transit and at rest. By default, Anthropic employees cannot access user conversations unless explicitly permitted or required to enforce usage policies. Strict access controls are in place for such cases[4].
+> - **No Training on User Data**: Anthropic does not use prompts or outputs from users to train its generative models unless users explicitly opt in or report data for debugging purposes[6].
+> - **Privacy-Preserving Analysis**: Anthropic employs tools like Clio, which anonymize and aggregate user data to derive insights while maintaining privacy. This ensures that no identifying information is visible to human analysts[2].
+> - **Short Retention Periods**: Feedback transcripts and sensitive data are stored for limited periods (e.g., 30 days) and are not used for training models[5].
+> - **Data Collection During "Computer Use"**: The "Computer Use" feature processes screenshots of the user's display to interact with the interface, along with prompts and outputs. While no additional data is collected beyond this, screenshots inherently carry sensitive information[6].
+> - **Desktop Control Risks**: Allowing Claude to control desktop functions (e.g., moving cursors, clicking buttons) introduces potential security vulnerabilities if not properly managed[3].
+> - **Standard Analytics Data**: Like many platforms, Claude collects standard analytics data (e.g., IP addresses, browsing history on its websites) for operational purposes[1].
+
+>Claude Desktop maintains several privacy safeguards, including encryption, anonymization, and restricted data usage policies. However, features like "Computer Use" involve processing potentially sensitive information (e.g., screenshots), which could pose risks if mishandled. Users concerned about privacy should carefully review Anthropic's privacy policies and consider additional protective measures, such as limiting Claude's permissions or using tools like VPNs and ad blockers for enhanced security.
+
+>Sources
+> - [1] Anthropics Claude 2 is STEALING huge amounts of your PRIVATE ... https://www.reddit.com/r/singularity/comments/15dhxtc/anthropics_claude_2_is_stealing_huge_amounts_of/
+> - [2] Clio: Privacy-preserving insights into real-world AI use - Anthropic https://www.anthropic.com/research/clio
+> - [3] Claude AI's New Desktop Control: The Pros and Cons of Privacy vs ... https://www.linkedin.com/pulse/claude-ais-new-desktop-control-pros-cons-privacy-vs-hal-di-rocco-q0pqc
+> - [4] How does Anthropic protect the personal data of Claude.ai users? https://privacy.anthropic.com/en/articles/10458704-how-does-anthropic-protect-the-personal-data-of-claude-ai-users
+> - [5] Claude Code overview - Anthropic API https://docs.anthropic.com/en/docs/agents-and-tools/claude-code/overview
+> - [6] What personal data will be processed by computer use (beta)? https://privacy.anthropic.com/en/articles/10030352-what-personal-data-will-be-processed-by-computer-use-beta
+> - [7] Meet Claude - Anthropic https://www.anthropic.com/claude
+> - [8] Introducing computer use, a new Claude 3.5 Sonnet, and ... - Anthropic https://www.anthropic.com/news/3-5-models-and-computer-use
+
+But, I am going to try the fast-agent one first.
+My brain is fried.
