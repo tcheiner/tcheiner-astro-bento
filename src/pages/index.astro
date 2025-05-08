@@ -46,8 +46,16 @@ const SITE = PROFILE.site
       <ExperienceCard/>
     </Card>
 
-    <Card colSpan="sm:col-span-1 md:col-span-2 lg:col-span-3" rowSpan="md:row-span-1 lg:row-span-2" title="What's cooking today">
-      <Recipe/>
+    <Card colSpan="sm:col-span-1 md:col-span-2 lg:col-span-3" rowSpan="md:row-span-1 lg:row-span-2" title="Contact">
+      <!--<Recipe/>-->
+      <div class="flex h-full w-full items-center justify-center text-center text-lg">
+        <i>
+          Please feel free to <br/>reach out to me via <br/><a href={PROFILE.links.email} class="underline hover:font-bold">Email
+        </a>, <br/>or <br/><a href={PROFILE.links.linkedin} class="underline hover:font-bold">LinkedIn</a>.<br/>
+          <br/>
+
+        </i>
+      </div>
     </Card>
     <Card colSpan="lg:col-span-3 md:col-span-1" rowSpan="md:row-span-1 lg:row-span-1" title="My time">
       <TimeZoneCard timezone={PROFILE.timezone} />
@@ -77,16 +85,16 @@ const SITE = PROFILE.site
     <Card colSpan="md:col-span-1 lg:col-span-9" rowSpan="md:row-span-1 lg:row-span-1" title="Books I am reading">
       <Books/>
     </Card>
-    <Card colSpan="md:col-span-2 lg:col-span-12" rowSpan="md:row-span-1 lg:row-span-1" title="Contact">
-      <div class="flex h-full w-full items-center justify-center text-center text-sm">
-        <i>
-          Please feel free to reach out to me through <a href={PROFILE.links.email} class="underline hover:font-bold">Email
-          </a>, or <a href={PROFILE.links.linkedin} class="underline hover:font-bold">LinkedIn</a>.<br/>
-          There is an option to calendly, but loosely gauges my schedule:
-          <a href={PROFILE.links.calendly} class="underline hover:font-bold">Calendly</a>
-        </i>
-      </div>
-    </Card>
+    <!--<Card colSpan="md:col-span-2 lg:col-span-12" rowSpan="md:row-span-1 lg:row-span-1" title="Contact">-->
+    <!--  <div class="flex h-full w-full items-center justify-center text-center text-sm">-->
+    <!--    <i>-->
+    <!--      Please feel free to reach out to me through <a href={PROFILE.links.email} class="underline hover:font-bold">Email-->
+    <!--      </a>, or <a href={PROFILE.links.linkedin} class="underline hover:font-bold">LinkedIn</a>.<br/>-->
+    <!--      There is an option to calendly, but loosely gauges my schedule:-->
+    <!--      <a href={PROFILE.links.calendly} class="underline hover:font-bold">Calendly</a>-->
+    <!--    </i>-->
+    <!--  </div>-->
+    <!--</Card>-->
 
 
   </main>
