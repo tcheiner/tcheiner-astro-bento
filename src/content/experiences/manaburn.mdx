@@ -6,7 +6,8 @@ startDate: 2023-06-11
 endDate: 2024-10-01
 tags: ["Python", "Langchain", "Langsmith", "Prompt Engineering", "Architecture", "Systems Design", "OpenAI", "AWS", "SQL", "React", "Github Actions"]
 ---
-
+![manaburn](/images/manaburn/manaburn-meme-website.png)
+[Manaburn](https://manaburn.gg/)
 A Free-to-play mobile, multiplayer role-playing game.
 
 Architected, developed and deployed a scalable backend platform
@@ -18,10 +19,94 @@ Notification Service, API Gateway (HTTP/REST APIs) and DynamoDB.
 Optimized cloud infrastructure costs (100% improvement), and latency
 (30% improvement) services hosted on AWS.
 
-Developed a custom Stable Diffusion custom model into a API service for
+Developed a custom Stable Diffusion custom model into an API service for
 demos
 
 Launched a new marketing tool within the Google Accelerator program
 that successfully attracted 15% more users during the pilot phase;
 implementation utilized Typescript, React, and Vue to ensure dynamic
 and responsive user experience.
+Sample of tool: https://app.manaburn.gg/
+
+## Tech talk:
+We had the image generation and when I came onboard, I fell in love with
+the art generation.  I could see a utility for it in tabletop games and such,
+the key to it then was that everything fit within a theme. At that time,
+AI generated art was all over the place.
+
+I proposed a data pipeline to build out a platform to sell generated art,
+storylines and such to speed up developing games.
+
+Started the MVP on Python and something obscure and found FastAPI and
+decided it was a better way to go.  I deployed it on AWS EC2 instances via
+Docker for GDC so the founder could peddle it for his meets at GDC.  We
+did not have a frontend so I trained the executive team to demo it via
+Postman Flows, with an elastic IP for GDC with an upgraded EC2 instance
+(we paid for a g4dn.2xlarge for fast generation of the images and storyline),
+deployed using Docker and stored images in AWS S3.
+
+More about the code, habits from banking, data is so important and ensuring
+that data is not corrupted or manipulated during transit to and fro is a
+key concern.  There was a possibility of doing web3 crypto assets and sale,
+and not being sure how valuable this AI generated art was to recreate (I was
+able to recreate it via Runpod in this [post](https://tcheiner.com/projects/custom%20lora%20gen%20ai%20imagery/))
+
+Back to data, I used pydantic and a model/data schema to ensure that we
+would only use data from the database, and stored data in events of failure (or
+at least recoverable data for mitigation) if needed.  But in the AWS ecosystem,
+there was less of this need as it was within the AWS ecosystem.  I was not
+going to set up our own infrastructure and support those costs until we absolutely
+needed to.
+
+After GDC, I migrated our implementation over to AWS Lambda (as a startup, as a
+company, we get 1million free Lambda calls per month which is sufficient for
+development and demo, on top of that we kept our eyes out and applied for whatever
+accelerator free credits we can get)  It also solved my concerns wth ramp-up,
+routing and security with the current implementation of the architecture (MVP).
+But with this migration, I added integrations to S3 (for storage and amplify deploy),
+Cloudfront (for caching), SES (for email), SNS (for notifications), API Gateway
+(for routing), DynamoDB (for storage, not the fastest but the cheapest) and
+Cloudwatch (for monitoring).
+
+I was not able to prevent downloads by right-clicking via mobile, it would require
+more time than I had with constant devops I was doing supporting the team and
+development.  It is preventable on the desktop but not on mobile.  We explored
+putting a watermark on our images as they were being sent out and decided to add
+that as part of our image generation flow instead of delivery (to requester) flow.
+
+Our costs ran about $10-30/mth, I further optimized by training whomever is
+willing on prompt engineering to optimize our token usage, in addition a caching
+strategy to further reduce our ongoing OpenAI API costs.  I explored finetuning,
+rag training, query chaining to try to eek out a more compelling storyline,
+reading research papers from universities on what parts researchers have
+determined is required to train one - the studies were extensive, mostly catered
+towards D&D (low hanging fruit as the downside risks are low, the rules are
+well-defined).  It reminded me of why the best cutting edge tech always stems from
+games.  The components required for a good storytelling AI LLM are:
+Literature Review, Plot Development, Character Development, Storytelling, Writing
+Style. Story Planning.  Most of the analysis are encapsulated in this [document](/images/manaburn/Manaburn-TED.pdf) I
+I created for fundraising purposes.
+
+We got accepted to the Google Accelerator, in which the ask was a frontend to
+showcase and leverage the backend, it was my first foray into the frontend in a
+while so the programming is a bit clunky.  [Manaburn Meme Generator](https://app.manaburn.gg/)
+
+The meme generator is deployed on AWS Amplify via a custom subdomain of one we already owned.
+Initially, I deployed it by dropping a zipfile in AWS Amplify but I found it tedious once the
+codebase was a bit more stable, so I found and integrated Github Actions to autodeploy.  In
+subsequent deploys, I used AWS CLI and a cloudformation stack.
+
+I am recreating the apis in a random tabletop game I picked up - Sweaters for Hedgehog - in this
+[post](https://tcheiner.com/projects/sweaters) here and got sidetracked by image generation and
+creating a good process and environment to journal my dev journey.  I created a discord bot
+for it but decided against deployment because when further simplified, I realized it can be
+resolved by a bunch of if/else and switch statements instead of wasting resources deploying and
+hosting it as an api.  Ultimately, it makes no sense to create for the sake of creating.
+It is in TBD status.
+
+In hindsight, I would have just used Netlify and hooked it up to github, which I am doing present
+day for my personal projects.  It's free.
+
+I would also have used DiagrammingAsCode to do my architecture diagrams and check it in as code,
+part of the documentation with codebase.
+
