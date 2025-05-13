@@ -4,10 +4,13 @@ title: "Founding Engineer"
 company: "ManaBurn"
 startDate: 2023-06-11
 endDate: 2024-10-01
-tags: ["Python", "Langchain", "Langsmith", "Prompt Engineering", "Architecture", "Systems Design", "OpenAI", "AWS", "SQL", "React", "Github Actions"]
+tags: ["Python", "FastAPI", "Config Server", "SNS", Caching", "Google Accelerator", "Pydanic", "Langchain",
+"Langsmith", "Prompt Engineering", "Cloud", "Architecture", "Systems Design", "OpenAI", "AWS", "NoSQL", "React",
+"Github Actions", "API Gateway"]
 ---
 ![manaburn](/images/manaburn/manaburn-meme-website.png)
 [Manaburn](https://manaburn.gg/)
+## Short Blurb
 A Free-to-play mobile, multiplayer role-playing game.
 
 Architected, developed and deployed a scalable backend platform architecture to serve AI-generated themed art and
@@ -77,13 +80,13 @@ possible foreseeable direction of growth and concerns) are encapsulated in docum
 wrote during my tenure there.   This wasn’t just about solving short-term problems—it was about creating a scalable,
 maintainable foundation for the company’s future. My approach to technical work is always long-term. Even if I step
 away from a project, I ensure that my contributions are well-documented and transparent with no gate-keeping for any
-technical talent we may choose to onboard. We ended up using this as part of our package for VCs - [document]
-(/images/manaburn/Manaburn-TED.pdf)
-
+technical talent we may choose to onboard. We ended up using this as part of our package for VCs -
+[document](/images/manaburn/Manaburn-TED.pdf) - Ariel is credited for the image generator, our CTO is credited for draft
+revisions and gearing the document towards what the VCs may need to see.
 
 We got accepted to the Google Accelerator, in which the ask was a frontend to showcase and leverage the backend, it
-was my first foray into the frontend in a while so the programming is a bit clunky.  [Manaburn Meme Generator]
-(https://app.manaburn.gg/)
+was my first foray into the frontend in a while so the programming is a bit clunky.
+[Manaburn Meme Generator](https://app.manaburn.gg/)
 
 The meme generator is deployed on AWS Amplify via a custom subdomain of one we already owned. Initially, I deployed
 it by dropping a zipfile in AWS Amplify but I found it tedious once the codebase was a bit more stable, so I found
@@ -92,13 +95,14 @@ and integrated Github Actions to autodeploy.  In subsequent deploys, I used AWS 
 I also started implementing a config server within AWS as we needed to store and share several API keys between our
 meme generator, mobile gaming app, and backend.
 
-I am recreating the apis in a random tabletop game I picked up - Sweaters for Hedgehog - in this [post]
-(https://tcheiner.com/projects/sweaters) here and got sidetracked by image generation and creating a good process
+I am recreating the apis in a random tabletop game I picked up - Sweaters for Hedgehog - in this
+[post](https://tcheiner.com/projects/sweaters) here and got sidetracked by image generation and creating a good process
 and environment to journal my dev journey.  I created a discord bot for it but decided against deployment because
 when further simplified, I realized it can be resolved by a bunch of if/else and switch statements instead of
 wasting resources deploying and hosting it as an api.  Ultimately, it makes no sense to create for the sake of creating.
 It is in TBD status.
 
+## Reflections
 In hindsight, I would have just used Netlify and hooked it up to github, which I am doing present day for my
 personal projects.  It's free.
 
@@ -111,6 +115,21 @@ for when it blew up.  I did not have the time to set up a full observability sta
 equivalent of Splunk to parse logs and set up alerts and dashboards for ease.  Speaking of which, I should implement
 a Grafana dashboard of my own for my personal projects.
 
+I ended up working with our CTO on what he needs to sell this platform, within the timelines I can manage and a
+process for Ariel to iteratively generate the images.  I ended up doing a pass and abstracting out a lot of the
+config so other people can iteratively prompt engineer whatever they need for a demo.  The codebase could be
+iteratively improved on (the gen AI libs iterate and release new versions every 4-6 weeks) and shortened.
+Admittedly, I delved into a random number generator to generate the random seed for the image generation, I am
+expecting no faster than 1ms per image (we did not get faster than 3seconds per image set (each image has a
+depth field and 3 other layers to give it dimension) hardware availability but our pipeline needs do not require
+that optimization - I also looked into batch generation that was not built into the libs but we did not need it then
+as well.
+
+I did have to optimize and minimize the libs we were using in order to include it as a layer for AWS Lambda since
+Lambda did not come with those libs and the libs were too large in size for Lambda layers.  It was a balance between
+number of API lambda calls and the runtime per lambda function as well - I had to find the sweet spot in terms of cost.
+
+## Conclusion
 Ultimately, I was offered a position as a cofounder in Manaburn's parent company, Plaiful.  I realized that gaming
 was not a passion of mine, it is a perfect playground to experiment and learn but I cannot see doing it for the next
 5-10 years.  It did not feel right to take a founder's equity upon that realization and I stepped away, we could not
