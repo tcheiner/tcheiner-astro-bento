@@ -82,10 +82,23 @@ reading research papers from universities on what parts researchers have
 determined is required to train one - the studies were extensive, mostly catered
 towards D&D (low hanging fruit as the downside risks are low, the rules are
 well-defined).  It reminded me of why the best cutting edge tech always stems from
-games.  The components required for a good storytelling AI LLM are:
-Literature Review, Plot Development, Character Development, Storytelling, Writing
-Style. Story Planning.  Most of the analysis are encapsulated in this [document](/images/manaburn/Manaburn-TED.pdf)
-that I created for fundraising purposes.
+games.
+
+The components required for a good storytelling AI LLM are:  Literature Review, Plot Development, Character
+Development, Storytelling, Writing Style. Story Planning.
+
+The boundaries set within our team were that there is a technical art aspect - they continued to refine and develop
+the magical mix of loras that makes our art look good.  I lifted that portion into a backend service.  I worked on
+the backend itself, along with devops and monitoring, and also working on the storytelling generative AI portion. I
+
+Most of the analysis (a detailed analysis of technical decisions, justifications for the architecture and addressing
+possible foreseeable direction of growth and concerns) are encapsulated in documents (lots of documents) that I
+wrote during my tenure there.   This wasn’t just about solving short-term problems—it was about creating a scalable,
+maintainable foundation for the company’s future. My approach to technical work is always long-term. Even if I step
+away from a project, I ensure that my contributions are well-documented and transparent with no gate-keeping for any
+technical talent we may choose to onboard. We ended up using this as part of our package for VCs - [document]
+(/images/manaburn/Manaburn-TED.pdf)
+
 
 We got accepted to the Google Accelerator, in which the ask was a frontend to
 showcase and leverage the backend, it was my first foray into the frontend in a
@@ -95,6 +108,11 @@ The meme generator is deployed on AWS Amplify via a custom subdomain of one we a
 Initially, I deployed it by dropping a zipfile in AWS Amplify but I found it tedious once the
 codebase was a bit more stable, so I found and integrated Github Actions to autodeploy.  In
 subsequent deploys, I used AWS CLI and a cloudformation stack.
+
+I also started implementing a config server within AWS as we needed to store and share several
+API keys between our meme generator, mobile gaming app, and backend.
+
+
 
 I am recreating the apis in a random tabletop game I picked up - Sweaters for Hedgehog - in this
 [post](https://tcheiner.com/projects/sweaters) here and got sidetracked by image generation and
@@ -109,4 +127,11 @@ day for my personal projects.  It's free.
 
 I would also have used DiagrammingAsCode to do my architecture diagrams and check it in as code,
 part of the documentation with codebase.
+
+Ultimately, I was offered a position as a cofounder in Manaburn's parent company, Plaiful.  I realized that gaming
+was not a passion of mine, it is a perfect playground to experiment and learn but I cannot see doing it for the next
+5-10 years.  It did not feel right to take a founder's equity upon that realization and I stepped away, we could not
+reach mutual ground on the non-compete but I would abide by it anyway.  I do own the entire architecture as of date
+and have permission to showcase it as a project of mine but I would not necessarily shout it from the rooftops out
+of regard for the wonderful team at Manaburn.  I have been, and will be turning down opportunities for games.
 
