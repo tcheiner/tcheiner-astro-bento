@@ -4,42 +4,231 @@ title: "Software Engineer"
 company: "Wells Fargo & Co"
 startDate: 2004-07-01
 endDate: 2020-16-10
-tags: ["Java", "Banking", "XML", "React", "Splunk", "J2EE", "SQL", "Oracle", "Jira", "Confluence"]
+tags: ["Java", "Banking", "XML", "React", "Splunk", "J2EE", "SQL", "Oracle", "Jira", "Confluence", "MVC", "SOAP", "REST", "Spring", "Hibernate", "JMS", "Web Services", "Microservices"]
 ---
+## Short list of points
+- Led the development (not at the same time) of all of Wells Fargo’s product offerings in the sales channel (Home
+Equity, Business and Consumer deposits/savings, Personal loans, Credit Cards, Retirement Accounts and Student Loans).
+- Directed the successful delivery of up to 5 concurrent high-impact projects per release cycle, with budgets
+ranging from $10k-700k and duration spanning 3-9 months.
+- Upgraded authentication layer used for platform, thus establishing a new standard practice for the platform
+(socket based mutual authentication for all SOAP interactions for the backend).
+- Spearheaded hands-on third-party integrations (Visa, Amex, Discover), setting standard practice for integrations
+for the team/platform.
+- Facilitated team expansion by onboarding and mentoring new developers, liaising with business product teams and
+managing transitions to offshore development expansion (Hyderabad/India team) and establishing the first unit if
+work transitioned to our Indian branch office.
+- Navigated complex corporate structures, cross-domain, to drive issue resolution, fostering collaboration and
+accountability amongst stakeholders.
+- Fostered professional growth through mentoring, code reviews, and leading knowledge/training sessions for both
+full-time and contract developers.
+- Executed security audits, documenting findings and recommendations in detailed reports; findings led to immediate
+remediation actions that improved compliance with industry standards and reduced audit failures by 50%.
+- Directed all phases of project lifecycle, ensuring effective resource allocation and management across three
+concurrent projects; enhanced team collaboration through weekly feedback sessions with cross-domain development
+teams, reducing development time and bug issues by 100%.
+- Constructed a comprehensive analytics platform analyzing millions of entries of production data for on-the-fly
+monitoring, product market analysis, and 100% increased visibility to production health. The platform has become
+essential for generating timely business insights for product managers.
 
-● Led the development (not at the same time) of all of Wells Fargo’s
-product offerings in the sales channel (Home Equity, Business and
-Consumer deposits/savings, Personal loans, Credit Cards, Retirement
-Accounts and Student Loans).
-● Directed the successful delivery of up to 5 concurrent high-impact
-projects per release cycle, with budgets ranging from $10k-700k and
-duration spanning 3-9 months.
-● Upgraded authentication layer used for platform, thus establishing a new
-standard practice for the platform (socket based mutual authentication
-for all SOAP interactions for the backend).
-● Spearheaded hands-on third-party integrations (Visa, Amex, Discover),
-setting standard practice for integrations for the team/platform.
-● Facilitated team expansion by onboarding and mentoring new
-developers, liaising with business product teams and managing
-transitions to offshore development expansion (Hyderabad/India team)
-and establishing the first unit if work transitioned to our Indian branch
-office.
-● Navigated complex corporate structures, cross-domain, to drive issue
-resolution, fostering collaboration and accountability amongst
-stakeholders.
-● Fostered professional growth through mentoring, code reviews, and
-leading knowledge/training sessions for both full-time and contract
-developers.
-● Executed security audits, documenting findings and recommendations in
-detailed reports; findings led to immediate remediation actions that
-improved compliance with industry standards and reduced audit failures
-by 50%.
-● Directed all phases of project lifecycle, ensuring effective resource
-allocation and management across three concurrent projects; enhanced
-team collaboration through weekly feedback sessions with cross-domain
-development teams, reducing development time and bug issues by 100%.
-● Constructed a comprehensive analytics platform analyzing millions of
-entries of production data for on-the-fly monitoring, product market
-analysis, and 100% increased visibility to production health. The platform
-has become essential for generating timely business insights for product
-managers.
+## Reflections: Off the cuff, rambling, human edition.
+One glaring reflection is that I should have journaled more consistently so that I am able to reflect upon the
+journey there, process it and learn from it.  Learning happens in layers and each layer takes time to set, per se.
+
+When I started at Wells, I was assigned to release management and builds.  DevOps was not a thing then, we built
+every build by hand and it took hours, iteration also took hours.  Development was done by iterating by code that
+was segmented by business domain.
+
+I started at production support for the dev team, doing production fixes, monitoring, and also troubleshooting (as a
+junior developer, it was difficult without proper onboarding to existing code).  There were issues that arose
+from production that were not major but needs to be addressed.  We would schedule in a fix that was aligned with the
+theme of each release, so we can leverage QA and regression resources as these were costs covered by the department
+and not business lines.  We also took on infrastructure projects and development tooling projects to help accelerate
+the dev team's productivity.  I wrote a lot of documentation during this period, I also picked up regression and
+load testing responsibilities as we downsized.
+
+I moved to managing small projects (under 30k) per release - mostly for compliance adherence and small issues that
+were deferred till much later till they were sufficient to warrant the cost for a release.  I took on several each
+release cycle and the multitasking was no mean feat.  The coordination required for each of these projects and the
+oversight took as much energy as a regular or large project but there was little negotiation on requirements or the
+product teams as the changes were expected and standard.
+
+One of the things we started doing often then was decompile java code, there were so many instances where the issue
+could not be found until you decompiled the bytecode to see what it was actually doing.  I don't think any modern
+developer quite does that - I heard that it became illegal to do as it violated security protocols.
+
+I started taking on a mentorship role at this point.  We were exploring offshoring some work to the Hydrabad office,
+one of the responsibilities was the maintenance development that happened every release cycle.  I was working with
+the Indian team to do this transition, which meant my work during the day and meeting with them in the evening to
+review their work and trained them on the dev process we have set up.
+
+I started taking on medium and larger projects at this juncture, a mixture of projects, whatever my manager could
+secure for his team (there was quite a bit of politics involved, and my manager was one of the kindest, calmest ones
+there).  I had developers assigned to my projects that I would manage, I negotiated requirements with the product
+team (started months before a project started), clarified requirements, did project architecture and design, hosted
+review sessions and knowledge transfer sessions, did code reviews, managed the defect queue with QA, made QA plans
+for QA (guidance) and coordinated integration (builds and test account creation and whatever the project needed)
+testing, along with load testing if needed.
+
+One of my favorite ones was a platform migration with no requirements, we had to reverse engineer the entire product
+(backend had no requirements on their end that they could share, they did not know what their code was doing).
+Implementation was easy but the reverse engineering took a while, to make sure we did not break revenue for the
+product line when we went live, it included a security feature that was new to the platform (socket based mutual
+authentication).  It was around then that we merged with Wachovia and a few of the dev guys got assigned to me for
+training.  I was managing 5 teams, with different projects at the same time at this point, as well as managing a
+group of 120 parents for a school my son was at (fundraising and event planning).  I learnt a lot about
+communication then, how communication flows downwards, how it is perceived (can be perceived), how long it takes for
+everyone downstream to absorb and then act on it.
+
+Life has a way of testing us in unexpected ways, and my journey at Wells Fargo was no exception. While I thrived
+professionally, I encountered profound personal challenges that shaped who I am today—both as a professional and as a
+person.
+
+During my tenure, my mother passed away, and I was diagnosed with pre-leukemia, a life-altering condition that required
+intensive treatment, including chemotherapy and a bone marrow transplant. At the time, my chances of survival were s
+lim—less than 5%, according to my doctors. Faced with this daunting reality, I chose to approach my health challenges
+the same way I tackled technical problems at work: by breaking them down into manageable components, identifying
+choke points, and addressing risks systematically. I isolated myself socially to minimize infection risks, prioritized
+my health, and made difficult decisions to ensure I could move forward with treatment. Every step was deliberate, and
+every decision was made with the hope of creating the best possible outcome.
+
+This experience taught me the value of meticulous planning, adaptability, and perseverance. It also gave me clarity
+about what truly matters in life. I realized that the strength we draw from our relationships—whether at work, at home,
+or within ourselves—is what helps us overcome the toughest challenges.
+
+While undergoing treatment, I took time to reflect on my priorities. I focused on creating meaningful moments with my
+sons, who were young at the time. I found joy in the simplest things: helping them with their schoolwork, watching them
+play, and being fully present in their lives. These experiences reinforced my belief that the love and support we show
+others can become an infinite source of resilience. It’s a lesson I carry with me in every aspect of my life, from
+mentoring my team to collaborating with colleagues.
+
+When I returned to work, I was eager to prove that I was still capable of contributing at a high level, but I quickly
+realized that my body wasn’t the same after the transplant. It took time to rebuild my stamina and adapt to my new
+normal. However, this period of adjustment also taught me patience—with myself and with others. I leaned into the
+opportunity to learn and grow, asking my manager to place me in roles that would challenge me and expand my skill set.
+This mindset allowed me to step into production support, a role that required deep domain knowledge and the ability to
+troubleshoot complex, real-time issues. What once seemed intimidating became a source of excitement and energy.
+
+My manager did want me back, and I went back and told him I am back to learn, to train me in a manner where I can
+step into any role that is required of a team.  He put me in production support, where we mitigated an ongoing,
+infinite pool of issues that arose from production at any given timeline.  It took me a good 6 months to pick up and
+make progress.  We often knew what was wrong with our platform production support team did.  I represented the
+department in meetings and war rooms that required a representative to for our team of 40-60 (including contractors),
+avenues in which the team was able to offer resources and support to fix an issue (inpromptu or not) and I managed
+the queue where issues were reported but no one knew if it was an issue or it belonged.  I sat in on team meetings
+as an advisory role on standards for dev teams, or prepare for what is queued for the next release.  It was a role
+that I could not have done previously as it required deep domain knowledge.  What was previously intimidating about
+stepping into the unknown everyday became a source of excitement and energy.  It also required on-call rotations
+late into the night as the devops production team who does the deploys usually requires development presence to
+clear/clarify or help troubleshoot issues that arise - which I was quite happy to have because it meant a longer day
+gave me an opportunity to present a stress-free afternoon when I picked up my sons, or do something special for them
+that week.
+
+One of the last things I was doing there was setting up a product-assigned dashboard with live production metrics
+(that is customizable) so that the product managers and management (C-Suite) can see where the dropoff chokepoints
+were for each product line - why consumers would give up midway in an application and not proceed to finish it.  We
+wanted to drill down and see if there was any possible way we could improve or close gaps in that flow.  My manager
+has tried to tackle this issue for a while now and the logging was finally to the point where we could do data
+analytics and try to figure this out.  We also tracked the response times in all pages during an application for a
+product and optimized our site for speed.  It was then that I realized I had become the sort of report that he would
+just come out and tell me what he was thinking and,  I was able to take it to the end with no checkpoints or
+guidance.  I did initiate reviews to ensure I was going in the right direction with what he had in mind but he really
+didn't need to do much.
+
+## AI Summary:
+
+### Leadership Reflections: Guiding Teams, Driving Impact, and Navigating Challenges
+One reflection I’ve had over the years is the importance of documenting and processing professional experiences.
+Journaling would have allowed me to better reflect on the journey, extract lessons, and apply them more intentionally.
+Leadership, like learning, happens in layers, and each layer requires time to set and mature.
+
+When I started at Wells Fargo, I was assigned to release management and builds. At the time, DevOps as a formalized
+discipline didn’t exist, and we built every software release manually—a process that took hours and required close
+attention to detail. Development was segmented by business domain, and iteration cycles were long and labor-intensive.
+These early experiences taught me the importance of process efficiency and team coordination as foundational elements
+of success.
+
+### From Troubleshooting to Leadership: Building Expertise and Mentoring Others
+My first major responsibility was in production support for the development team. As a junior developer, I was tasked
+with resolving production issues, monitoring systems, and troubleshooting problems. Without proper onboarding to the
+existing codebase, this was a challenging initiation, but it forced me to quickly learn how to navigate ambiguity and
+collaborate with senior team members to uncover solutions.
+
+In this role, I began to understand the interplay between technical fixes and organizational priorities. For example,
+we aligned production fixes with the themes of each release to leverage QA and regression resources efficiently—
+a decision that not only optimized costs but also minimized disruption for business lines. Beyond fixes, I also
+contributed to infrastructure projects and development tooling, which accelerated productivity across the dev team.
+These contributions helped me see the broader impact of technical improvements on team performance, laying the
+groundwork for future leadership.
+
+As our team downsized, I took on additional responsibilities, such as regression testing, load testing, and writing
+extensive documentation to ensure knowledge transfer and continuity. These experiences taught me how to adapt to
+shifting team dynamics and step into roles that needed leadership, even when they were outside my initial scope.
+
+### Leading Projects: From Small Initiatives to Complex Deliverables
+Over time, I transitioned from production support to managing small projects (under $30k) per release cycle.
+These projects, often focused on compliance updates or deferred issues, required significant coordination, even if
+their scope was smaller. I led several projects per cycle, managing requirements, timelines, and resources. The
+multitasking demanded by these efforts honed my ability to prioritize effectively, allocate resources, and communicate
+clearly with cross-functional teams.
+
+As I gained experience, I began to take on medium and larger projects, often managing multiple developers and
+collaborating with product teams to clarify requirements, architect solutions, and oversee the full project lifecycle.
+My role included:
+- Negotiating requirements with product stakeholders months in advance.
+- Designing project architecture and hosting review sessions to align teams.
+- Leading knowledge transfer sessions and mentoring developers on best practices.
+- Managing QA plans, defect queues, and integration testing to ensure smooth delivery.
+
+One particularly memorable project involved a platform migration with no existing documentation or requirements. I led
+the effort to reverse-engineer the backend system, working closely with my team to ensure that we preserved revenue
+streams during the transition. I also introduced a new security feature—socket-based mutual authentication—which became
+a standard practice for the platform. This project demonstrated my ability to guide teams through complex, high-stakes
+initiatives while maintaining focus on both technical and business outcomes.
+
+### Mentoring and Team Building: Expanding Through Collaboration
+Leadership is not just about delivering projects; it’s also about building teams and empowering others. When our work
+expanded to include offshore development in Hyderabad, I played a key role in onboarding and mentoring the new team.
+
+This involved:
+- Training developers on our processes and standards.
+- Reviewing their work in the evenings to ensure quality and alignment.
+- Guiding them through the maintenance development cycle, which was critical to our release schedule.
+- This experience taught me the importance of cross-cultural collaboration and how to adapt my communication and
+- mentoring style to meet the needs of a diverse team. By fostering trust and providing clear guidance, I helped
+- establish a foundation for successful offshore operations, ensuring that productivity and quality were maintained
+during the transition.
+
+### Scaling Leadership: Managing Teams and Communication
+At the peak of my responsibilities, I was managing up to five teams across different projects, in addition to handling
+personal responsibilities like managing a group of 120 parents for my son’s school fundraising efforts. This period
+taught me invaluable lessons about communication flow, both within teams and across organizational hierarchies:
+- I learned how to tailor messaging to different audiences, ensuring that stakeholders understood the context and
+priorities of each project.
+- I became adept at managing downstream communication, understanding how long it takes for directives to be absorbed
+and acted upon, and ensuring alignment across teams.
+- I honed the ability to write clear, concise, and actionable emails, making it easy for recipients to quickly
+understand the message, respond effectively, and, where needed, say "yes" with minimal additional effort. This
+skill streamlined collaboration and accelerated decision-making processes.
+
+These experiences reinforced the importance of clarity, empathy, and alignment in leadership, enabling me to manage
+complexity while empowering teams to succeed. Whether it was guiding developers through a project or coordinating
+with parents for an event, I focused on creating an environment where everyone felt supported and empowered to
+contribute.
+
+### Driving Innovation: Analytics and Production Metrics
+One of the final projects I led at Wells Fargo involved developing a customizable dashboard for live production metrics.
+This tool allowed product managers and C-suite executives to visualize drop-off points in real time, identifying where
+customers abandoned applications mid-process. By analyzing these chokepoints, we were able to propose targeted
+improvements to streamline workflows and optimize the user experience.
+
+This dashboard was the culmination of years of effort to improve logging and analytics capabilities, and it provided
+unprecedented visibility into production health. It also showcased my ability to translate technical insights into
+actionable business intelligence, a skill that has become increasingly critical in modern organizations.
+
+My manager trusted me to take this project from concept to completion with minimal oversight, which was a testament to
+the trust I had built over the years. I initiated review sessions to ensure alignment with his vision, but I was
+largely able to operate independently, demonstrating my ability to lead with confidence and deliver results.
+
+
+

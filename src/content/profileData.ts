@@ -16,9 +16,9 @@ export const PROFILE = {
   repo: "https://github.com/tcheiner",
   avatarUrl: "/images/tcheina_transparent.png",
   shortIntros: [
-    "💻 Founding Engineer | Self-starter",
-    "☘️ Fueled by curiosity and how things work",
-    "📚 Book reader | 🥏 Baker | ☘️ Gardener | 🎲 Tinkerer",
+    "💻 Engineering Leader | Technical Architect | Founding Engineer",
+    "☘️ Driven by curiosity and a love for learning",
+    "📚 Lifelong learner | 🎲 Systems thinker | 🌱 Gardener | 🥧 Baker",
   ],
   // "☁️ I can't remember everything I have done, so here it is",
   now: ["Playing with astro - round 2"],
@@ -38,7 +38,8 @@ export const PROFILE = {
     github: "https://github.com/tcheiner",
     email: "mailto: tcheiner@gmail.com",
     linkedin: "https://www.linkedin.com/in/tcheiner/",
-    calendly: "https://calendly.com/tcheiner"
+    calendly: "https://calendly.com/tcheiner",
+    instagram: "https://www.instagram.com/tcheiner/"
   },
   studies: [
     {
