@@ -10,8 +10,9 @@ export const PROFILE = {
   language: "en-US",
   firstName: "TC",
   name: "tcheina",
-  headLine: "Let’s create something extraordinary — whether it changes the world, the bottom line, or both",
-  headLine2: "Bring the business, I will find the way.",
+  headLine: "I’m eager to contribute—whether as a leader or individual contributor—\n" +
+    "        to create meaningful solutions.",
+  headLine2: "Let’s build something extraordinary, focused on people, purpose and progress.",
   website: "https://tcheiner.com",
   repo: "https://github.com/tcheiner",
   avatarUrl: "/images/tcheina_transparent.png",
