@@ -1,0 +1,223 @@
+---
+slug: "2025-06-04"
+title: "FastApi Concurrency and Threadpools"
+description: "Tying it to Gunicorn, DBs, and Async"
+startDate: 2025-06-04
+image: {
+    url: "/images/posts/2025-06-04.png",
+    alt: "CF"
+}
+tags: ["IaC", "AWS", "SAM-CLI", "CloudFormation", "FastAPI", "Postgres", "Mangum", "Python", "Pytest", "Logger",
+SQLModel", "AWS RDS", "AWS Lambda"]
+canonical: https://tcheiner.com
+---
+# FastAPI Implementation with Docker, Async Refactoring, and Gunicorn
+
+Had to write a FastAPI implementation for a project, using Python.
+They wanted to know what it would look like to have a **Docker Deploy**, then **IaC in Cloud Deploy**.
+
+I documented it all [here](https://mt-app.netlify.app) – trying out an Astro documentation framework and I love it.
+I am addicted.
+
+I am in the middle of **refactoring code so it works with async (concurrency)** and tossing in **Gunicorn** in the mix.
+
+---
+
+## Threadpool Basics
+
+### What is a Threadpool?
+
+- A threadpool is a collection of **pre-created threads** that can be reused to execute tasks concurrently.
+- Instead of creating a new thread for every task (which is expensive), threads are reused from the pool, which improves efficiency.
+
+### Why Does FastAPI Use a Threadpool?
+
+- FastAPI uses an asynchronous event loop (via `asyncio`) to handle requests.
+- If you use a **synchronous function (`def`)** in a path operation or dependency, it could block the event loop while performing its operation. This would prevent other requests from being handled concurrently.
+- To avoid blocking the event loop, FastAPI runs synchronous functions in a **separate threadpool**.
+  This allows other tasks in the event loop to continue running while the synchronous function executes in a separate thread.
+
+### How Does FastAPI Handle `def` Functions?
+
+- When you declare a path operation or dependency as a synchronous `def` function:
+  - FastAPI detects that the function is synchronous.
+  - It runs the function in a threadpool using Python's `concurrent.futures.ThreadPoolExecutor` (via `asyncio.to_thread` or similar mechanisms).
+  - The result of the function is **awaited** by the event loop, so the response is returned to the client once the function finishes execution.
+
+### What Happens Behind the Scenes?
+
+1. When a request is made to a path operation with a `def` function:
+   - FastAPI submits the function to the threadpool for execution.
+   - The threadpool executes the function in a separate thread.
+2. The main event loop **awaits** the result of the function, allowing other requests to be processed in the meantime.
+3. Once the function completes, its result is returned to the event loop, which sends the response back to the client.
+
+### Dependencies in a Threadpool
+
+- The same logic applies to dependencies declared as `def` functions.
+  FastAPI runs them in the threadpool to avoid blocking the event loop.
+
+---
+
+## How Threadpools Work in FastAPI
+
+### Asynchronous Functions (`async def`):
+- Asynchronous functions do **not** use a threadpool.
+- They run directly on the **event loop**, which is managed by `asyncio`.
+- These functions are **non-blocking** and can yield control back to the event loop when performing I/O or awaiting tasks, allowing other requests to be processed concurrently.
+
+### Synchronous Functions (`def`):
+- Synchronous functions **do** use a threadpool.
+- FastAPI runs these functions in a threadpool to prevent them from blocking the event loop.
+- Specifically, FastAPI uses the **default threadpool** provided by Python's `concurrent.futures.ThreadPoolExecutor`.
+  This threadpool is shared across all synchronous tasks submitted to it.
+
+### Single Threadpool for Synchronous Tasks:
+- All synchronous (`def`) functions executed by FastAPI share the **same threadpool**.
+  There is no separate threadpool for each function or path operation.
+- The threadpool's size (number of threads) is usually determined by Python's default configuration (based on the number of CPU cores), but it can be customized if needed.
+
+### No Threadpool for Asynchronous Tasks:
+- Asynchronous (`async def`) functions are handled **directly by the asyncio event loop**, not by a threadpool.
+
+---
+
+### Key Takeaways:
+1. FastAPI uses **one shared threadpool** for all synchronous (`def`) functions.
+2. Asynchronous (`async def`) functions bypass the threadpool entirely and run directly on the asyncio event loop.
+3. Synchronous and asynchronous code does **not** have separate threadpools because asynchronous code does not use threadpools at all.
+
+---
+
+## When to Use Synchronous Database Code
+
+### Use Case:
+- Use synchronous database code (in a `def` function) if the database library or driver you are using does **not** support asynchronous operations.
+
+#### Example: Synchronous Database Code with `psycopg2`
+- `psycopg2` (a popular PostgreSQL driver) is **synchronous** and does not natively support asynchronous calls.
+- Synchronous database operations will block the thread they are running on.
+  FastAPI will handle this by running the code in a **threadpool** to avoid blocking the asyncio event loop.
+
+    ```python
+    import psycopg2
+    from fastapi import FastAPI
+
+    app = FastAPI()
+
+    def get_data_from_db():
+        connection = psycopg2.connect("dbname=test user=postgres password=secret")
+        cursor = connection.cursor()
+        cursor.execute("SELECT * FROM some_table")
+        result = cursor.fetchall()
+        connection.close()
+        return result
+
+    @app.get("/data")
+    def read_data():
+        data = get_data_from_db()
+        return {"data": data}
+    ```
+
+In this example:
+- The database call is **blocking**.
+- `get_data_from_db()` will be run in a threadpool to avoid blocking the event loop.
+
+---
+
+## When to Use Asynchronous Database Code
+
+### Use Case:
+- Use asynchronous database code (in an `async def` function) if the database library or driver you are using **supports asynchronous operations**.
+
+#### Example: Asynchronous Database Code with `asyncpg`
+
+    ```python
+    import asyncpg
+    from fastapi import FastAPI
+
+    app = FastAPI()
+
+    @app.on_event("startup")
+    async def startup():
+        app.state.db = await asyncpg.create_pool(dsn="postgresql://user:password@localhost/dbname")
+
+    @app.on_event("shutdown")
+    async def shutdown():
+        await app.state.db.close()
+
+    @app.get("/data")
+    async def read_data():
+        async with app.state.db.acquire() as connection:
+            result = await connection.fetch("SELECT * FROM some_table")
+        return {"data": [dict(row) for row in result]}
+    ```
+
+In this example:
+- The database call is **non-blocking**.
+- The `asyncpg` library is used to make **asynchronous** queries to the database.
+
+---
+
+### Asynchronous Transactions with `asyncpg`
+
+You do **not** need to manually implement transactions (like `DELETE`, `UPDATE`, etc.) as blocking code when using `asyncpg`.
+The `asyncpg` library fully supports **asynchronous execution** of all types of database operations, including transactions.
+
+#### Example: Asynchronous Transactions with `asyncpg`
+
+    ```python
+    import asyncpg
+    from fastapi import FastAPI
+
+    app = FastAPI()
+
+    @app.on_event("startup")
+    async def startup():
+        app.state.db = await asyncpg.create_pool(dsn="postgresql://user:password@localhost/dbname")
+
+    @app.on_event("shutdown")
+    async def shutdown():
+        await app.state.db.close()
+
+    @app.post("/update-data")
+    async def update_data():
+        async with app.state.db.acquire() as connection:
+            async with connection.transaction():
+                await connection.execute("UPDATE some_table SET column1 = $1 WHERE id = $2", "new_value", 1)
+                await connection.execute("DELETE FROM some_table WHERE id = $1", 2)
+        return {"message": "Transaction completed"}
+    ```
+
+---
+
+## Gunicorn with Async FastAPI and Database Connectivity
+
+### Gunicorn Workers
+- Gunicorn by itself is **not asynchronous**.
+It spawns **multiple worker processes** to handle concurrent requests.
+- To support FastAPI's async capabilities, use an **async worker class** like `uvicorn.workers.UvicornWorker`.
+
+#### Example Gunicorn Command:
+
+    ```bash
+    gunicorn -w 4 -k uvicorn.workers.UvicornWorker app:app
+    ```
+
+Here:
+- `-w 4`: Spawns 4 worker processes.
+- `-k uvicorn.workers.UvicornWorker`: Uses Uvicorn's async worker class.
+
+---
+
+### Database Connection Pooling with Gunicorn
+
+#### Connection Pool Size:
+- Each Gunicorn worker will have **its own process** and **its own database connection pool**.
+- Ensure your database has enough capacity to handle the combined connections across all workers.
+
+---
+
+### Key Takeaways:
+1. Gunicorn workers run **separate processes**, each with its own database pool.
+2. Use load-testing tools (e.g., `locust`, `wrk`) to monitor worker and database performance.
