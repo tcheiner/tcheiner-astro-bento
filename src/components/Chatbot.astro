@@ -1,0 +1,85 @@
+---
+import { useState } from 'react'
+
+const [question, setQuestion] = useState('')
+const [response, setResponse] = useState('')
+const [loading, setLoading] = useState(false)
+
+async function handleSubmit(event: Event) {
+  event.preventDefault()
+  setLoading(true)
+  setResponse('')
+
+  try {
+    const res = await fetch(import.meta.env.VITE_BACKEND_URL + '/query', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ question }),
+    })
+    const data = await res.json()
+    setResponse(data.answer)
+  } catch (error) {
+    setResponse('Error: Unable to fetch response.')
+  }
+
+  setLoading(false)
+}
+---
+
+<div class="chatbot">
+  <form onSubmit={handleSubmit}>
+    <input
+      type="text"
+      placeholder="Ask a question..."
+      value={question}
+      onInput={(e) => setQuestion(e.target.value)}
+    />
+    <button type="submit" disabled={loading}>
+      {loading ? 'Loading...' : 'Ask'}
+    </button>
+  </form>
+  {response && <div class="response">{response}</div>}
+</div>
+
+<style>
+  .chatbot {
+    max-width: 400px;
+    margin: 20px auto;
+    padding: 10px;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    font-family: Arial, sans-serif;
+  }
+
+  .chatbot form {
+    display: flex;
+    gap: 10px;
+  }
+
+  .chatbot input {
+    flex: 1;
+    padding: 8px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+  }
+
+  .chatbot button {
+    padding: 8px 12px;
+    background-color: #0078d7;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+  }
+
+  .chatbot button:disabled {
+    background-color: #999;
+  }
+
+  .chatbot .response {
+    margin-top: 10px;
+    padding: 8px;
+    background-color: #f0f0f0;
+    border-radius: 4px;
+  }
+</style>
