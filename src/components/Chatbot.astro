@@ -1,45 +1,58 @@
 ---
-import { useState } from 'react'
-
-const [question, setQuestion] = useState('')
-const [response, setResponse] = useState('')
-const [loading, setLoading] = useState(false)
-
-async function handleSubmit(event: Event) {
-  event.preventDefault()
-  setLoading(true)
-  setResponse('')
-
-  try {
-    const res = await fetch(import.meta.env.VITE_BACKEND_URL + '/query', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ question }),
-    })
-    const data = await res.json()
-    setResponse(data.answer)
-  } catch (error) {
-    setResponse('Error: Unable to fetch response.')
-  }
-
-  setLoading(false)
-}
+// No React imports needed in Astro frontmatter
 ---
 
 <div class="chatbot">
-  <form onSubmit={handleSubmit}>
+  <form id="chatbot-form">
     <input
+      id="chatbot-input"
       type="text"
       placeholder="Ask a question..."
-      value={question}
-      onInput={(e) => setQuestion(e.target.value)}
     />
-    <button type="submit" disabled={loading}>
-      {loading ? 'Loading...' : 'Ask'}
+    <button type="submit" id="chatbot-button">
+      Ask
     </button>
   </form>
-  {response && <div class="response">{response}</div>}
+  <div id="chatbot-response" class="response" style="display: none;"></div>
 </div>
+
+<script>
+  const form = document.getElementById('chatbot-form') as HTMLFormElement
+  const input = document.getElementById('chatbot-input') as HTMLInputElement
+  const button = document.getElementById('chatbot-button') as HTMLButtonElement
+  const responseDiv = document.getElementById('chatbot-response') as HTMLDivElement
+
+  form.addEventListener('submit', async (event) => {
+    event.preventDefault()
+    
+    const question = input.value.trim()
+    if (!question) return
+
+    // Set loading state
+    button.disabled = true
+    button.textContent = 'Loading...'
+    responseDiv.style.display = 'none'
+
+    try {
+      const res = await fetch(import.meta.env.VITE_BACKEND_URL + '/query', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ question }),
+      })
+      const data = await res.json()
+      
+      responseDiv.textContent = data.answer
+      responseDiv.style.display = 'block'
+    } catch (error) {
+      responseDiv.textContent = 'Error: Unable to fetch response.'
+      responseDiv.style.display = 'block'
+    }
+
+    // Reset loading state
+    button.disabled = false
+    button.textContent = 'Ask'
+  })
+</script>
 
 <style>
   .chatbot {
