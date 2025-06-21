@@ -1,0 +1,153 @@
+---
+slug: "2025-06-19"
+title: "Walkthrough on integrating e-commerce with Astro and Shopify"
+description: "A step-by-step guide on how to integrate an e-commerce platform with Astro and Shopify, including code snippets."
+startDate: 2025-06-10
+image:
+  url: "/images/posts/2025-06-19.png"
+  alt: "dragon & bao"
+tags: ["ecommerce", "shopify", "headless"]
+canonical: https://tcheiner.com
+---
+
+Shopify's documentation can be frustrating. With the rise of AI and machine learning, why isn’t there a way to download comprehensive documentation for personal LLMs to enable Socratic learning? Instead, we’re stuck with scattered, incomplete resources. [Shopify reference docs](https://shopify.dev/docs)
+
+Here’s how I integrated Shopify with Astro for a headless e-commerce solution:
+
+1. **Create a Shopify Partner account**
+   Navigate to [partner.shopify.com](https://partner.shopify.com) since it lets you create as many development stores for testing as you need.
+
+2. **Make a test directory and initialize it**
+   Start by creating a new directory for your project and navigating into it:
+   ```bash
+   mkdir my-test-store
+   cd my-test-store
+   ```
+
+3. **Install Shopify CLI**
+I prefer using the CLI to avoid searching for links or buttons:
+```bash
+npm i -g @shopify/cli@latest
+   ```
+
+4. **Choose your app type**
+At this point, you have two options for Shopify app development:
+
+- **Hydrogen app**:
+```bash
+shopify hydrogen init
+     ```
+Follow the [Hydrogen documentation](https://shopify.dev/docs).
+
+- **Remix app**:
+```bash
+shopify app init
+     ```
+Follow the [Remix documentation](https://shopify.dev/docs/apps/build/scaffold-app).
+
+Here's a comparison of **Hydrogen** vs. **Remix**:
+
+| Feature/Aspect           | **Hydrogen**                                      | **Remix**                                           |
+   |--------------------------|--------------------------------------------------|----------------------------------------------------|
+| **Purpose**              | Shopify-specific custom storefronts              | General-purpose web applications                  |
+| **Pre-Built Components** | Includes Shopify-specific components             | No pre-built Shopify components                   |
+| **Integration with Shopify** | Deeply integrated with Shopify APIs and ecosystem | Can integrate with Shopify APIs, but not specific |
+| **Hosting**              | Optimized for Shopify's Oxygen hosting           | Hosting-agnostic (can be deployed anywhere)       |
+| **Flexibility**          | Opinionated framework tailored for e-commerce    | Unopinionated and flexible                        |
+| **Use Case**             | Best for Shopify storefronts                     | Best for general web applications, including storefronts |
+
+Both options don’t fit my goal of creating a separate shop component for my Astro website. Instead, I followed Shopify’s [Headless documentation](https://shopify.dev/docs/storefronts/headless/bring-your-own-stack) and documented my process for future reference.
+
+**Pro Tip**: If you need a website, go the Hydrogen route. Two commands and you’ve got a store up and running.
+![shopify hydrogen](/images/posts/2025-06-21-hydrogen.png)
+
+5. **Create a development store**
+From your Partner dashboard, create a development store where you can test features.
+
+6. **Log into the store**
+Access your store via the Partner dashboard, which opens the admin panel (e.g., `admin.shopify.com/<store_id>`).
+
+7. **Create a custom app**
+Go to "Develop app" → "Create custom app" → "Install app." This process generates an API token for accessing Shopify’s ecosystem.
+
+8. **Test the Storefront API**
+Write a Node.js app to test your API token and fetch product data. Example code:
+```javascript
+import dotenv from 'dotenv';
+dotenv.config();
+
+const SHOPIFY_STORE_DOMAIN = '<your-store-name>.myshopify.com';
+const SHOPIFY_ENDPOINT = `https://${SHOPIFY_STORE_DOMAIN}/api/2024-01/graphql.json`;
+const SHOPIFY_STOREFRONT_ACCESS_TOKEN = '<your-access-token>';
+
+const query = `
+  query getProducts($first: Int!) {
+    products(first: $first) {
+      edges {
+        node {
+          id
+          title
+          description
+          handle
+          images(first: 1) {
+            edges {
+              node {
+                url
+                altText
+              }
+            }
+          }
+          variants(first: 1) {
+            edges {
+              node {
+                id
+                title
+                price {
+                  amount
+                  currencyCode
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+`;
+
+async function testShopifyAPI() {
+  try {
+    const response = await fetch(SHOPIFY_ENDPOINT, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'X-Shopify-Storefront-Access-Token': SHOPIFY_STOREFRONT_ACCESS_TOKEN,
+      },
+      body: JSON.stringify({
+        query: query,
+        variables: { first: 5 },
+      }),
+    });
+
+    const data = await response.json();
+    console.log('Products:', data.data.products.edges);
+  } catch (error) {
+    console.error('Error:', error);
+  }
+}
+
+testShopifyAPI();
+   ```
+
+9. **Populate the dev store**
+Use Shopify's built-in option to populate your dev store with random products, customers, and orders.
+
+10. **Map API results to your Astro site**
+Convert the API response (`data`) into JSON for Astro to consume.
+Example result:
+![shopify headless](/images/posts/2025-06-21-headless.png)
+
+For a quick solution, use Hydrogen for a Shopify storefront.
+For headless setup, Shopify’s Storefront API (headless but you need to develop a custom app by Shopify's terms) is the
+way to go.  It abstracts the inventory in a database and tracks everything else.  Will do another sprint on auth and
+login and managing it on a personal site soon.

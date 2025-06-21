@@ -1,0 +1,35 @@
+---
+slug: "2025-06-06"
+title: "Deeper Dive in Concurrency - Concurrency Models"
+description: "Concurrency Model"
+startDate: 2025-06-06
+image:
+    url: "/images/posts/2025-06-06-1.png"
+    alt: "Concurrency Models"
+tags: ["concurrency"]
+canonical: https://tcheiner.com
+---
+![models](/images/posts/2025-06-06-1.png)
+Here’s a detailed comparison table for various concurrency models, including examples, strengths, weaknesses, scalability,
+resource usage, complexity, production readiness, and suitable architectures:
+| ✅  | **Model**                 | **Examples**                                | **Strengths**                                                                 | **Weaknesses**                                                                 | **Best For**                           | **Scalability**   | **Resource Usage** | **Complexity**   | **Production Ready** | **Suitable Architectures**    |
+|-----|---------------------------|---------------------------------------------|------------------------------------------------------------------------------|-------------------------------------------------------------------------------|---------------------------------------|-------------------|--------------------|------------------|-----------------------|------------------------------|
+| [ ] | **Pre-Fork**              | Gunicorn, Apache HTTP (prefork mode)        | - Reliable and predictable.<br />- Handles CPU-intensive workloads well.     | - High memory usage (one process per worker).<br />- Limited scalability for high concurrency. | CPU-intensive workloads.<br />Monolithic apps. | Moderate          | High               | Low              | Yes                   | Monolithic, legacy systems.  |
+| [x] | **Thread-Based**          | Apache Tomcat, Jetty, Python `threading`    | - Lower memory usage than pre-fork.<br />- Good for I/O-bound workloads.     | - Risk of race conditions.<br />- Performance degrades with too many threads. | I/O-bound workloads.<br />Web servers.  | High              | Moderate           | Moderate         | Yes                   | Monolithic, microservices.   |
+| [x] | **Event-Driven**          | Nginx, Uvicorn, Node.js                     | - Extremely efficient for I/O-bound tasks.<br />- Low resource usage.<br />- High concurrency. | - Not suited for CPU-heavy tasks.<br />- Higher complexity due to async programming. | APIs, WebSockets,<br />real-time apps.  | Very High         | Low                | High             | Yes                   | Serverless, microservices.   |
+| [ ] | **Hybrid (Pre-Fork + Threads/Async)** | Gunicorn with threads,<br />Apache HTTP (worker/event MPM), Puma | - Combines benefits of processes and threads/async.<br />- Scalable for mixed workloads. | - More complex to configure and manage.<br />- Needs tuning of worker/thread counts. | Mixed workloads,<br />multi-core CPUs.  | High              | Moderate           | High             | Yes                   | Monolithic, microservices.   |
+| [x] | **Single-Process, Single-Thread** | Python `http.server`, older CGI            | - Simple and easy to implement.<br />- Minimal resource usage.               | - Cannot handle concurrent requests.<br />- Not scalable for production use.  | Low-traffic apps,<br />development.     | Low               | Low                | Very Low         | No                    | Monolithic (small apps).     |
+| [ ] | **Multiplexing (Worker Pool)** | Apache HTTP (worker MPM),<br />ThreadPoolExecutor | - Efficient resource utilization.<br />- Scalable for moderate traffic.      | - Latency if all workers are busy.<br />- Requires careful tuning of pool size. | Moderate concurrency workloads.       | High              | Moderate           | Moderate         | Yes                   | Monolithic, microservices.   |
+| [ ] | **Reactive**              | Akka (Scala), Vert.x (Java),<br />Spring WebFlux | - Highly efficient for real-time, event-driven apps.<br />- Minimal resource usage. | - Requires reactive programming.<br />- Steep learning curve.                 | Real-time apps,<br />event-driven systems. | Very High         | Low                | High             | Yes                   | Event-driven, microservices. |
+| [ ] | **Container-Based**       | Kubernetes, AWS Fargate,<br />Google Cloud Run | - Dynamically scalable.<br />- Isolated and resilient.<br />- Ideal for microservices. | - Higher startup latency.<br />- Overhead from container orchestration.       | Microservices,<br />modern architectures. | Very High         | Moderate-High      | High             | Yes                   | Microservices, serverless.   |
+
+### **Key Takeaways:**
+1. **Pre-Fork**: Best for monolithic, CPU-heavy apps where stability is key. Suitable for legacy systems.
+2. **Thread-Based**: Works well for I/O-heavy workloads, but can struggle with race conditions in high concurrency.
+3. **Event-Driven**: Ideal for lightweight, high-concurrency use cases like APIs and WebSockets. Common for serverless and microservices.
+4. **Hybrid**: Balances the strengths of pre-fork and threading/async models. Good for mixed workloads.
+5. **Single-Process**: Simple for development but not scalable for production.
+6. **Multiplexing**: Great for moderate concurrency workloads with efficient resource usage, but requires careful tuning.
+7. **Reactive**: Perfect for real-time, event-driven systems but requires expertise in reactive programming.
+8. **Container-Based**: The go-to for modern architectures like microservices and serverless, with excellent scalability and isolation.
+

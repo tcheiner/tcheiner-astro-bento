@@ -6,6 +6,7 @@ import Card from '../components/Card.astro'
 import TimeZoneCard from '../components/sections/TimeZoneCard.astro'
 import Books from '../components/sections/Books.astro'
 import ExperienceCard from '../components/sections/ExperienceCard.astro'
+import Chatbot from '../components/Chatbot.astro'
 import Projects from '../components/sections/Projects.astro'
 import { PROFILE } from "../content/profileData";
 import BlogCard from '../components/sections/BlogCard.astro'
@@ -136,7 +137,10 @@ const SITE = PROFILE.site
     <!--  </div>-->
     <!--</Card>-->
 
-
+  <!--<Card colSpan="sm:col-span-1 md:col-span-1 lg:col-span-12" rowSpan="md:row-span-1 lg:row-span-1" title="Chatbot TC">-->
+  <!--  <Chatbot client:load/>-->
+  <!--</Card>-->
+    <Chatbot client:load/>
   </main>
 </BaseLayout>
 

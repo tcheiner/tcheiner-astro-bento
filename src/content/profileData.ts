@@ -22,7 +22,7 @@ export const PROFILE = {
     "📚 Lifelong learner | 🎲 Systems thinker | 🌱 Gardener | 🥧 Baker",
   ],
   // "☁️ I can't remember everything I have done, so here it is",
-  now: ["Playing with astro - round 2"],
+  now: ["Hospital MCP Integration, Reading about concurrency models and learning Rust"],
   preferredTools: ["Python", "NoSQL", "Cloud", "Serverless", "Astro", "Backend", "Linux"],
   skills: [
     "Languages: Python, Java, Javascript, Typescript",
