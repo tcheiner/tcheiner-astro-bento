@@ -44,3 +44,6 @@ env.d.ts
 # Node version manager
 .nvmrc
 .npmrc
+
+# backend code
+/backend
