@@ -3,7 +3,7 @@ export const PROFILE = {
     SEO: {
       title: "TC Heiner.",
       description:
-        "Learn, Share and Grow ❤️ -- Software Engineer | cloud Professional | Open Source Lover  --☘️ ",
+        "Learn, Share and Grow ❤️ -- Software Engineer | Cloud Professional | Open Source Lover  --☘️ ",
     },
   },
   timezone: "Europe/Amsterdam",
@@ -22,7 +22,7 @@ export const PROFILE = {
     "📚 Lifelong learner | 🎲 Systems thinker | 🌱 Gardener | 🥧 Baker",
   ],
   // "☁️ I can't remember everything I have done, so here it is",
-  now: ["Hospital MCP Integration, Reading about concurrency models and learning Rust"],
+  now: ["Rag trained AI assistant"],
   preferredTools: ["Python", "NoSQL", "Cloud", "Serverless", "Astro", "Backend", "Linux"],
   skills: [
     "Languages: Python, Java, Javascript, Typescript",

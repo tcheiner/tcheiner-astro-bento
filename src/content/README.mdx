@@ -1,0 +1,203 @@
+---
+title: "Content Management Guide"
+description: "Guide for managing MDX content collections in TC Heiner's portfolio website"
+---
+
+# Content Management System
+
+This directory contains all content for TC Heiner's portfolio website, organized into type-safe collections with automatic validation.
+
+## 📁 Content Collections
+
+### Posts (`/posts/`)
+**Blog posts and articles**
+- **Naming**: `post-YYYY-MM-DD.mdx`
+- **Schema**: `title`, `startDate`, `description?`, `image?`, `tags?`, `canonical?`
+- **Indexed by AI**: ✅ (Full content searchable by chatbot)
+
+### Projects (`/projects/`)  
+**Portfolio project showcases**
+- **Naming**: `project-YYYY-MM-DD.mdx` or descriptive names
+- **Schema**: `title`, `startDate`, `description`, `image?`, `tags?`
+- **Indexed by AI**: ✅ (Technical details and accomplishments)
+
+### Experiences (`/experiences/`)
+**Professional work experience**
+- **Naming**: `experience-YYYY-MM-DD.mdx` or company names
+- **Schema**: `title`, `company`, `startDate`, `endDate?`, `tags?`
+- **Indexed by AI**: ✅ (Skills, responsibilities, achievements)
+- **Current positions**: Omit `endDate` field
+
+### Books (`/books/`)
+**Book reviews and reading notes**
+- **Naming**: `book-YYYY-MM-DD.mdx` or book titles
+- **Schema**: `title`, `author`, `readYear`, `tags?`
+- **Indexed by AI**: ❌ (Personal reading, not professional content)
+
+### Recipes (`/recipes/`)
+**Cooking recipes and culinary experiments**  
+- **Naming**: `recipe-YYYY-MM-DD.mdx` or dish names
+- **Schema**: Complex recipe schema (see template)
+- **Indexed by AI**: ❌ (Personal content, not professional)
+
+## 🛠️ Content Creation Workflow
+
+### Quick Start
+```bash
+# Create new content with templates (recommended)
+./templates/create-content.sh post        # → post-2025-09-02.mdx
+./templates/create-content.sh experience  # → experience-2025-09-02.mdx
+./templates/create-content.sh project     # → project-2025-09-02.mdx
+
+# Validate all content
+node validate-mdx.js
+
+# Update AI chatbot knowledge (if content is indexed)
+cd backend && python -c "from chatbot.services import rebuild_vectorstore; rebuild_vectorstore()"
+```
+
+### Manual Creation
+1. Copy appropriate template from `/templates/`
+2. Rename with proper naming convention
+3. Fill in frontmatter and content
+4. Validate with `node validate-mdx.js`
+
+### Content Guidelines
+
+#### Frontmatter Requirements
+- **All dates**: Use `YYYY-MM-DD` format
+- **Tags**: Array of strings `["tag1", "tag2"]`
+- **Images**: Relative paths from `/public/` directory
+- **Optional fields**: Include `?` in schema, can be omitted
+
+#### Content Best Practices
+- **Professional content** (posts, projects, experiences) should be detailed for AI indexing
+- **Use descriptive titles** and tags for better discoverability
+- **Include images** when available for visual appeal
+- **Link to related content** using relative paths
+
+## 🔍 Schema Validation
+
+### Validation Process
+```bash
+node validate-mdx.js  # Validates ALL MDX files
+# Fix any reported errors before committing
+```
+
+### Common Schema Errors
+```yaml
+# ❌ Wrong date format
+startDate: 2025/09/02      # Wrong
+startDate: 2025-09-02      # Correct
+
+# ❌ Invalid tags format  
+tags: "tag1,tag2"          # Wrong - string
+tags: ["tag1", "tag2"]     # Correct - array
+
+# ❌ Missing required fields
+# title: "Missing title"   # Wrong - commented out
+title: "My Project"        # Correct
+
+# ❌ Current position with end date
+endDate: null              # Wrong - use null or omit
+# endDate:                 # Correct - commented out or omitted
+```
+
+## 🤖 AI Chatbot Integration
+
+### What Gets Indexed
+The AI chatbot automatically indexes content for intelligent Q&A:
+
+**Indexed Collections** (searchable by users):
+- ✅ **Posts**: Full blog post content, code examples, insights
+- ✅ **Projects**: Technical details, challenges, solutions, tech stack
+- ✅ **Experiences**: Job responsibilities, achievements, skills used
+
+**Not Indexed** (personal content):
+- ❌ **Books**: Reading notes and personal reflections
+- ❌ **Recipes**: Cooking content not relevant for professional queries
+
+### Content Update Impact
+When you modify indexed content (posts/projects/experiences):
+
+1. **FAISS index rebuild required** for AI to see changes
+2. **Container redeployment needed** for AWS Lambda updates
+3. **Responses improve** with fresh, accurate information
+
+```bash
+# After editing indexed content:
+cd backend
+python -c "from chatbot.services import rebuild_vectorstore; rebuild_vectorstore()"
+./build-container.sh  # Deploy to AWS
+```
+
+## 📋 Content Templates
+
+### Available Templates
+All templates include:
+- ✅ **Schema-compliant frontmatter**
+- ✅ **Auto-generated filenames** with today's date
+- ✅ **Structured content sections**
+- ✅ **Best practice guidelines**
+
+| Template | Purpose | Auto-Generated Filename |
+|----------|---------|------------------------|
+| `post-template.mdx` | Blog posts, articles | `post-YYYY-MM-DD.mdx` |
+| `project-template.mdx` | Portfolio projects | `project-YYYY-MM-DD.mdx` |
+| `experience-template.mdx` | Work experience | `experience-YYYY-MM-DD.mdx` |
+| `book-template.mdx` | Book reviews | `book-YYYY-MM-DD.mdx` |
+| `recipe-template.mdx` | Cooking recipes | `recipe-YYYY-MM-DD.mdx` |
+
+### Template Features
+- **Date auto-fill**: All date fields populated with today's date
+- **Schema compliance**: Guaranteed to pass validation
+- **Content structure**: Organized sections with examples
+- **Placeholder content**: Clear guidance on what to include
+
+## 🔧 Advanced Usage
+
+### Custom Naming
+For non-date-based naming (projects, experiences):
+```bash
+# After using template, rename as needed:
+mv project-2025-09-02.mdx my-awesome-project.mdx
+mv experience-2025-09-02.mdx google-swe.mdx
+```
+
+### Batch Operations
+```bash
+# Validate specific collection
+node validate-mdx.js src/content/posts/*.mdx
+
+# Find content by tag
+grep -r "tag-name" src/content/
+
+# List recent content
+ls -la src/content/posts/ | tail -10
+```
+
+### Content Organization Tips
+- **Use consistent tagging** across related content
+- **Link between related pieces** using relative paths  
+- **Include source attribution** for external content
+- **Maintain professional tone** for indexed content
+- **Add images** to enhance visual appeal
+
+## 🚨 Important Notes
+
+### Before Committing
+1. ✅ **Validate content**: `node validate-mdx.js`
+2. ✅ **Check file naming**: Follow conventions
+3. ✅ **Review frontmatter**: Required fields present
+4. ✅ **Test locally**: `npm run dev` to verify rendering
+
+### Content That Affects AI Chatbot
+- **Posts**: New insights, technical learnings, project updates
+- **Projects**: New portfolio pieces, updated tech stacks  
+- **Experiences**: Job changes, new roles, skill updates
+
+Remember to rebuild FAISS index and redeploy chatbot after significant content changes!
+
+---
+
+*This content management system powers both the static website and the AI chatbot's knowledge base. Well-structured, validated content ensures the best experience for both human visitors and AI interactions.*

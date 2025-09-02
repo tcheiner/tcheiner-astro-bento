@@ -1,7 +1,6 @@
-from logger import logger
 from fastapi import APIRouter, HTTPException
-from chatbot.models import QueryRequest, QueryResponse
-from chatbot.services import ask_question
+from .models import QueryRequest, QueryResponse
+from .services import query_vectorstore
 
 # Create a router
 router = APIRouter()
@@ -11,7 +10,7 @@ router = APIRouter()
 async def chat(request: QueryRequest):
     question = request.question
     try:
-        answer, sources = ask_question(question)
+        answer, sources = query_vectorstore(question)
         return {"answer": answer, "sources": [source.metadata["source"] for source in sources]}
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))

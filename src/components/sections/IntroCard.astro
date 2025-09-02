@@ -2,7 +2,7 @@
 import {Button} from '../ui/button'
 import {PROFILE} from "../../content/profileData";
 import {Linkedin, Github, Mail, Youtube, Twitter, Rss, Book, PanelsTopLeft} from 'lucide-react'
-import {getAndGroupUniqueTags} from "../../lib/utils";
+import {getAndGroupUniqueTags} from "../../lib/server-utils";
 
 const tagsMap = await getAndGroupUniqueTags();
 const skills = PROFILE.skills;

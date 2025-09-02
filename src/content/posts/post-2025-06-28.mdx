@@ -1,0 +1,204 @@
+---
+slug: "2025-06-28"
+title: "Automated AI dev workflow: Github Actions, ArgoCD, Minikube, Kubernetes"
+description: "Trying out an automated dev workflow with AI tools and Kubernetes"
+startDate: 2025-06-28
+image: {
+    url: "/images/tcheina.png",
+    alt: "CF"
+    }
+tags: ["ai", "github-actions", "argocd", "minikube", "kubernetes"]
+canonical: https://tcheiner.com
+---
+Overview: What This Setup Does
+This setup is likely designed to streamline code development, CI/CD (Continuous Integration and Continuous Deployment), database management, and infrastructure orchestration. Here's how each component contributes to the workflow:
+
+GitHub: Acts as your code repository and version control system.
+GitHub Copilot: Assists developers by providing AI-powered code suggestions and automation during development.
+GitHub Actions: Automates workflows, such as testing, building, and deploying your applications.
+NeonDB: A cloud-based PostgreSQL database service that serves as your application's database backend.
+ArgoCD: A GitOps tool that automates the deployment and continuous synchronization of Kubernetes applications.
+Together, this setup enables a modern, DevOps-driven development pipeline where code changes are automatically tested, deployed, and synced with infrastructure and databases in a reliable and repeatable way.
+
+
+Detailed Breakdown of Each Component
+1. GitHub
+
+What it does: GitHub is where your code lives. It serves as a code repository that allows collaboration, version control, and integration with other tools.
+How it fits into the setup:
+Developers push their code to GitHub repositories.
+GitHub acts as the "source of truth" for your application's codebase.
+It integrates with GitHub Actions to trigger automated workflows (e.g., tests, builds, deployments).
+2. GitHub Copilot
+
+What it does: GitHub Copilot is an AI-powered coding assistant that helps developers write code faster by providing intelligent suggestions and snippets.
+How it fits into the setup:
+During development, Copilot assists by generating boilerplate code, suggesting functions, and offering solutions based on your coding context.
+Helps reduce development time by automating repetitive tasks and providing solutions to common problems.
+3. GitHub Actions
+
+What it does: GitHub Actions is a CI/CD platform built into GitHub. It automates workflows triggered by events in your repository (e.g., a pull request, push, or merge).
+How it fits into the setup:
+When developers push code to GitHub, GitHub Actions triggers automated workflows.
+Example workflows:
+Running automated tests to ensure the code works as expected.
+Building the application (e.g., creating Docker images).
+Deploying the application to a Kubernetes cluster (via ArgoCD).
+Managing database migrations for NeonDB.
+GitHub Actions ensures that the code is tested, built, and deployed in a consistent, automated way.
+4. NeonDB
+
+What it does: NeonDB is a serverless, cloud-based PostgreSQL database service. It provides a scalable and managed relational database for your application.
+How it fits into the setup:
+Your application uses NeonDB as its database backend to store and retrieve data.
+During CI/CD workflows, GitHub Actions may run database migrations to ensure the database schema is in sync with the application code.
+NeonDB offers features like branching, which allows developers to test database changes in isolated environments before merging them into production.
+5. ArgoCD
+
+What it does: ArgoCD is a GitOps tool for Kubernetes. It continuously syncs your Kubernetes cluster with the desired state defined in a Git repository.
+How it fits into the setup:
+ArgoCD deploys your application to a Kubernetes cluster based on the manifests (YAML files) stored in your GitHub repository.
+It ensures that the live state of the application (running in Kubernetes) matches the desired state defined in Git.
+If someone manually modifies the Kubernetes resources, ArgoCD will detect the drift and revert the changes to match the Git configuration.
+ArgoCD provides a dashboard to monitor and manage application deployments.
+How These Components Work Together
+Here’s an example workflow that ties everything together:
+
+1. Development (GitHub + GitHub Copilot)
+
+Developers write code in their local development environment.
+GitHub Copilot assists by generating boilerplate code, suggesting solutions, and speeding up development.
+Once the code is ready, developers push it to a GitHub repository.
+2. CI/CD Pipeline (GitHub Actions)
+
+GitHub Actions is triggered when code is pushed or a pull request is created.
+The pipeline performs the following steps:
+Run Tests: Ensures the code is functioning as expected.
+Build the Application: Creates a Docker image for the application.
+Database Migrations: Runs migrations to update the NeonDB schema to match the application.
+Deploy the Application: Pushes the updated Docker image and Kubernetes manifests to the Git repository used by ArgoCD.
+3. Database Management (NeonDB)
+
+NeonDB serves as the database backend for the application.
+Database migrations (e.g., schema updates, adding tables) are handled as part of the CI/CD pipeline.
+NeonDB’s branching feature allows developers to test database changes in isolated environments.
+4. Application Deployment (ArgoCD)
+
+ArgoCD continuously monitors the Git repository for changes (e.g., new Kubernetes manifests or updated Docker images).
+When changes are detected, ArgoCD automatically applies them to the Kubernetes cluster, ensuring that the live environment matches the desired state defined in Git.
+ArgoCD also handles rollbacks and drift detection to maintain consistency.
+Benefits of This Setup
+Automated Workflows:
+
+GitHub Actions automates testing, building, and deploying the application.
+ArgoCD automates the deployment and synchronization of Kubernetes resources.
+GitOps Approach:
+
+The entire system is version-controlled in Git, ensuring every change is tracked and auditable.
+ArgoCD ensures the live environment is always in sync with the repository.
+Scalability and Efficiency:
+
+NeonDB provides a scalable database backend that can handle application growth.
+Kubernetes (managed by ArgoCD) ensures the application can scale dynamically.
+Developer Productivity:
+
+GitHub Copilot speeds up development by providing intelligent code suggestions.
+CI/CD pipelines reduce manual effort and errors, allowing developers to focus on writing code.
+Reliability:
+
+Automated testing and deployments reduce the risk of bugs reaching production.
+ArgoCD ensures infrastructure consistency and minimizes configuration drift.
+Real-World Use Case
+Imagine you’re developing a web application. Here’s how this setup might work in practice:
+
+A developer writes new features for the app and pushes the code to GitHub.
+GitHub Actions runs automated tests, builds the app, and applies database migrations to NeonDB.
+The updated Kubernetes manifests (e.g., deployment changes) are pushed to the Git repository.
+ArgoCD detects the changes and updates the Kubernetes cluster to deploy the new version of the app.
+The app is live with the latest features, and the database schema is updated to support the new functionality.
+
+```bash
+11133  mkdir ai-dev-test-flow
+11134  cd ai-dev-test-flow
+11135  git init
+11136  echo "# AI Automated dev flow" > README.md
+11137  git add .
+11138  git commit -m "initial commit"
+11139  git branch -M main
+11140  ls
+11141  cd .github
+11142  git remote add origin git@github.com:tcheiner/ai-dev-test-flow.git
+11143  git push -u origin main
+11144  ls -a
+11145  touch .github/workflows/dev-flow.yaml
+11146  vi ./.github/workflows/dev-flow.yaml
+11147  mkdir .github
+11148  cd .github
+11149  mkdir workflows
+11150  cd workflows
+11151  vi dev-flow.yaml
+11152  cd ..
+11153  cd ,,
+11154  cd ..
+11155  ls
+11156  curl -LO "https://dl.k8s.io/release/$(curl -L -s https://dl.k8s.io/release/stable.txt)/bin/darwin/arm64/kubectl"\n
+11157  curl -LO "https://dl.k8s.io/release/$(curl -L -s https://dl.k8s.io/release/stable.txt)/bin/darwin/arm64/kubectl.sha256"
+11158  echo "$(cat kubectl.sha256)  kubectl" | shasum -a 256 --check
+11159  chmod +x ./kubectl
+11160  sudo mv ./kubectl /usr/local/bin/kubectl
+11161  sudo chown root: /usr/local/bin/kubectl
+11162  kubectl version --client
+11163  rm kubectl.sha256
+11164  brew install kubectl
+11165  brew install kubernetes-cli
+11166  kubectl create namespace argocd
+11167  brew link kubernetes-cli
+11168  kubectl create namespace argocd
+11169  kubectl version --client
+11170  minikube version
+11171  kind version
+11172  uname -m
+11173  sysctl -n machdep.cpu.brand_string
+11174  system_profiler SPHardwareDataType\n
+11175  /usr/bin/arch
+11176  ps -p $$ | grep -q x86_64 && echo "Running in x86_64" || echo "Native ARM"
+11177  # Switch to ARM architecture\narch -arm64 /bin/bash
+11178  bew install minikube
+11179  brew install minikube
+11180  vi ./.github/workflows/dev-flow.yaml
+11181  kubectl create namespace argocd
+11182  minikube start
+11183  kubectl create namespace argocd
+11184  curl -LO https://github.com/kubernetes/minikube/releases/download/v1.36.0/minikube-darwin-arm64\nchmod +x minikube-darwin-arm64\nsudo mv minikube-darwin-arm64 /usr/local/bin/minikube
+11185  brew install hyperkit\nminikube config set driver hyperkit
+11186  minikube config set driver docker
+11187  minikube delete
+11188  minikube start
+11189  kubectl create namespace argocd
+11190  kubectl apply -n argocd -f https://raw.githubusercontent.com/argoproj/argo-cd/stable/manifests/install.yaml
+11191  kubectl -n argocd get secret argocd-initial-admin-secret -o jsonpath="{.data.password}" | base64 -d
+11192  kubectl create namespace argocd
+11193  kubectl apply -n argocd -f https://raw.githubusercontent.com/argoproj/argo-cd/stable/manifests/install.yaml
+11194  kubectl get pods -n argocd
+11195  kubectl -n argocd get secret argocd-initial-admin-secret -o jsonpath="{.data.password}" | base64 -d
+11196  kubectl port-forward svc/argocd-server -n argocd 8080:443
+11197  kubectl -n argocd get secret argocd-initial-admin-secret -o jsonpath="{.data.password}" | base64 -d
+11198  kubectl -n argocd patch deployment argocd-server -p '{"spec": {"template": {"spec": {"containers": [{"name": "argocd-server", "env": [{"name": "ARGOCD_ADMIN_PASSWORD", "value": "your-new-password"}]}]}}}}'
+11199  kubectl -n argocd patch deployment argocd-server -p '{"spec": {"template": {"spec": {"containers": [{"name": "argocd-server", "env": [{"name": "ARGOCD_ADMIN_PASSWORD", "value": "1tchbu77"}]}]}}}}'
+11200  kubectl -n argocd get configmap argocd-cm -o yaml
+11201  kubectl -n argocd patch configmap argocd-cm --type merge -p '{\n  "data": {\n    "accounts.admin": "enabled"\n  }\n}'
+11202  kubectl -n argocd patch deployment argocd-server -p '{"spec": {"template": {"spec": {"containers": [{"name": "argocd-server", "env": [{"name": "ARGOCD_ADMIN_PASSWORD", "value": "1tchbu77"}]}]}}}}'
+11203  kubectl -n argocd rollout restart deployment argocd-server
+11204  kubectl -n argocd get secret argocd-initial-admin-secret -o jsonpath="{.data.password}" | base64 -d
+11205  kubectl -n argocd get configmap argocd-cm -o yaml
+11206  kubectl -n argocd get secret argocd-initial-admin-secret -o jsonpath="{.data.password}" | base64 -d
+11207  kubectl -n argocd rollout restart deployment argocd-server
+11208  kubectl create namespace argocd
+11209  kubectl apply -n argocd -f https://raw.githubusercontent.com/argoproj/argo-cd/stable/manifests/install.yaml
+11210  kubectl -n argocd get secret argocd-initial-admin-secret -o jsonpath="{.data.password}" | base64 -d
+11211  htpasswd -bnBC 10 "" your-new-password | tr -d ':\n'
+11212  kubectl -n argocd create secret generic argocd-initial-admin-secret \\n  --from-literal=password='your-new-password'
+11213  kubectl port-forward svc/argocd-server -n argocd 8080:443
+11214  kubectl -n argocd get secret argocd-initial-admin-secret -o jsonpath="{.data.password}" | base64 -d
+11215  kubectl port-forward svc/argocd-server -n argocd 8080:443
+```

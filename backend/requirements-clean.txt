@@ -1,0 +1,23 @@
+# Core web framework
+fastapi==0.115.12
+mangum
+pydantic
+starlette
+uvicorn
+
+# AI/ML dependencies
+langchain
+langchain-openai
+langchain-community
+openai
+tiktoken
+langsmith
+
+# Vector store
+faiss-cpu
+numpy
+
+# Utilities
+python-dotenv
+requests
+typing-extensions

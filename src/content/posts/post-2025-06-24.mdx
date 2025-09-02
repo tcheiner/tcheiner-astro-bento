@@ -1,0 +1,23 @@
+---
+slug: "2025-06-24"
+title: "Terraform: AWS Lambda, AWS API Gateway, AWS CLI, Terraform CLI"
+description: "Deploying my chatbot to AWS Lambda with Terraform"
+startDate: 2025-06-04
+image: {
+    url: "/images/tcheina.png",
+    alt: "CF"
+    }
+tags: ["terraform", "aws", "lambda", "api-gateway", "cli", "python"]
+canonical: https://tcheiner.com
+---
+[Terraform AWS Tutorial](https://developer.hashicorp.com/terraform/tutorials/aws/lambda-api-gateway)
+After a whole day of banging at it, I found a tutorial from Terraform that worked.  I think etags are the key.
+
+Again, I believe the key is file structure and how you organize your code to make it intuitive.
+The following list of terraform files and they implied structure is what I used to get it working:
+1. terraform.tf     : declare terraform{} here, along with version, required providers.
+2. variables.tf     : declare your variables here, along with their types and defaults.
+3. main.tf          : declare your resources here, along with their types and properties.
+4. outputs.tf       : declare your console outputs here, along with their types and values.
+ ```terraform
+ ```

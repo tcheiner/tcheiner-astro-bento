@@ -1,0 +1,70 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Transform: AWS::Serverless-2016-10-31
+Description: FastAPI + Mangum on Lambda
+
+Parameters:
+  OpenAIApiKey:
+    Type: AWS::SSM::Parameter::Value<String>
+    Default: /myapp/OPENAI_API_KEY
+  AwsRegion:
+    Type: AWS::SSM::Parameter::Value<String>
+    Default: /myapp/AWS_REGION
+  AwsAccountId:
+    Type: AWS::SSM::Parameter::Value<String>
+    Default: /myapp/AWS_ACCOUNT_ID
+  VectorstoreBucket:
+    Type: AWS::SSM::Parameter::Value<String>
+    Default: /myapp/VECTORSTORE_BUCKET
+  VectorstorePrefix:
+    Type: AWS::SSM::Parameter::Value<String>
+    Default: /myapp/VECTORSTORE_PREFIX
+
+Policies:
+    - Statement:
+        - Effect: Allow
+          Action:
+            - ssm:GetParameter
+          Resource:
+            - arn:aws:ssm:REGION:ACCOUNT_ID:parameter/myapp/OPENAI_API_KEY
+            - arn:aws:ssm:REGION:ACCOUNT_ID:parameter/myapp/AWS_REGION
+            - arn:aws:ssm:REGION:ACCOUNT_ID:parameter/myapp/VECTORSTORE_BUCKET
+            - arn:aws:ssm:REGION:ACCOUNT_ID:parameter/myapp/VECTORSTORE_PREFIX
+    - Statement:
+        - Effect: Allow
+          Action:
+            - s3:GetObject
+            - s3:ListBucket
+          Resource:
+            - arn:aws:s3::: !Ref VectorstoreBucket
+            - arn:aws:s3::: !Ref VectorstorePrefix
+Resources:
+  FastApiFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      CodeUri: .
+      Handler: chatbot/main.handler
+      Runtime: python3.12
+      Timeout: 30
+      MemorySize: 2048
+      Environment:
+        Variables:
+          OPENAI_API_KEY: !Ref OpenAIApiKey
+          AWS_REGION: !Ref AwsRegion
+          AWS_ACCOUNT_ID: !Ref AwsAccountId
+          VECTORSTORE_BUCKET: !Ref VectorstoreBucket
+          VECTORSTORE_PREFIX: !Ref VectorstorePrefix
+      Events:
+            Api:
+              Type: Api
+              Properties:
+                Path: /{proxy+}
+                Method: ANY
+      Policies:
+        - Statement:
+            - Effect: Allow
+              Action:
+                - s3:GetObject
+                - s3:ListBucket
+              Resource:
+                - arn:aws:s3:::chatbot-vectorstore-bucket
+                - arn:aws:s3:::chatbot-vectorstore-bucket/*

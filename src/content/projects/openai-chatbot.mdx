@@ -6,7 +6,7 @@ startDate: 2025-06-07
 image:
     url: "/images/tcheina.png"
     alt: "personal chatbot image"
-tags: ["Tailwind CSS", "Node.js", "Astro", "Island Architecture"]
+tags: ["Chatbot", "RAG", "Semantic Search", "FAISS", "Vectorstore", "Langchain", "OpenAI", "FastAPI", "AWS Lambda"]
 ---
 1. create a new /backend dir for python backend code for chatbot
 2. create chatbot interface with react, typescript and css
@@ -19,3 +19,89 @@ tags: ["Tailwind CSS", "Node.js", "Astro", "Island Architecture"]
 Will need to take a break to do soe research but continue this shortly, really working on a longer term process to
 get all my data, preferably summarized and stored for chatbot to work with.  Preferably all automated because why
 would I not.
+
+The tech stack:
+- Frontend: Astro + React + Typescript + CSS for the frontend chatbot interface
+- Backend: FastAPI + RAG (FAISS + OpenAI embeddings + Langchain) for the backend chatbot logic deployed to AWS
+Lambda containers
+- Deployment: OpenTofu (formerly Terraform) to deploy the backend to AWS Lambda and API Gateway, Docker for containerization
+- Security: AWS SSM for secure storage of API keys and environment variables, CORS protection, input validation,
+content filtering
+
+Future improvements:
+- automatically rebuild vectorstores when new data (e.g., new blog posts) is added and deploy
+- improve chatbot personality and responses with more context and fine-tuning
+- add more data sources (e.g., GitHub repos, social media profiles) for a richer knowledge base
+- implement user authentication and rate limiting to prevent abuse
+- improve chatbot accuracy by continuously pausing and compressing (and building a graph db of knowledge) the
+chatbot conversations (I am assuming short intro convos currently) -- inspired by AI Dev conference.
+
+Update: Sept 2, 2025.
+OH MY GOD!  This was harder than expected.  It worked locally within a day but to deploy it safely, I ran up against
+limitation of AWS Lambda, Terraform (I decided to learn Terraform for this deployment because why not?), and Docker
+and a whole slew of shell scripting for verification checks.  Terraform ceased to be the hot chick at prom while I
+was working on it, so I picked up and migrated to OpenTofu for this leg of the development.
+
+My Terraform script was set to:
+- upload my zipped AWS lambda function (fastapi and mangum) to AWS S3,
+- configure and deploy AWS API Gateway for a REST API
+- configure and use AWS SSM
+- set AWS IAM roles and policies attachment to run AWS Lambda
+- configure AWS Cloudwatch
+
+I have a Docker script to build the container, that I can deploy locally or via OpenTofu remotely using AWS ECR.
+
+Funny story about AWS ECR.  I was being cheap and did not want to pay for AWS ECR so I had previously configured my
+deployments to upload my REST API to AWS Lambda via a zipped file in AWS S3.  I was getting all sorts of weird
+errors, and after a few hours, FIGURED OUT THAT AWS Lambda was importing my python dependencies in the function,
+then loading the Lambda Layers (which had all my carefully optimized - for size - dependencies).  So I had
+repeatedly gotten "Cannot find module" errors that spiraled into hours of checking my zipped files, checking my
+terraform caches, AWS Lambda Layer hashes to ensure that the most recent zipped layers got uploaded ... infinitely.
+
+So I gave in and created an AWS ECR repo, and pushed my docker container up to it.  It was a relief to see that it
+just worked, reliably but not before I desperately and creatively lazy loaded my imports mid-code.  Yes, it was ugly.
+
+After I got it ALL working, my chatbot sounded rather lame.  I do know I gave it more context that most generative
+AI get in terms of data (all the content on this website with all my projects) so I spent the next few hours
+tweaking temperatures and implementing (with the help of Claude Code) content filters (to keep to the point of
+personality, cultural fit, professional topics) to prevent API key abuse, etc.  I figured it would help anyone
+trying to assess if I could help them achieve their goals in any way, in no-commitment, exploratory setting.
+
+We can definitely tweak it to be more personable but this is about the extent I am willing to take it today.
+
+I had to do a security pass and move my api keys to AWS SSM, and then that spewed a whole series of properly
+configuring AWS IAM to build and pull the creds properly.
+
+This is typically what happens when I start on a project and have someone to chat with - I get ideas and refinements
+that go on and on, I suppose.
+
+In testing my new vectorstores for this post (update), I found inaccuracies in the chatbot responses.  Namely,
+that my vectorstores are secured in AWS S3 and that it was a challenge (false on both counts!) but worth
+exploring on whether it is a better approach.  It is not because all the vectorstore content is front-facing
+anyway and it adds response time since it has to be downloaded from S3.  Claude  mentioned confidence scoring (which
+is a great idea), so I am putting that in.  I am also putting in clickable links to my projects and posts, so people
+can go navigate and read my literal words for accuracy.
+
+In doing so, I know AWS Lambda functions have a size limit (and it is advisable to keep them small so they run fast),
+so the utility functions are broken out into several files.
+
+New file structure for code:
+
+```
+chatbot/
+├── main.py          # FastAPI app + endpoints (259 lines)
+├── filters.py       # Content filtering functions
+├── sources.py       # URL conversion + clickable links
+├── confidence.py    # Response confidence scoring
+├── summarization.py # Skills-focused response summarization
+├── services.py      # Vectorstore + QA chain management
+├── models.py        # Pydantic schemas
+└── routes.py        # Additional API routes
+```
+
+Had to update Terraform/OpenTofu to check hashes to update.  There is a lot of caching issues - but it makes sense
+from a devops perspective to do so.
+
+Checking responses and decided it was worth it to add a summarization pass on the response.
+
+At this point, it is worth it to move these into Agentic workflows.  Stay tuned.

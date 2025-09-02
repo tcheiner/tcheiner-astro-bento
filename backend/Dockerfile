@@ -1,17 +1,17 @@
-# Use a lightweight Python image
-FROM python:3.10-slim
+FROM public.ecr.aws/lambda/python:3.12
 
 # Set working directory
-WORKDIR /app
+WORKDIR ${LAMBDA_TASK_ROOT}
 
-# Copy project files
-COPY . .
+# Copy requirements and install dependencies
+COPY requirements-clean.txt requirements.txt
+RUN pip install -r requirements.txt
 
-# Install dependencies
-RUN pip install --no-cache-dir -r requirements.txt
+# Copy application code
+COPY chatbot/ ./chatbot/
 
-# Expose the app port
-EXPOSE 8000
+# Copy FAISS index data to match expected path
+COPY chatbot/faiss_index/ ./chatbot/faiss_index/
 
-# Start the FastAPI app
-CMD ["uvicorn", "app.main:app", "--host", "0.0.0.0", "--port", "8000"]
+# Set the handler (main.py is now in chatbot directory)
+CMD ["chatbot.main.handler"]

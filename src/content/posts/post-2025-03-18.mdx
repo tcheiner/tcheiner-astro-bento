@@ -70,8 +70,8 @@ with ((Diagram("leftover-noodles",
                                 "noodles.png"),
                        Custom("6 cups water",
                                 "water.png")]
-            stepTwo[0]  << Edge(label="drain and toss")
-                        << Custom("2 tsp sesame oil",
+            stepTwo[0]  &lt;&lt; Edge(label="drain and toss")
+                        &lt;&lt; Custom("2 tsp sesame oil",
                                     "sesameOil.png")
     with Cluster("Mix 2"):
         cabbageNoodlesMix = [Custom("Cabbage + Noodle",
@@ -107,11 +107,11 @@ with ((Diagram("leftover-noodles",
                     Custom("scallions, chopped, green parts",
                             "scallions.png")]
 
-    stepThree[0] << Edge(label=" Step 1") << stepFour[0]
+    stepThree[0] &lt;&lt; Edge(label=" Step 1") &lt;&lt; stepFour[0]
     cabbageNoodlesMix >> Edge(label="Step 2") >>stepThree[0]
-    stepThree[0] << Edge(label="Step 3") << stepFive[0]
+    stepThree[0] &lt;&lt; Edge(label="Step 3") &lt;&lt; stepFive[0]
     stepThree[0] >> Edge(label="Step 4") >> plate[0]
-    plate[0] << Edge(label="Step 5") << stepSix[0]
+    plate[0] &lt;&lt; Edge(label="Step 5") &lt;&lt; stepSix[0]
 </code>
 ```
 

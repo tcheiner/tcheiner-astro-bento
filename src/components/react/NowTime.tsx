@@ -1,6 +1,6 @@
 import React, {useState, useEffect} from "react";
 import moment from "moment-timezone";
-import {getUserTimeZoneInBrowser} from "@/lib/utils.ts";
+import {getUserTimeZoneInBrowser} from "../../lib/utils.ts";
 
 const NowTime = ({timezone}: { timezone?: string }) => {
   const [currentTime, setCurrentTime] = useState<string>('');
@@ -13,8 +13,6 @@ const NowTime = ({timezone}: { timezone?: string }) => {
   const browserTimezone = getUserTimeZoneInBrowser();
 
   const usingTimezone = timezone ? timezone : browserTimezone;
-
-  console.log(usingTimezone)
 
   useEffect(() => {
     const interval = setInterval(() => {

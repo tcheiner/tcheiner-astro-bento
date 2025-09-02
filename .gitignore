@@ -26,7 +26,13 @@ yarn-error.log*
 .pnpm-debug.log*
 
 # local env files
+.env
+.env*
 .env*.local
+/backend/venv
+.venv
+/venv
+/node_modules
 
 # vercel
 .vercel
@@ -37,6 +43,7 @@ yarn-error.log*
 env.d.ts
 /dist/
 .aider*
+CLAUDE.MD
 
 # Local Netlify folder
 .netlify
@@ -45,5 +52,10 @@ env.d.ts
 .nvmrc
 .npmrc
 
-# backend code
-/backend
+# all zip files
+*.zip
+/python
+faiss*
+faiss_index*
+faiss/
+
