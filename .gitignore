@@ -61,3 +61,10 @@ faiss*
 faiss_index*
 faiss/
 
+# Terraform state files - contain sensitive data
+*.tfstate
+*.tfstate.*
+*.tfvars
+*.tfvars.json
+.terraform.lock.hcl
+
