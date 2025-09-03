@@ -1,91 +1,118 @@
 ---
 slug: "openai-chatbot"
-title: "Chatbot about me"
-description: "talk about me, on repeat"
+title: "AI Chatbot with RAG"
+description: "Personal portfolio chatbot using vector search and semantic similarity"
 startDate: 2025-06-07
 image:
     url: "/images/tcheina.png"
     alt: "personal chatbot image"
 tags: ["Chatbot", "RAG", "Semantic Search", "FAISS", "Vectorstore", "Langchain", "OpenAI", "FastAPI", "AWS Lambda"]
 ---
-1. create a new /backend dir for python backend code for chatbot
-2. create chatbot interface with react, typescript and css
-3. install the following libs.  reminder to start using uv.
 
-    ```bash
-   pip install langchain openai faiss-cpu tiktoken python-dotenv
-    ```
+# AI Chatbot with Retrieval-Augmented Generation (RAG)
 
-Will need to take a break to do soe research but continue this shortly, really working on a longer term process to
-get all my data, preferably summarized and stored for chatbot to work with.  Preferably all automated because why
-would I not.
+A sophisticated chatbot that can answer questions about my professional background, experience, and projects using semantic search and AI-powered responses.
 
-The tech stack:
-- Frontend: Astro + React + Typescript + CSS for the frontend chatbot interface
-- Backend: FastAPI + RAG (FAISS + OpenAI embeddings + Langchain) for the backend chatbot logic deployed to AWS
-Lambda containers
-- Deployment: OpenTofu (formerly Terraform) to deploy the backend to AWS Lambda and API Gateway, Docker for containerization
-- Security: AWS SSM for secure storage of API keys and environment variables, CORS protection, input validation,
-content filtering
+## Project Overview
 
-Future improvements:
-- automatically rebuild vectorstores when new data (e.g., new blog posts) is added and deploy
-- improve chatbot personality and responses with more context and fine-tuning
-- add more data sources (e.g., GitHub repos, social media profiles) for a richer knowledge base
-- implement user authentication and rate limiting to prevent abuse
-- improve chatbot accuracy by continuously pausing and compressing (and building a graph db of knowledge) the
-chatbot conversations (I am assuming short intro convos currently) -- inspired by AI Dev conference.
+This project implements a full-stack chatbot solution that:
+- Processes and indexes all content from my portfolio website
+- Uses semantic search to find relevant context for user questions
+- Generates personalized responses using OpenAI's GPT models
+- Provides source citations and confidence scoring
 
-Update: Sept 2, 2025.
-OH MY GOD!  This was harder than expected.  It worked locally within a day but to deploy it safely, I ran up against
-limitation of AWS Lambda, Terraform (I decided to learn Terraform for this deployment because why not?), and Docker
-and a whole slew of shell scripting for verification checks.  Terraform ceased to be the hot chick at prom while I
-was working on it, so I picked up and migrated to OpenTofu for this leg of the development.
+## Initial Development Plan
 
-My Terraform script was set to:
-- upload my zipped AWS lambda function (fastapi and mangum) to AWS S3,
-- configure and deploy AWS API Gateway for a REST API
-- configure and use AWS SSM
-- set AWS IAM roles and policies attachment to run AWS Lambda
-- configure AWS Cloudwatch
+1. **Backend Setup**: Create `/backend` directory for Python chatbot code
+2. **Frontend Interface**: Build React/TypeScript chat interface
+3. **Core Dependencies**: Install required libraries
 
-I have a Docker script to build the container, that I can deploy locally or via OpenTofu remotely using AWS ECR.
+```bash
+pip install langchain openai faiss-cpu tiktoken python-dotenv
+```
 
-Funny story about AWS ECR.  I was being cheap and did not want to pay for AWS ECR so I had previously configured my
-deployments to upload my REST API to AWS Lambda via a zipped file in AWS S3.  I was getting all sorts of weird
-errors, and after a few hours, FIGURED OUT THAT AWS Lambda was importing my python dependencies in the function,
-then loading the Lambda Layers (which had all my carefully optimized - for size - dependencies).  So I had
-repeatedly gotten "Cannot find module" errors that spiraled into hours of checking my zipped files, checking my
-terraform caches, AWS Lambda Layer hashes to ensure that the most recent zipped layers got uploaded ... infinitely.
+## Tech Stack
 
-So I gave in and created an AWS ECR repo, and pushed my docker container up to it.  It was a relief to see that it
-just worked, reliably but not before I desperately and creatively lazy loaded my imports mid-code.  Yes, it was ugly.
+### Frontend
+- **Astro + React + TypeScript**: Static site generation with interactive components
+- **CSS**: Custom styling for chat interface
+- **Netlify**: Hosting and deployment
 
-After I got it ALL working, my chatbot sounded rather lame.  I do know I gave it more context that most generative
-AI get in terms of data (all the content on this website with all my projects) so I spent the next few hours
-tweaking temperatures and implementing (with the help of Claude Code) content filters (to keep to the point of
-personality, cultural fit, professional topics) to prevent API key abuse, etc.  I figured it would help anyone
-trying to assess if I could help them achieve their goals in any way, in no-commitment, exploratory setting.
+### Backend
+- **FastAPI**: High-performance API framework
+- **RAG Pipeline**: FAISS + OpenAI embeddings + LangChain
+- **AWS Lambda**: Serverless container deployment
+- **Docker**: Containerization for consistent deployments
 
-We can definitely tweak it to be more personable but this is about the extent I am willing to take it today.
+### Infrastructure
+- **OpenTofu** (formerly Terraform): Infrastructure as Code
+- **AWS API Gateway**: REST API management
+- **AWS ECR**: Container registry
+- **AWS SSM**: Secure API key storage
 
-I had to do a security pass and move my api keys to AWS SSM, and then that spewed a whole series of properly
-configuring AWS IAM to build and pull the creds properly.
+### Security Features
+- CORS protection for cross-origin requests
+- Input validation and content filtering
+- Rate limiting and API key management
+- Environment-specific configuration
 
-This is typically what happens when I start on a project and have someone to chat with - I get ideas and refinements
-that go on and on, I suppose.
+## Future Roadmap
 
-In testing my new vectorstores for this post (update), I found inaccuracies in the chatbot responses.  Namely,
-that my vectorstores are secured in AWS S3 and that it was a challenge (false on both counts!) but worth
-exploring on whether it is a better approach.  It is not because all the vectorstore content is front-facing
-anyway and it adds response time since it has to be downloaded from S3.  Claude  mentioned confidence scoring (which
-is a great idea), so I am putting that in.  I am also putting in clickable links to my projects and posts, so people
-can go navigate and read my literal words for accuracy.
+- **Automated Updates**: Rebuild vector stores when new content is published
+- **Enhanced Personality**: Improve response quality with better context and fine-tuning
+- **Multi-Source Data**: Integrate GitHub repos, social media profiles, and other data sources
+- **Authentication**: User management and rate limiting
+- **Conversation Memory**: Graph database for conversation history and context compression
 
-In doing so, I know AWS Lambda functions have a size limit (and it is advisable to keep them small so they run fast),
-so the utility functions are broken out into several files.
+---
 
-New file structure for code:
+## Development Journey
+
+### September 2, 2025 Update
+
+**The Reality Check**: This project turned out to be significantly more complex than initially anticipated!
+
+While the core functionality worked locally within a day, deploying it safely to production involved navigating multiple AWS services, infrastructure-as-code complexities, and containerization challenges.
+
+#### Infrastructure Evolution
+
+**Initial Terraform Configuration:**
+- ZIP-based Lambda deployment via S3
+- API Gateway REST API setup
+- AWS SSM parameter management
+- IAM roles and policies
+- CloudWatch logging configuration
+
+**Migration to OpenTofu:**
+During development, Terraform's licensing changes led to adopting OpenTofu, which provided better open-source compatibility for this project.
+
+#### The AWS ECR Learning Experience
+
+**The Problem**: Initially avoided AWS ECR to stay within free tier limits, using S3-based ZIP deployments instead.
+
+**The Challenge**: Encountered persistent "Cannot find module" errors due to conflicts between:
+- Dependencies bundled in the Lambda function ZIP
+- Dependencies in carefully size-optimized Lambda Layers
+
+This led to an endless debugging cycle involving ZIP file validation, Terraform cache clearing, and Lambda Layer hash verification.
+
+**The Solution**: Migrated to AWS ECR with Docker containers, which resolved dependency conflicts immediately and provided more reliable deployments.
+
+#### Performance and Quality Improvements
+
+**Content Filtering**: Implemented sophisticated filtering to maintain:
+- Professional topic focus
+- Personality consistency
+- API key abuse prevention
+- Cultural and contextual appropriateness
+
+**Response Enhancement Features:**
+- **Confidence Scoring**: Assess and display response reliability
+- **Source Citations**: Clickable links to original content for verification
+- **Response Summarization**: Skills-focused, concise answers
+- **Modular Architecture**: Split functionality across multiple files for better maintainability
+
+#### Current Architecture
 
 ```
 chatbot/
@@ -99,14 +126,21 @@ chatbot/
 └── routes.py        # Additional API routes
 ```
 
-Had to update Terraform/OpenTofu to check hashes to update.  There is a lot of caching issues - but it makes sense
-from a devops perspective to do so.
+#### Infrastructure Considerations
 
-Checking responses and decided it was worth it to add a summarization pass on the response.
+**Terraform/OpenTofu Caching**: Implemented hash-based change detection for efficient deployments while managing the inherent caching complexities of infrastructure-as-code tools.
 
-At this point, it is worth it to move these into Agentic workflows.  Stay tuned.
+**Next Evolution**: Planning migration to agentic workflows for more sophisticated conversation handling and multi-step reasoning capabilities.
 
-Optimization Pass.
+---
+
+Production deployment bombed.  Took a break and came back to it - Cloudwatch logs are empty and decided I was too
+stingy to upgrade them.  Had a chat with Claude and teased out that it is probably the REST API set to .env (not
+checked in) and I have to set a Netlify variable for the project.  Duh.
+
+---
+
+## Performance Optimization Analysis
 
 🎯 Top Space Consumers:
 
@@ -135,7 +169,7 @@ Low Impact:
   - Most other dependencies are essential for FastAPI/LangChain
 
 
-⏺ Industry Standard Approaches for Vector Search in Production:
+#### Industry Standard Approaches for Vector Search in Production:
 
 🏭 Enterprise/Large Scale (Standard Practice):
 
@@ -159,9 +193,9 @@ Frontend → API Gateway → Lambda/Container → Vector DB (external)
 Document Store (S3)
 
 Not:
-Frontend → API Gateway → Lambda (with embedded vectors)
+Frontend → API Gateway → Lambda Container (with embedded vectors)
 
-📊 When Each Approach is Used:
+📊 Approach Analysis:
 
 | Use Case          | Embedded FAISS | External Vector DB  |
   |-------------------|----------------|---------------------|
@@ -170,16 +204,24 @@ Frontend → API Gateway → Lambda (with embedded vectors)
 | Production Apps   | ❌ Rare         | ✅ Standard          |
 | Enterprise        | ❌ Never        | ✅ Always            |
 
-🎯 Your Current Approach vs Industry:
+🎯 My Current Approach vs Industry:
 
-You're doing: Embedded FAISS (like SQLite - file-based, bundled)
+Current setup: Embedded FAISS (like SQLite - file-based, bundled)
 Industry standard: External vector DB (like PostgreSQL - service-based)
+
+Ultimately, it comes down to cost and cost liability in the event my blog is discovered and abused heavily.
 
 🚀 Migration Path (Standard Practice):
 
   1. Start with embedded (where you are) - Fast to prototype
-  2. Move to managed (Pinecone/Weaviate) - When you need reliability
+  2. Shave off about 100MB if we used multi-stage docker deploys.
+  3. Move to managed (Pinecone/Weaviate) - When you need reliability but adds ~5-20ms latency
   3. Consider self-hosted (Qdrant/Weaviate) - When you need control/cost savings
+
+I looked at offloading the LLM packages to AWS Bedrock and leveraging the LLMs within the AWS ecosystem but
+the cost difference of $0.15/1M tokens vs $3/1M tokens really put me off.
+
+I looked at AWS Opensearch as a vectorstore and the pricing also put me off.
 
 💼 Real-World Examples:
 
@@ -187,4 +229,6 @@ Industry standard: External vector DB (like PostgreSQL - service-based)
   - GitHub Copilot - Uses custom vector infrastructure
   - ChatGPT plugins - Most use Pinecone/Weaviate
   - Startups - 80% start with Pinecone, some move to self-hosted
+
+Okay, it is good enough for now.
 
