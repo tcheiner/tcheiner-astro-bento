@@ -5,8 +5,83 @@ description: "Inspired by Fable, GoodReads, and Clubhouse. Community through boo
 startDate: 2025-07-29
 image:
         url: "/images/projects/lunchnotes/lunchnotes-logo-yellow.png"
-        alt: "lunchNotes - daily drops for daily growth",
+        alt: "lunchNotes - daily drops for daily growth"
 
 tags: ["IOS", "Swift", "Base44", "BookClub", "Community", "Growth", "Reading", "Books"]
 ---
+First, the eye candy, screenshots of my rudimentary design skills.
 
+I used a mix of color schemes from Material Design, inspiration from apps like Fable, GoodReads, and Clubhouse, to create a simple, clean, and functional design.
+
+<div style="display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; margin: 20px 0;">
+  <img src="/images/projects/ios-bookclub-app/simulator-homeview-2025-09-04.png" alt="HomeView" style="width: 100%; height: auto; border-radius: 8px;" />
+  <img src="/images/projects/ios-bookclub-app/simulator-homeview2-2025-09-04.png" alt="HomeView2" style="width: 100%; height: auto; border-radius: 8px;" />
+  <img src="/images/projects/ios-bookclub-app/simulator-clubview-2025-09-04.png" alt="ClubView" style="width: 100%; height: auto; border-radius: 8px;" />
+  <img src="/images/projects/ios-bookclub-app/simulator-bookshelfview-2025-09-04.png" alt="BookShelfView" style="width: 100%; height: auto; border-radius: 8px;" />
+  <img src="/images/projects/ios-bookclub-app/simulator-chatview-2025-09-04.png" alt="ChatView" style="width: 100%; height: auto; border-radius: 8px;" />
+  <img src="/images/projects/ios-bookclub-app/simulator-profileStats-2025-09-04.png" alt="ProfileViewStats" style="width: 100%; height: auto; border-radius: 8px;" />
+  <img src="/images/projects/ios-bookclub-app/simulator-profileSettings-2025-09-04.png" alt="ProfileViewSettings" style="width: 100%; height: auto; border-radius: 8px;" />
+  <img src="/images/projects/ios-bookclub-app/simulator-profileCreations-2025-09-04.png" alt="ProfileViewCreations" style="width: 100%; height: auto; border-radius: 8px;" />
+  <img src="/images/projects/ios-bookclub-app/simulator-profileCreationsReviews-2025-09-04.png" alt="ProfileViewCreationsReviews" style="width: 100%; height: auto; border-radius: 8px;" />
+  <img src="/images/projects/ios-bookclub-app/simulator-profileCreationsVideos-2025-09-04.png" alt="ProfileViewCreationsVideos" style="width: 100%; height: auto; border-radius: 8px;" />
+</div>
+
+## Architecture Overview
+
+### SwiftUI Structure
+- **Main App**: `TheEnchantedQuillApp.swift` - Entry point with login state management
+- **Navigation**: `MainTabView.swift` - Tab-based navigation system
+- **Views**: Modular view structure with main sections:
+- `HomeView.swift` - Feed and recommendations
+- `BookshelfView.swift` - Digital book organization
+- `ClubsView.swift` - Book clubs and communities
+- `ChatView.swift` / `ChatScreen.swift` - Messaging functionality
+- `ProfileView.swift` - User profiles and statistics
+- Authentication: `LoginScreen.swift`, `CreateAccountScreen.swift`
+
+### Design System
+- **Color System**: Comprehensive dark academia theming in `DarkAcademiaColors.swift`
+- `Color.DarkAcademia.*` - Dark theme colors
+- `Color.LightAcademia.*` - Light theme colors
+- Pre-defined gradients for consistent styling
+- **Typography**: Custom text field styling in `DarkAcademiaTextFieldStyle.swift`
+- **Fonts**: Custom fonts loaded via Info.plist (Beachwood, Beachwood Sans, Parisienne, etc.)
+
+### Dependencies
+- **StreamChat**: Chat functionality via Swift Package Manager
+- **StreamChatUI**: UI components for chat interface
+- **Local package reference**: "../stream-chat-swift"
+
+### Configuration
+- **Credentials**: `Config/Credentials.swift` for API keys (see `Credentials.swift.example`)
+- **Bundle ID**: `com.theenchantedquill.app`
+- **Deployment Target**: iOS 17.4+
+- **Custom fonts**: Automatically loaded via Info.plist UIAppFonts array
+
+### Media Assets
+- **Fonts**: Located in `TheEnchantedQuill/fonts/` directory
+- **Images**: Logo variants and book imagery in `media/` and Assets.xcassets
+- **Video**: Background teaser video (`teaser.mp4`) for login screen
+
+### Theme Management
+- Environment-based color scheme detection using `@Environment(\.colorScheme)`
+- Consistent theming through `colorScheme == .dark ? Color.DarkAcademia.* : Color.LightAcademia.*` pattern
+- Gradient support with predefined academic color schemes
+
+### Navigation Flow
+- State-based navigation with `@State private var isLoggedIn`
+- Tab-based main interface after authentication
+- Full-screen covers for modal presentations
+
+### Video Background
+- AVPlayerViewController implementation for background video playback
+- Auto-looping video with proper resource handling
+- Graceful fallback for missing video assets
+
+### File Organization
+
+- **Main source**: `TheEnchantedQuill/` directory contains all Swift files
+- **Configuration**: `Config/` subdirectory for credentials and settings
+- **Assets**: `Assets.xcassets` for images, `fonts/` for custom typography
+- **Documentation**: Root-level markdown files for project planning and setup
+- **Screenshots**: `screenshots/` with light/dark theme examples
