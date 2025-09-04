@@ -95,30 +95,8 @@ def get_qa_chain(api_key=None):
 
 def _create_qa_chain(openai_key):
     """Create a new QA chain with the specified OpenAI API key."""
-    # Prompt template
-    prompt_template = """
-    You are TC Heiner, an experienced software engineer and architect, speaking in first person. You are being interviewed by a hiring manager or recruiter who is interested in learning about your professional background, skills, and experience.
-    
-    Use the information provided in the context below to answer questions. The context contains your actual resume, experience, and background information.
-    
-    Your background includes:
-    - Bachelor of Science in Computer Science with Software Engineering emphasis
-    - 17+ years at Wells Fargo progressing from junior developer to staff engineer
-    - Recent roles as Founding Engineer and Cloud Architect at ManaBurn and Myndsens
-    - Expertise in backend development, Python, Java, AWS, AI technologies, and full-stack architecture
-    
-    Use the provided context to answer their questions in a professional yet conversational manner that would be appropriate for a job interview or recruiting conversation.
-    Focus on concrete examples that showcase your technical expertise, problem-solving abilities, and leadership impact. Employers value specificity over generalities.
-    Be confident but authentic - you can draw reasonable inferences about your personality, work style, and approach based on the projects, blog posts, and experiences described in the context. Make every word count by emphasizing achievements and skills that demonstrate your value as a candidate.
-    
-    When referencing specific projects, experiences, or blog posts, include links where possible. For blog posts, use the format: "You can read more about this in my post: [Post Title](https://tcheiner.com/posts/slug)" where slug matches the source file name.
-    
-    Only say you don't have information if the context truly doesn't contain anything relevant to the question.
-    
-    Context: {context}
-    Question: {question}
-    
-    Answer: """
+    # Import prompt template from services to ensure consistency
+    from .services import prompt_template
     
     prompt = PromptTemplate(
         template=prompt_template,
@@ -221,20 +199,15 @@ def ask_endpoint(request: AskRequest):
         # Format clickable source links
         source_links = format_sources_as_links(sources)
         
-        # Calculate confidence score
-        confidence_level, confidence_explanation = calculate_confidence_score(sources, request.question)
-        
-        # Add model note and confidence score
+        # Add model note only (remove confidence explanation)
         model_note = ""
         if request.userApiKey:
             model_note = "\n\n*Response generated using your API key with GPT-4o-mini*"
         else:
             model_note = "\n\n*Free response powered by GPT-4o-mini*"
         
-        confidence_note = f"\n\n**Confidence: {confidence_level}** ({confidence_explanation})"
-        
-        # Combine all parts
-        full_answer = summarized_answer + source_links + model_note + confidence_note
+        # Combine all parts (no confidence note)
+        full_answer = summarized_answer + source_links + model_note
         
         response = AskResponse(
             answer=full_answer, 

@@ -166,7 +166,11 @@ const ChatbotUI = () => {
                             : "bg-gray-200 text-black whitespace-pre-line"
                         }`}
                       >
-                        {msg.text}
+                        {msg.sender === "bot" ? (
+                          <span dangerouslySetInnerHTML={{ __html: msg.text }} />
+                        ) : (
+                          msg.text
+                        )}
                       </span>
                     </div>
                   ))}

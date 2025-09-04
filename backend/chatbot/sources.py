@@ -2,6 +2,8 @@
 
 def convert_source_to_url(source_path: str) -> str:
     """Convert source file path to website URL."""
+    import os
+    
     # Handle both full paths and relative paths
     if "src/content/" not in source_path:
         return ""
@@ -10,27 +12,32 @@ def convert_source_to_url(source_path: str) -> str:
     content_index = source_path.find("src/content/")
     path_parts = source_path[content_index + len("src/content/"):].replace(".mdx", "").replace(".md", "")
     
+    # Determine base URL based on environment
+    # Check if running in development (localhost) or production
+    is_development = os.environ.get("NODE_ENV") == "development" or os.environ.get("ENVIRONMENT") == "development"
+    base_url = "http://localhost:4321" if is_development else "https://tcheiner.com"
+    
     # Build URL based on content type
     if path_parts.startswith("posts/"):
         # posts/post-2025-06-23 -> /posts/post-2025-06-23
         slug = path_parts.replace("posts/", "")
-        return f"https://tcheiner.com/posts/{slug}"
+        return f"{base_url}/posts/{slug}"
     elif path_parts.startswith("projects/"):
         # projects/openai-chatbot -> /projects/openai-chatbot  
         slug = path_parts.replace("projects/", "")
-        return f"https://tcheiner.com/projects/{slug}"
+        return f"{base_url}/projects/{slug}"
     elif path_parts.startswith("experiences/"):
         # experiences/manaburn -> /experiences/manaburn
         slug = path_parts.replace("experiences/", "")
-        return f"https://tcheiner.com/experiences/{slug}"
+        return f"{base_url}/experiences/{slug}"
     elif path_parts.startswith("books/"):
         # books/clear-thinking -> /books/clear-thinking
         slug = path_parts.replace("books/", "")
-        return f"https://tcheiner.com/books/{slug}"
+        return f"{base_url}/books/{slug}"
     elif path_parts.startswith("recipes/"):
         # recipes/beef-stew -> /recipes/beef-stew
         slug = path_parts.replace("recipes/", "")
-        return f"https://tcheiner.com/recipes/{slug}"
+        return f"{base_url}/recipes/{slug}"
     
     return ""
 

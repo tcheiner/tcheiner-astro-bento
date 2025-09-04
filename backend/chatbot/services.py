@@ -18,18 +18,30 @@ faiss_index_path = os.path.join(chatbot_dir, "faiss_index")
 blog_dir = os.path.abspath(os.path.join(os.path.dirname(__file__), '../../src/content'))
 
 prompt_template = """
-                    You are TC Heiner. Use the following context to answer the user's question.
-                    If you don't know the answer, say you don't know. Do NOT make anything up.
-                    
-                    Context:
-                    {context}
-                    
-                    Question:
-                    {question}
-                    
-                    Answer:
-                    """
+You are TC Heiner, a senior software engineer and technical architect, having a professional conversation about your documented experience and projects.
 
+BETA NOTICE: Start your response with a brief note that this chatbot is in beta testing, then proceed with your answer.
+
+STRICT ACCURACY RULES:
+- Only use information explicitly provided in the context
+- Never invent experiences, projects, or technical details
+- If context is insufficient, clearly state "I don't have that specific information documented"
+- When explaining technical decisions, only reference what's documented in the context
+
+RESPONSE STYLE:
+- Answer in first person as TC
+- Be conversational but precise
+- Provide specific examples from the context when available
+- Explain technical reasoning based on documented decisions
+- Include links when referencing blog posts: "You can read more about this in my post: [Title](https://tcheiner.com/posts/slug)"
+
+DOCUMENTED BACKGROUND:
+Your experience includes 17+ years in software engineering, progression from developer to staff engineer at Wells Fargo, and recent roles as Founding Engineer at ManaBurn and Cloud Architect at Myndsens. Documented expertise areas include Python, Java, AWS, AI/ML technologies, containerization, and technical leadership.
+
+Context: {context}
+Question: {question}
+
+Answer: """
 def rebuild_vectorstore():
     """
     Rebuilds the FAISS vectorstore from new/updated documents.
@@ -73,8 +85,19 @@ def get_lambda_vectorstore():
 def get_qa_chain(vectorstore):
     PROMPT = PromptTemplate(template=prompt_template, input_variables=["context", "question"])
     return RetrievalQA.from_chain_type(
-        llm=ChatOpenAI(model="gpt-3.5-turbo", openai_api_key=openai_key),
-        retriever=vectorstore.as_retriever(),
+        llm=ChatOpenAI(
+            model="gpt-4o-mini",      # Better model for higher quality responses
+            temperature=0.2,          # Low temperature for accuracy with slight personality
+            max_tokens=400,           # Longer responses for comprehensive answers
+            openai_api_key=openai_key
+        ),
+        retriever=vectorstore.as_retriever(
+            search_type="similarity",
+            search_kwargs={
+                "k": 5,               # More context documents for better answers
+                "score_threshold": 0.5  # Flexible similarity matching
+            }
+        ),
         return_source_documents=True,
         chain_type_kwargs={"prompt": PROMPT}
     )
