@@ -46,11 +46,11 @@ I am in the middle of **refactoring code so it works with async (concurrency)** 
 
 ### What Happens Behind the Scenes?
 
-1. When a request is made to a path operation with a `def` function:
+1\. When a request is made to a path operation with a `def` function:
    - FastAPI submits the function to the threadpool for execution.
    - The threadpool executes the function in a separate thread.
-2. The main event loop **awaits** the result of the function, allowing other requests to be processed in the meantime.
-3. Once the function completes, its result is returned to the event loop, which sends the response back to the client.
+2\. The main event loop **awaits** the result of the function, allowing other requests to be processed in the meantime.
+3\. Once the function completes, its result is returned to the event loop, which sends the response back to the client.
 
 ### Dependencies in a Threadpool
 
@@ -83,9 +83,9 @@ I am in the middle of **refactoring code so it works with async (concurrency)** 
 ---
 
 ### Key Takeaways:
-1. FastAPI uses **one shared threadpool** for all synchronous (`def`) functions.
-2. Asynchronous (`async def`) functions bypass the threadpool entirely and run directly on the asyncio event loop.
-3. Synchronous and asynchronous code does **not** have separate threadpools because asynchronous code does not use threadpools at all.
+1\. FastAPI uses **one shared threadpool** for all synchronous (`def`) functions.
+2\. Asynchronous (`async def`) functions bypass the threadpool entirely and run directly on the asyncio event loop.
+3\. Synchronous and asynchronous code does **not** have separate threadpools because asynchronous code does not use threadpools at all.
 
 ---
 
@@ -219,5 +219,5 @@ Here:
 ---
 
 ### Key Takeaways:
-1. Gunicorn workers run **separate processes**, each with its own database pool.
-2. Use load-testing tools (e.g., `locust`, `wrk`) to monitor worker and database performance.
+1\. Gunicorn workers run **separate processes**, each with its own database pool.
+2\. Use load-testing tools (e.g., `locust`, `wrk`) to monitor worker and database performance.
