@@ -1,18 +1,18 @@
 #!/bin/bash
 
 # Script to create new content files from templates
-# Usage: ./create-content.sh <type> <filename>
+# Usage: ./create-content.sh <type> [filename]
 # Example: ./create-content.sh post "my-new-post"
 
-if [ $# -ne 2 ]; then
-    echo "Usage: $0 <type> <filename>"
+if [ $# -lt 1 ] || [ $# -gt 2 ]; then
+    echo "Usage: $0 <type> [filename]"
     echo "Types: experience, post, project, book, recipe"
     echo "Example: $0 post 'my-new-post'"
     exit 1
 fi
 
 TYPE=$1
-FILENAME=$2
+FILENAME=${2:-""}
 TEMPLATE_FILE="templates/${TYPE}-template.mdx"
 CONTENT_DIR="src/content/${TYPE}s"
 
@@ -48,11 +48,11 @@ fi
 
 # Create target file with proper naming convention
 TODAY=$(date +%Y-%m-%d)
-if [ "$TYPE" = "post" ]; then
-    # For posts, use post-YYYY-MM-DD.mdx format
-    TARGET_FILE="${CONTENT_DIR}/post-${TODAY}.mdx"
+if [ -n "$FILENAME" ]; then
+    # Use provided filename
+    TARGET_FILE="${CONTENT_DIR}/${FILENAME}.mdx"
 else
-    # For others, use <type>-YYYY-MM-DD.mdx format
+    # Use default date-based naming
     TARGET_FILE="${CONTENT_DIR}/${TYPE}-${TODAY}.mdx"
 fi
 
