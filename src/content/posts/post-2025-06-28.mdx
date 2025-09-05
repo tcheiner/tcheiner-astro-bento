@@ -22,20 +22,20 @@ Together, this setup enables a modern, DevOps-driven development pipeline where 
 
 
 Detailed Breakdown of Each Component
-1\. GitHub
+1. GitHub
 
 What it does: GitHub is where your code lives. It serves as a code repository that allows collaboration, version control, and integration with other tools.
 How it fits into the setup:
 Developers push their code to GitHub repositories.
 GitHub acts as the "source of truth" for your application's codebase.
 It integrates with GitHub Actions to trigger automated workflows (e.g., tests, builds, deployments).
-2\. GitHub Copilot
+2. GitHub Copilot
 
 What it does: GitHub Copilot is an AI-powered coding assistant that helps developers write code faster by providing intelligent suggestions and snippets.
 How it fits into the setup:
 During development, Copilot assists by generating boilerplate code, suggesting functions, and offering solutions based on your coding context.
 Helps reduce development time by automating repetitive tasks and providing solutions to common problems.
-3\. GitHub Actions
+3. GitHub Actions
 
 What it does: GitHub Actions is a CI/CD platform built into GitHub. It automates workflows triggered by events in your repository (e.g., a pull request, push, or merge).
 How it fits into the setup:
@@ -46,14 +46,14 @@ Building the application (e.g., creating Docker images).
 Deploying the application to a Kubernetes cluster (via ArgoCD).
 Managing database migrations for NeonDB.
 GitHub Actions ensures that the code is tested, built, and deployed in a consistent, automated way.
-4\. NeonDB
+4. NeonDB
 
 What it does: NeonDB is a serverless, cloud-based PostgreSQL database service. It provides a scalable and managed relational database for your application.
 How it fits into the setup:
 Your application uses NeonDB as its database backend to store and retrieve data.
 During CI/CD workflows, GitHub Actions may run database migrations to ensure the database schema is in sync with the application code.
 NeonDB offers features like branching, which allows developers to test database changes in isolated environments before merging them into production.
-5\. ArgoCD
+5. ArgoCD
 
 What it does: ArgoCD is a GitOps tool for Kubernetes. It continuously syncs your Kubernetes cluster with the desired state defined in a Git repository.
 How it fits into the setup:
@@ -64,12 +64,12 @@ ArgoCD provides a dashboard to monitor and manage application deployments.
 How These Components Work Together
 Here’s an example workflow that ties everything together:
 
-1\. Development (GitHub + GitHub Copilot)
+1. Development (GitHub + GitHub Copilot)
 
 Developers write code in their local development environment.
 GitHub Copilot assists by generating boilerplate code, suggesting solutions, and speeding up development.
 Once the code is ready, developers push it to a GitHub repository.
-2\. CI/CD Pipeline (GitHub Actions)
+2. CI/CD Pipeline (GitHub Actions)
 
 GitHub Actions is triggered when code is pushed or a pull request is created.
 The pipeline performs the following steps:
@@ -77,12 +77,12 @@ Run Tests: Ensures the code is functioning as expected.
 Build the Application: Creates a Docker image for the application.
 Database Migrations: Runs migrations to update the NeonDB schema to match the application.
 Deploy the Application: Pushes the updated Docker image and Kubernetes manifests to the Git repository used by ArgoCD.
-3\. Database Management (NeonDB)
+3. Database Management (NeonDB)
 
 NeonDB serves as the database backend for the application.
 Database migrations (e.g., schema updates, adding tables) are handled as part of the CI/CD pipeline.
 NeonDB’s branching feature allows developers to test database changes in isolated environments.
-4\. Application Deployment (ArgoCD)
+4. Application Deployment (ArgoCD)
 
 ArgoCD continuously monitors the Git repository for changes (e.g., new Kubernetes manifests or updated Docker images).
 When changes are detected, ArgoCD automatically applies them to the Kubernetes cluster, ensuring that the live environment matches the desired state defined in Git.
