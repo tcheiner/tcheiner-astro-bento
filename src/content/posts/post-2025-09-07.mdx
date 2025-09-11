@@ -1,0 +1,226 @@
+---
+title: "Refresher: State of AI Agents"
+startDate: 2025-09-07
+description: "What are AI agents doing today, updates, and MCP"
+image:
+   url: "/images/your-image.jpg"
+   alt: "Image description"
+tags: ["Tag1", "Tag2", "Tag3"]
+canonical: "https://example.com/original-post"  # If this was published elsewhere first
+---
+
+[HITL Agentic Systems](https://medium.com/@saimudhiganti/human-in-the-loop-agentic-systems-a-practical-guide-for
+-engineers-who-want-smarter-safer-agents-e1becadfbbdd) - It makes sense that you want a human-in-the-loop for high
+stakes decisions.  Per this medium article, it suggests that humans support AI agents but I think it should be the
+other way around.  When your AI spits out text tokens based on how it is chunked (semantically, syntactically,
+temporally, visually, auditory, cognitive, statistically, lexically, task-oriented, spatially, hierarchically,
+emotionally/conceptually, linguistically) and stored as vector embeddings and found via cosine similarity
+calculations.  But, the amount of review on the mental load per processing is intense.
+
+Upon some digging, the other ways to incorporate feedback into an agent's learning are:
+<table>
+    <thead>
+    <tr>
+        <th>Method</th>
+        <th>Key Algorithms/Architectures</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr>
+        <td>Knowledge Graphs</td>
+        <td>Graph Neural Networks (GNNs), SPARQL, OWL Reasoners, BFS/DFS, Neo4j</td>
+    </tr>
+    <tr>
+        <td>Rule-Based Systems</td>
+        <td>Forward/Backward Chaining, Expert Systems (CLIPS, Drools), Logic Programming (Prolog)</td>
+    </tr>
+    <tr>
+        <td>Probabilistic Reasoning</td>
+        <td>Bayesian Inference, Dynamic Bayesian Networks, Markov Decision Processes</td>
+    </tr>
+    <tr>
+        <td>Memory-Augmented NN</td>
+        <td>Neural Turing Machines (NTMs), Differentiable Neural Computers (DNCs), Transformers with Memory</td>
+    </tr>
+    <tr>
+        <td>Incremental Learning</td>
+        <td>Online Learning (SGD), Continual Learning (EWC), Streaming Algorithms (Hoeffding Trees)</td>
+    </tr>
+    <tr>
+        <td>Episodic Memory Systems</td>
+        <td>Case-Based Reasoning (CBR), Attention Mechanisms, Episodic Control, Memory-Augmented RL</td>
+    </tr>
+    <tr>
+        <td>Policy Updates in RL</td>
+        <td>Q-Learning, Policy Gradients, Actor-Critic (PPO, A3C), Model-Based RL (MuZero)</td>
+    </tr>
+    <tr>
+        <td>Context-Aware Retrieval</td>
+        <td>ElasticSearch, BM25, Dense Passage Retrieval (DPR), Query Expansion</td>
+    </tr>
+    <tr>
+        <td>Hybrid Approaches</td>
+        <td>Neuro-Symbolic AI, Hybrid Memory (RAG), Multi-Agent Systems</td>
+    </tr>
+    <tr>
+        <td>Human-in-the-Loop</td>
+        <td>Active Learning, RLHF, Crowdsourcing, Interactive Machine Learning</td>
+    </tr>
+    </tbody>
+</table>
+
+---
+## 1. Knowledge Graphs
+
+### **Algorithms/Architectures**
+- **Graph Databases**:
+- Examples: Neo4j, ArangoDB, Amazon Neptune.
+- **Graph Neural Networks (GNNs)**:
+- Algorithms: Graph Convolutional Networks (GCNs), Graph Attention Networks (GATs), Message Passing Neural Networks (MPNNs).
+- Use Case: Learning embeddings for nodes and edges to improve reasoning over relationships.
+- **Pathfinding Algorithms**:
+- Examples: Breadth-First Search (BFS), Depth-First Search (DFS), Dijkstra’s Algorithm.
+- **Reasoning Engines**:
+- Tools: **OWL Reasoners** (e.g., Protégé, Pellet) for semantic reasoning.
+- Query Language: SPARQL for querying the graph.
+
+---
+
+## 2. Rule-Based Systems
+
+### **Algorithms/Architectures**
+- **Expert Systems**:
+- Examples: MYCIN, CLIPS, Drools.
+- Rules are written as explicit "if-then" statements.
+- **Forward Chaining**:
+- Algorithm: Start from known facts and infer new facts until a goal is reached.
+- Example: Production systems.
+- **Backward Chaining**:
+- Algorithm: Work backward from a goal to find supporting facts.
+- Example: Prolog and logic programming.
+- **Hybrid Systems**:
+- Combine symbolic rule-based reasoning with neural networks for more complex tasks.
+
+---
+
+## 3. Probabilistic Reasoning (Bayesian Networks)
+
+### **Algorithms/Architectures**
+- **Bayesian Inference**:
+- Algorithms: Variable Elimination, Junction Tree Algorithm, Belief Propagation.
+- Frameworks: PyMC3, TensorFlow Probability, bnlearn.
+- **Dynamic Bayesian Networks**:
+- Combines Bayesian inference with temporal models like Hidden Markov Models (HMMs) or Kalman Filters.
+- **Markov Decision Processes (MDPs)**:
+- Algorithms: Value Iteration, Policy Iteration.
+- Use Case: Decision-making under uncertainty.
+
+---
+
+## 4. Memory-Augmented Neural Networks
+
+### **Algorithms/Architectures**
+- **Neural Turing Machines (NTMs)**:
+- Combines a neural network with an external memory module.
+- Algorithm: Differentiable attention mechanisms for memory read/write.
+- **Differentiable Neural Computers (DNCs)**:
+- Extension of NTMs with enhanced memory capabilities.
+- **Transformer Architectures with Memory**:
+- Example: GPT models with attention-based memory.
+- **Episodic Memory Networks**:
+- Algorithm: Memory slots updated with episodic information (e.g., Facebook AI's Memory Networks).
+
+---
+
+## 5. Incremental Learning
+
+### **Algorithms/Architectures**
+- **Online Learning Algorithms**:
+- Example: Stochastic Gradient Descent (SGD) for continuous updates.
+- Perceptron Learning Algorithm for incremental classification.
+- **Continual Learning**:
+- Algorithms: Elastic Weight Consolidation (EWC), Synaptic Intelligence, Progressive Neural Networks.
+- **Streaming Algorithms**:
+- Examples: Hoeffding Trees, Online Random Forests.
+
+---
+
+## 6. Episodic Memory Systems
+
+### **Algorithms/Architectures**
+- **Case-Based Reasoning (CBR)**:
+- Algorithm: Retrieve, reuse, revise, and retain cases.
+- Frameworks: OpenCBR, myCBR.
+- **Attention Mechanisms**:
+- Algorithm: Self-attention (e.g., Transformers) for retrieving relevant episodes from memory.
+- **Reinforcement Learning with Memory**:
+- Algorithm: Memory-augmented RL (e.g., LSTMs or Transformers in RL agents).
+- **Episodic Control**:
+- Stores specific action-reward pairs for rapid decision-making.
+
+---
+
+## 7. Policy Updates in Reinforcement Learning
+
+### **Algorithms/Architectures**
+- **Value-Based Methods**:
+- Q-Learning: Updates Q-values based on feedback.
+- Deep Q-Networks (DQN): Combines Q-Learning with neural networks.
+- **Policy-Based Methods**:
+- Policy Gradient Methods: Directly optimize the policy using feedback (e.g., REINFORCE).
+- Actor-Critic Algorithms: Combines value-based and policy-based methods (e.g., PPO, A3C).
+- **Model-Based RL**:
+- Uses a model of the environment to simulate feedback.
+- Algorithms: Dyna-Q, MuZero.
+- **Hierarchical RL**:
+- Decomposes tasks into subtasks and updates policies for each subtask.
+
+---
+
+## 8. Context-Aware Retrieval (Without Vectorstores)
+
+### **Algorithms/Architectures**
+- **ElasticSearch**:
+- A distributed search engine for keyword and semantic similarity retrieval.
+- **BM25 (Best Matching 25)**:
+- Algorithm for ranking documents using term frequency and inverse document frequency (TF-IDF).
+- **Dense Retrieval Models**:
+- Algorithms: Dense Passage Retrieval (DPR), Retrieval-Augmented Generation (RAG).
+- **Dynamic Query Expansion**:
+- Algorithm: Expands search queries based on feedback or context.
+
+---
+
+## 9. Hybrid Approaches
+
+### **Algorithms/Architectures**
+- **Neuro-Symbolic Systems**:
+- Combines neural networks with symbolic reasoning (e.g., DeepMind’s AlphaCode, IBM’s Neuro-Symbolic AI).
+- **Hybrid Memory Architectures**:
+- Example: Retrieval-Augmented Generation (RAG) combines dense vector retrieval with generative models.
+- **Multi-Agent Systems**:
+- Algorithms: Game theory, auction mechanisms for collaborative reasoning.
+- Frameworks: OpenAI Gym, PettingZoo.
+
+---
+
+## 10. Human-in-the-Loop Updates
+
+### **Algorithms/Architectures**
+- **Active Learning**:
+- Algorithm: Queries humans for labels on uncertain data points.
+- Examples: Uncertainty Sampling, Query-by-Committee.
+- **Reinforcement Learning from Human Feedback (RLHF)**:
+- Algorithm: Fine-tunes a model based on human-provided reward signals.
+- Example: Used in OpenAI’s GPT-4 and ChatGPT.
+- **Crowdsourcing and Annotation Tools**:
+- Platforms: Amazon Mechanical Turk, Label Studio.
+- **Interactive Machine Learning**:
+- Algorithm: Incrementally updates the model based on real-time human feedback.
+
+---
+In ReAct architecture, ReAct stands for Reasoning + Acting framework that emphasizes the integration of reasoning
+(ability of an agent to think, reflect and plan based on its internal knowledge and observed environment) and acting
+(ability of agets to take actions in the environment to achieve its goals).
+
+... to be continued... brain full.
