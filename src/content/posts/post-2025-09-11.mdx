@@ -1,0 +1,209 @@
+---
+title: "Trending keyword analysis in Reddit via generative AI, Python, Svelte, NLP, N-gram analysis, "
+startDate: 2025-09-11
+description: "b crawler and analytics tool to analyze romantsy/BookTok content from social media platforms (Reddit, TikTok) to identify trending terms, themes, and market opportunities for brand development."
+image:
+   url: "/images/posts/2025-09-11-wordcloud.png"
+   alt: "word cloud"
+tags: ["web crawler", "Reddit API", "NLP", "N-gram analysis", "SvelteKit", "Python", "PDF generation", "Data
+persistence", "Market analysis", "Brand development", "Python", "Svelte", "TailwindCSS", "DaisyUI", "Chart.js", "Plotly", "Matplotlib", "Pandas", "PRAW", "Spacy", "NLTK"]
+---
+## ⏺ Project Summary: Social Media Market Analysis Tool
+
+🎯 What We're Building:
+A comprehensive web crawler and analytics platform that analyzes romance/BookTok content from Reddit to identify trending terms, market opportunities, and brand development insights.
+
+🏗️ Architecture:
+  - Frontend: SvelteKit TypeScript web dashboard
+  - Backend: Python analysis pipeline with Reddit API integration
+  - Data Flow: Frontend settings → Python analysis → PDF reports
+  - Stack: SvelteKit + Python + Reddit API + NLP processing
+
+🔧 Current Session Focus:
+We've been perfecting the data persistence and PDF generation system to ensure complete traceability:
+
+  1. Settings Flow: Frontend settings page → API → /data/current_settings.json → Python script
+  2. PDF Generation: Analysis results + settings → comprehensive PDF reports
+  3. Data Traceability: Every PDF shows exactly what settings produced those results
+
+📊 Key Features Implemented:
+  - Reddit Data Collection: 7+ subreddits, configurable terms, intelligent caching
+  - Advanced Text Analysis: NLP processing, sentiment analysis, semantic clustering
+  - PDF Reports: Professional reports with settings audit trail
+  - Analytics Dashboard: Performance tracking, term frequency analysis
+  - Brand Insights: Market opportunities and naming suggestions
+
+---
+## The Story
+It always starts out simple - I wanted a web crawler to crawl the web for trending keywords.
+I decided to start small - Tiktok (they do not let you crawl, no API), Reddit (they have an API, do not like you to
+crawl), and Facebook/Instagram (TBD).
+
+I usually start with a generic UI, and springboard off that.  I am language agnostic these days - will use whatever,
+just use AI for a language reference.  The language usually has some special guidelines for production deploys that
+is strongly recommended but not required for a tool or prototype.  There is a common set of guidelines that pertain
+to production deploys.
+
+It was quickly evident that the data that came back looked... dead, static, uninteresting and bland.  I realized
+that the pure analysis of words pulled from a bunch of reddit posts lacked lexical and semantic meaning so I started
+looking and reading into what was required to give it a bit more context in terms of meaning in our analysis.  Down
+the rabbit hole I go (it usually doesn't ever end because there is always more to learn).
+
+After 2 days, this is the [report](/pdfs/2025-09-11-market-analysis.pdf) that it generated.
+
+It is not complete, the analysis configuration section looks terrible but it is a work in progress.
+
+### Tech Stack
+#### Python Stack
+- `praw` - Reddit API client
+- `nltk/spacy` - NLP processing
+- `pandas` - Data manipulation
+- `matplotlib/plotly` - Visualization
+
+#### Frontend Stack
+- **Framework**: Svelte/SvelteKit (lightweight, fast)
+- **Styling**: TailwindCSS + DaisyUI components
+- **Charts**: Chart.js / D3.js for data visualization
+- **HTTP Client**: Fetch API to Rust backend
+- **Build**: Vite for fast development
+
+## Key Components
+
+### 1. Data Collectors
+- **Reddit API Client**: Focus on r/RomanceBooks, r/BookTok, r/Fantasy
+- **Rate Limiting**: Respect API limits and ToS
+- **Data Models**: Posts, comments, metadata
+
+### 2. Enhanced Text Processing Pipeline
+- **Stop Words Filtering**: Remove fluff words ("the", "a", social media noise)
+- **Domain-Specific Terms**: Configurable keywords for any industry
+- **Advanced N-gram Analysis**: Multi-word phrases, collocations, brand-worthy terms
+- **Semantic Phrase Extraction**: Pattern-based trending phrase detection
+- **Sentiment Analysis**: Emotional impact scoring
+- **Brand Scoring Algorithm**: Ranks terms by marketing/SEO potential
+
+### 3. Analytics Engine
+- **Word Frequency Analysis**: Most common terms by subreddit/platform
+- **Relationship Graphs**: Word associations and co-occurrence
+- **Trend Detection**: Rising/declining terms over time
+- **Market Insights**: Product gaps, naming opportunities
+
+### 4. Web UI Dashboard
+- **Home**: Project overview and quick stats
+- **Data Collection**: Configure Reddit/TikTok sources
+- **Analytics**: Interactive charts and word clouds
+- **Insights**: Market opportunities and brand suggestions
+- **N-gram Tester**: Interactive testing interface for any domain
+- **Settings**: API keys, filtering preferences
+
+## Data Flow Architecture
+
+### Reddit Data → Text Processing Integration
+
+The system uses a coordinated pipeline where `reddit_client.py` and `text_processor.py` are integrated through `analyze_romantsy.py`:
+
+```
+reddit_client.py → pandas DataFrame → text_processor.py → Analysis Results
+      ↓                    ↓                   ↓                  ↓
+1. Collect Posts    2. Structured Data   3. Text Analysis   4. Market Insights
+   - r/RomanceBooks    - title            - Extract keywords    - Word frequencies
+   - r/Fantasy         - selftext         - Remove stop words   - Sentiment analysis
+   - r/BookTok         - created_datetime - Preserve romantsy   - Co-occurrences
+   - Filter BookTok    - score/comments   - Multi-word phrases  - Brand opportunities
+   - Add timestamps    - Save to CSV      - Generate word cloud - Visualizations
+```
+### Data Processing Flow
+
+**Input**: Raw Reddit posts (JSON from API)
+**Stage 1**: Structured data collection
+- Clean and normalize post data
+- Add datetime formatting (YYYY-MM-DD HH:MM:SS)
+- Flag BookTok-related content
+- Store in pandas DataFrame
+
+**Stage 2**: Text analysis processing
+- Combine title + selftext for analysis
+- Apply configurable stop word filtering
+- Preserve romantsy-specific keywords
+- Extract multi-word phrases ("enemies to lovers")
+- Calculate sentiment scores
+
+**Stage 3**: Market insights generation
+- Word frequency analysis by subreddit
+- Co-occurrence mapping for relationship graphs
+- Trend detection and sentiment analysis
+- Brand naming opportunity identification
+
+**Output**: Comprehensive analysis results
+- CSV files with raw data and timestamps
+- JSON files with analysis results and insights
+- PNG visualizations (charts and word clouds)
+- Market research recommendations
+
+## Target Analysis Areas
+- **Genre Keywords**: romantsy, BookTok, spicy reads
+- **Character Archetypes**: alpha, morally gray, book boyfriend
+- **Tropes**: enemies to lovers, grumpy sunshine, one bed
+- **Emotional Descriptors**: swoon, angst, steamy
+- **Community Language**: What resonates with readers
+
+## Enhanced Semantic Analysis Implementation Strategy
+
+### Phase 1: Enhanced N-gram Analysis
+- **Enhanced Text Preprocessing Pipeline**: Domain-agnostic preprocessing with configurable stop words
+- **N-gram Analysis Engine**: Bigram/trigram extraction with frequency filtering
+- **Pattern-Based Phrase Detection**: Regex patterns for trending phrase identification
+- **Brand-Worthy Term Scoring**: Algorithmic scoring for marketing potential
+- **Frontend Testing Interface**: Interactive domain testing with sample text loading
+- **API Integration**: Python backend processing with JSON API endpoints
+
+### Phase 2: Advanced Semantic Analysis
+**1. Enhanced Text Preprocessing Pipeline**
+- Preserve important multi-word phrases before tokenization
+- Context-aware stop word removal (keep domain-specific terms)
+- Lemmatization with domain-specific exceptions
+- Domain-specific abbreviation handling (MMC, FMC, HEA, etc.)
+
+**2. Named Entity Recognition**
+- Custom NER with spaCy integration and fallback patterns
+- Extract: character archetypes, trope names, genres
+- Romance/BookTok specific entity classification
+- Pattern-based entity extraction for domain terms
+
+**3. Semantic Clustering**
+- Group synonymous terms/phrases automatically using K-means
+- Identify emerging vs established trends through clustering
+- Map brand-worthy term families and relationships
+- Content theme identification for marketing strategy
+
+**4. Enhanced TF-IDF Analysis**
+- Weight terms by domain-specificity scoring with bonuses
+- Identify unique-to-community language patterns
+- Enhanced "brandability" scoring algorithms
+- Separate domain-specific vs general high-value terms
+
+**5. Integrated Market Insights Generation**
+- Multi-source trending term aggregation
+- Enhanced brand naming suggestions from semantic analysis
+- Market entity analysis (tropes, archetypes, genres)
+- Content theme strategy recommendations
+- Emerging trend and opportunity identification
+
+## Conclusion
+Every semantic analysis implementation probably (I did not measure it) adds about a 5-10% accuracy to the analysis.
+N-gram is significant (much higher than a 5-10%) but it assumes that each reddit poster uses the same manner of
+speech the algorithm is trained/tested for (likely proper English, not Gen Z slang, etc.).  It reminds me, as a
+programmer, how much we are building on top of these foundational commonly used algorithms and the choices those
+programmers have made.
+
+I can overthink and over-analyze, and require more context than most but I also am painfully aware that subtle
+changes in context is everything, it can be difference in a different logic branch altogether.
+
+Just as I tweaked the creativity levels of my chatbot to be more creative, so it sounds more natural and less
+robotic, I wonder as we marvel and awe over the new capabilities of each newly-released LLM model, how much
+'tweaking' was done so the models perform in a convincing manner so that the company is positioned for the next
+round of VC funding and pressure is maintained in an acceptable level by appropriately showing growth for/in
+shareholder value.
+
+
+
