@@ -25,7 +25,7 @@ AI-powered chatbot using FastAPI + RAG (Retrieval Augmented Generation) to answe
    ls chatbot/faiss_index/
    
    # If missing, rebuild it
-   python -c "from chatbot.services import rebuild_vectorstore; rebuild_vectorstore()"
+   OPENAI_API_KEY="" python -c "from chatbot.services import rebuild_vectorstore; rebuild_vectorstore()"
    ```
 
 4. **Start Development Server**:

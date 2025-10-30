@@ -1,0 +1,39 @@
+---
+import ProjectCard from '../../components/ProjectCard.astro'
+import { getCollection } from "astro:content";
+
+
+import IndexPageLayout from "../../layouts/IndexPageLayout.astro";
+
+
+// read mdx files from projects folder as entities
+const algo = await getCollection('algomonster');
+
+// sort projects by dateStart DESC
+algo.sort((a: any, b: any) => {
+  return new Date(b.data.startDate) - new Date(a.data.startDate);
+});
+---
+
+<IndexPageLayout title="Algomonster" description="What am I memorizing today?"
+                 subTitle="Algorithm Review">
+
+  <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-3">
+    {
+      algo.map((entity: any) => (
+        <ProjectCard
+          class=""
+          key={entity.data.title}
+          href={'/algomonster/' + entity.slug}
+          heading={entity.data.title}
+          subheading={entity.data.description}
+          altText={entity.data?.image?.alt}
+          imagePath={entity.data?.image?.url}
+          dateStart={entity.data.startDate}
+        />
+      ))
+    }
+  </div>
+
+
+</IndexPageLayout>

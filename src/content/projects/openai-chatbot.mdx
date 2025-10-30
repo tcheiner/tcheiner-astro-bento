@@ -23,12 +23,12 @@ This project implements a full-stack chatbot solution that:
 
 ## Initial Development Plan
 
-1. **Backend Setup**: Create `/backend` directory for Python chatbot code
-2. **Frontend Interface**: Build React/TypeScript chat interface
-3. **Core Dependencies**: Install required libraries
+\1. **Backend Setup**: Create `/backend` directory for Python chatbot code
+\2. **Frontend Interface**: Build React/TypeScript chat interface
+\3. **Core Dependencies**: Install required libraries
 
 ```bash
-pip install langchain openai faiss-cpu tiktoken python-dotenv
+  pip install langchain openai faiss-cpu tiktoken python-dotenv
 ```
 
 ## Tech Stack
@@ -114,16 +114,16 @@ This led to an endless debugging cycle involving ZIP file validation, Terraform 
 
 #### Current Architecture
 
-```
-chatbot/
-├── main.py          # FastAPI app + endpoints (259 lines)
-├── filters.py       # Content filtering functions
-├── sources.py       # URL conversion + clickable links
-├── confidence.py    # Response confidence scoring
-├── summarization.py # Skills-focused response summarization
-├── services.py      # Vectorstore + QA chain management
-├── models.py        # Pydantic schemas
-└── routes.py        # Additional API routes
+```bash
+  chatbot/
+  ├── main.py          # FastAPI app + endpoints (259 lines)
+  ├── filters.py       # Content filtering functions
+  ├── sources.py       # URL conversion + clickable links
+  ├── confidence.py    # Response confidence scoring
+  ├── summarization.py # Skills-focused response summarization
+  ├── services.py      # Vectorstore + QA chain management
+  ├── models.py        # Pydantic schemas
+  └── routes.py        # Additional API routes
 ```
 
 #### Infrastructure Considerations
@@ -144,16 +144,16 @@ checked in) and I have to set a Netlify variable for the project.  Duh.
 
 🎯 Top Space Consumers:
 
-  1. numpy.libs - 26MB (Linear algebra operations, used by FAISS)
-  2. zstandard - 21MB (Compression library, used by LangSmith)
-  3. numpy - 18MB (Numerical computing, required by FAISS)
-  4. sqlalchemy - 14MB (Database ORM, used by LangChain)
-  5. faiss - 13MB (Vector similarity search - your main index)
-  6. langchain_community - 12MB (Community LangChain integrations)
-  7. langchain - 7MB (Core LangChain framework)
-  8. aiohttp - 6.5MB (Async HTTP client)
-  9. openai - 5.9MB (OpenAI API client)
-  10. pydantic_core - 4.5MB (Data validation)
+  \1. numpy.libs - 26MB (Linear algebra operations, used by FAISS)
+  \2. zstandard - 21MB (Compression library, used by LangSmith)
+  \3. numpy - 18MB (Numerical computing, required by FAISS)
+  \4. sqlalchemy - 14MB (Database ORM, used by LangChain)
+  \5. faiss - 13MB (Vector similarity search - your main index)
+  \6. langchain_community - 12MB (Community LangChain integrations)
+  \7. langchain - 7MB (Core LangChain framework)
+  \8. aiohttp - 6.5MB (Async HTTP client)
+  \9. openai - 5.9MB (OpenAI API client)
+  \10. pydantic_core - 4.5MB (Data validation)
 
 📊 Optimization Potential:
 
@@ -213,10 +213,10 @@ Ultimately, it comes down to cost and cost liability in the event my blog is dis
 
 🚀 Migration Path (Standard Practice):
 
-  1. Start with embedded (where you are) - Fast to prototype
-  2. Shave off about 100MB if we used multi-stage docker deploys.
-  3. Move to managed (Pinecone/Weaviate) - When you need reliability but adds ~5-20ms latency
-  3. Consider self-hosted (Qdrant/Weaviate) - When you need control/cost savings
+  \1. Start with embedded (where you are) - Fast to prototype
+  \2. Shave off about 100MB if we used multi-stage docker deploys.
+  \3. Move to managed (Pinecone/Weaviate) - When you need reliability but adds ~5-20ms latency
+  \3. Consider self-hosted (Qdrant/Weaviate) - When you need control/cost savings
 
 I looked at offloading the LLM packages to AWS Bedrock and leveraging the LLMs within the AWS ecosystem but
 the cost difference of $0.15/1M tokens vs $3/1M tokens really put me off.

@@ -1,0 +1,803 @@
+---
+slug: "BinarySearch"
+title: "Algomonster: BinarySearch"
+description: "All about Binary Search"
+startDate: 2025-10-21
+image:
+    url: "/images/leetcode/BinarySearch.png"
+    alt: "BinarySearch"
+tags: ["binary search", "search", "algorithm"]
+---
+
+## Binary Search
+---
+# Basics
+---
+#### Intuition
+---
+Binary search is an efficient array search algorithm. It works by narrowing down the search range by half each time. If you have looked up a word in a physical dictionary, you've already used binary search in real life. Let's look at a simple example:
+
+Given a sorted array of integers and an integer called target, find the element that equals the target and return its index. If the element is not found, return -1.
+
+The key observation here is that the array is sorted. We pick a random element in the array and compare it to the target.
+
+- If we happen to pick the element that equals the target (how lucky!), then bingo. We don't need to do any more work; we return its index.
+- If the element is smaller than the target, then we know the target cannot be found in the section to the left of the current element, since everything to the left is even smaller. So, we discard the current element and everything on the left from the search range.
+- If the element is larger than the target, then we know the target cannot be found in the section to the right of the current element, since everything to the right is even larger. So, we discard the current element and everything on the right from the search range.
+We repeat this process until we find the target. Instead of picking a random element, we always pick the middle element in the current search range. This way, we can discard half of the options and shrink the search range by half each time. This gives us O(log(N)) runtime.
+
+This idea can be implemented both iteratively and recursively. However, the major difference is that the iterative version of binary search uses O(1) memory while the recursive version uses O(log(N)) memory.
+
+```python
+def binary_search(arr: list[int], target: int) -> int:
+    left, right = 0, len(arr) - 1
+    # &lt;= because left and right could point to the same element, &lt; would miss it
+    while left &lt;= right:
+        # double slash for integer division in python 3,
+        # we don't have to worry about integer `left + right` overflow
+        # since python integers can be arbitrarily large
+        mid = (left + right) // 2
+        # found target, return its index
+        if arr[mid] == target:
+            return mid
+        # middle less than target, discard left half by making left search boundary `mid + 1`
+        if arr[mid] &lt; target:
+            left = mid + 1
+        # middle greater than target, discard right half by making right search boundary `mid - 1`
+        else:
+            right = mid - 1
+    return -1  # if we get here we didn't hit above return so we didn't find target
+
+if __name__ == "__main__":
+    arr = [int(x) for x in input().split()]
+    target = int(input())
+    res = binary_search(arr, target)
+    print(res)
+```
+
+```Java
+import java.util.Arrays;
+import java.util.List;
+import java.util.Scanner;
+import java.util.stream.Collectors;
+
+class Solution {
+    public static int binarySearch(List<Integer> arr, int target) {
+        int left = 0;
+        int right = arr.size() - 1;
+
+        while (left &lt;= right) { // &lt;= here because left and right could point to the same element, &lt; would miss it
+            int mid = left + (right - left) / 2; // use `(right - left) /2` to prevent `left + right` potential overflow
+            // found target, return its index
+            if (arr.get(mid) == target) return mid;
+            if (arr.get(mid) &lt; target) {
+                // middle less than target, discard left half by making left search boundary `mid + 1`
+                left = mid + 1;
+            } else {
+                // middle greater than target, discard right half by making right search boundary `mid - 1`
+                right = mid - 1;
+            }
+        }
+        return -1; // if we get here we didn't hit above return so we didn't find target
+    }
+
+    public static List<String> splitWords(String s) {
+        return s.isEmpty() ? List.of() : Arrays.asList(s.split(" "));
+    }
+
+    public static void main(String[] args) {
+        Scanner scanner = new Scanner(System.in);
+        List<Integer> arr = splitWords(scanner.nextLine()).stream().map(Integer::parseInt).collect(Collectors.toList());
+        int target = Integer.parseInt(scanner.nextLine());
+        scanner.close();
+        int res = binarySearch(arr, target);
+        System.out.println(res);
+    }
+}
+```
+
+```javascript
+"use strict";
+
+function binarySearch(arr, target) {
+    // WRITE YOUR BRILLIANT CODE HERE
+    return 0;
+}
+
+function splitWords(s) {
+    return s === "" ? [] : s.split(" ");
+}
+
+function* main() {
+    const arr = splitWords(yield).map((v) => parseInt(v));
+    const target = parseInt(yield);
+    const res = binarySearch(arr, target);
+    console.log(res);
+}
+
+class EOFError extends Error {}
+{
+    const gen = main();
+    const next = (line) => gen.next(line).done && process.exit();
+    let buf = "";
+    next();
+    process.stdin.setEncoding("utf8");
+    process.stdin.on("data", (data) => {
+        const lines = (buf + data).split("\n");
+        buf = lines.pop();
+        lines.forEach(next);
+    });
+    process.stdin.on("end", () => {
+        buf && next(buf);
+        gen.throw(new EOFError());
+    });
+}
+```
+
+```cpp
+#include <algorithm>
+#include <iostream>
+#include <iterator>
+#include <limits>
+#include <sstream>
+#include <string>
+#include <vector>
+
+int binary_search(std::vector<int>& arr, int target) {
+    // WRITE YOUR BRILLIANT CODE HERE
+    return 0;
+}
+
+template<typename T>
+std::vector<T> get_words() {
+    std::string line;
+    std::getline(std::cin, line);
+    std::istringstream ss{line};
+    ss >> std::boolalpha;
+    std::vector<T> v;
+    std::copy(std::istream_iterator<T>{ss}, std::istream_iterator<T>{}, std::back_inserter(v));
+    return v;
+}
+
+void ignore_line() {
+    std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+}
+
+int main() {
+    std::vector<int> arr = get_words<int>();
+    int target;
+    std::cin >> target;
+    ignore_line();
+    int res = binary_search(arr, target);
+    std::cout &lt;&lt; res &lt;&lt; '\n';
+}
+```
+
+```go
+package main
+
+import (
+    "bufio"
+    "fmt"
+    "os"
+    "strconv"
+    "strings"
+)
+
+func binarySearch(arr []int, target int) int {
+    // WRITE YOUR BRILLIANT CODE HERE
+    return 0
+}
+
+func arrayAtoi(arr []string) []int {
+    res := []int{}
+    for _, x := range arr {
+        v, _ := strconv.Atoi(x)
+        res = append(res, v)
+    }
+    return res
+}
+
+func splitWords(s string) []string {
+    if s == "" {
+        return []string{}
+    }
+    return strings.Split(s, " ")
+}
+
+func main() {
+    scanner := bufio.NewScanner(os.Stdin)
+    scanner.Scan()
+    arr := arrayAtoi(splitWords(scanner.Text()))
+    scanner.Scan()
+    target, _ := strconv.Atoi(scanner.Text())
+    res := binarySearch(arr, target)
+    fmt.Println(res)
+}
+```
+
+#### Implementation
+---
+The search range is represented by the left and right indices that start from both ends of the array and move towards each other as we search. When moving the index, we discard elements and shrink the search range.
+
+Time Complexity: O(log(n))
+
+Calculating mid
+Note that when calculating mid, if the number of elements is even, there are two elements in the middle. We usually follow the convention of picking the first one, equivalent to doing integer division (left + right) / 2.
+
+In most programming languages, we calculate mid with left + floor((right-left) / 2) to avoid potential integer overflow. However, in Python, we do not need to worry about integer overflow with left + right because Python3 integers can be arbitrarily large.
+
+#### Deducing binary search
+---
+It's essential to understand and deduce the algorithm yourself instead of memorizing it. In an actual interview, interviewers may ask you additional questions to test your understanding, so simply memorizing the algorithm may not be enough to convince the interviewer.
+
+Key elements in writing a correct binary search:
+
+\1. When to terminate the loop
+Make sure the while loop includes an equality comparison; otherwise, we might skip the loop and miss the potential match for the edge case of a one-element array.
+
+\2. Whether/how to update left and right boundary in the if conditions
+Consider which side to discard. If arr[mid] is smaller than the target, we should discard everything on the left by making left = mid + 1.
+
+\3. Should I discard the current element?
+For vanilla binary search, we can discard it since it cannot be the final answer if it is not equal to the target. There might be situations where you would want to think twice before discarding the current element. We'll discuss this in the next module.
+
+#### When to use binary search
+---
+Interestingly, binary search works beyond sorted arrays. You can use binary search whenever you make a binary decision to shrink the search range. We will see this in the following modules.
+
+
+### Find the First True in a Sorted Boolean Array
+---
+Prereq: Binary Search Introduction
+
+An array of boolean values is divided into two sections: The left section consists of all false, and the right section consists of all true. Find the First True in a Sorted Boolean Array of the right section, i.e., the index of the first true element. If there is no true element, return -1.
+
+#### Importance
+---
+This variation is a key technique for solving a broader class of binary search problems, especially those involving boundaries or transitions, and it helps avoid common pitfalls like infinite loops and missed edge cases. As the article notes, “many problems boil down to finding the boundary in a boolean array,” and this pattern is essential for those cases.
+
+Comparing to First Occurrence:
+The classic "find first occurrence" binary search is specifically designed for sorted arrays with duplicates, to return the index of the first appearance of a target value.
+
+Particulars of Boundary/Transition Search (right = mid, while (left &lt; right)):
+This pattern is more general. It is used to find the boundary or transition point in a boolean array or in any monotonic predicate (e.g., the smallest index where a condition becomes true). It is not limited to finding a specific value, but rather the point where a property changes.
+
+1. To find the boundaries, not just existence.
+- The vanilla binary search is typically used to check if a target exists in a sorted array.
+- This variation is crucial when you need to find a boundary or the first/last occurrence of a value, or the smallest/largest value that satisfies a certain condition.
+- Many advanced binary search problems (such as finding the first true in a boolean array, or the lower/upper bound of a value) require this approach.
+2. Avoiding Infinite Loops
+- If you use right = mid without changing the while condition to while (left &lt; right), you risk getting stuck in an infinite loop when left == right.
+- This variation ensures that the search range always shrinks, and the loop will terminate.
+3. Handling Edge Cases
+- By removing the equality in the while condition and adding a post-loop check, you correctly handle the single-element edge case, which the vanilla approach might miss in certain scenarios.
+4. Generalization
+- This approach is more flexible and generalizes better to a wider range of problems, especially those that require finding the exact position of a transition or boundary in the data.
+
+Input: arr = [false, false, true, true, true]
+
+Output: 2
+
+Explanation: The first true's index is 2.
+```python
+from typing import List
+
+def find_boundary(arr: List[bool]) -> int:
+    left, right = 0, len(arr) - 1
+    while left &lt;= right:
+        mid = (left + right) // 2
+        #print(f"mid: {mid} arr[mid]: {arr[mid]}")
+        if arr[mid]:
+            if mid == 0 or (mid > 0 and not arr[mid-1]):
+                #print(f"arr[mid]: {arr[mid]} arr[mid-1]: {arr[mid-1]}")
+                return mid
+            else:
+                # search left
+                right = mid - 1
+        elif not arr[mid]:
+            # search right
+            left = mid + 1
+        else:
+            # search left
+            right = mid -1
+    return -1
+
+if __name__ == '__main__':
+    arr = [x == "true" for x in input().split()]
+    res = find_boundary(arr)
+    print(res)
+```
+
+#### Explanation
+---
+The binary decision we must make when we look at an element is:
+
+If the element is false, we discard everything to the left and the current element itself.
+If the element is true, the current element could be the first true although there may be other true to the left. We discard everything to the right but what about the current element?
+We can either keep the current element in the range or record it somewhere and then discard it. Here we choose the latter. We'll discuss the other approach in the alternative solution section.
+
+We keep a variable boundary_index that represents the currently recorded leftmost true's index. If the current element is true, then we update boundary_index with its index and discard everything to the right including the current element itself since its index has been recorded by the variable.
+
+Time Complexity: O(log(n))
+
+Space Complexity: O(1)
+
+The good thing about this approach is that we don't have to modify the while-loop logic in the vanilla binary search from the last module, except for introducing a variable.
+
+#### Alternative approach
+Another approach to handle case 2, above, is to keep the current element in the search range instead of discarding it; i.e., if arr[mid]: right = mid instead of right = mid - 1. However, doing this without modifying the while condition will result in an infinite loop. This is because when left == right, right = mid will not modify right and thus, not shrink search range and we will be stuck in the while loop forever. To make this work we have to remove the equality in the while condition. In addition, as mentioned in the last module, a while loop without equality will miss the single-element edge case so we have to add an additional check after the loop to handle this case. Overall, we have to make three modifications to the vanilla binary search to make it work.
+
+Side note: how to not get stuck in an infinite loop
+make progress in each step
+have an exit strategy
+
+### Summary
+---
+This problem is a major 🔑 in solving future binary search-related problems. As we will see in the following modules, many problems boil down to finding the boundary in a boolean array.
+
+
+## Sorted Array
+---
+In the preceding binary search problems, the arrays are always sorted. We stated that we can use binary search whenever we make a binary decision to shrink the search range. This might sound a little abstract. In this module, we will dive a little further into when we can use binary search.
+
+### Monotonic function
+---
+[Monotonic functions](/images/content/leetcode/monotonic-function.png)
+A monotonic function is a function that is either non-decreasing or non-increasing. Given x1 and x2 where x1 > x2, we should have f(x1) >= f(x2).
+
+A sorted array is monotonic because the value increases or stays the same as the index increases.
+
+If f(x) only contains Boolean values True and False and we think of true as 1 and false as 0, then a sorted Boolean array would consist of consecutive 0s and then consecutive 1s. For example, FFFFTTTTT.
+
+#### Binary Search Template
+---
+<b>feasible function</b>
+The precondition for binary search is to find a monotonic function f(x) that returns either True or False. Then the problem becomes Find the First True in a Sorted Boolean Array that we already know how to solve using binary search. We will call the function feasible to signify whether the element at the current index is feasible (True) or not (False) to meet the problem constraints.
+[binary search feasible](/images/content/leetcode/BS_feasible.png)
+
+```python
+def binary_search(arr: List[int], target: int) -> int:
+    left, right = 0, len(arr) - 1
+    first_true_index = -1
+    while left &lt;= right:
+        mid = (left + right) // 2
+        if feasible(mid):
+            first_true_index = mid
+            right = mid - 1
+        else:
+            left = mid + 1
+
+    return first_true_index
+```
+Now, the problem has become finding the feasible function and then mechanically applying the template.
+
+In the Find the First True in a Sorted Boolean Array problem, the feasible function is simply arr[mid] == True. Finding the feasible function can be trickier in other problems. Let's look at a few examples.
+
+### First Element Not Smaller Than Target
+---
+Prereq: Finding the Boundary with Binary Search
+
+Given an array of integers sorted in increasing order and a target, find the index of the first element in the array that is larger than or equal to the target. Assume that it is guaranteed to find a satisfying number.
+
+Input:
+
+arr = [1, 3, 3, 5, 8, 8, 10]
+target = 2
+Output: 1
+
+Explanation: The first element larger than 2 is 3, which has index 1.
+
+Input:
+
+arr = [2, 3, 5, 7, 11, 13, 17, 19]
+target = 6
+Output: 3
+
+Explanation: The first element larger than 6 is 7, which has index 3.
+```python
+def first_not_smaller(arr: list[int], target: int) -> int:
+    left, right = 0, len(arr) -1
+    while left &lt;= right:
+        mid = (left + right) //2
+        #print(f"mid: {mid}, arr[mid]: {arr[mid]}")
+        if arr[mid] &lt; target:
+            left = mid + 1
+        else:
+            #print(f"mid: {mid}, arr[mid-1]: {arr[mid-1]}")
+            if (mid > 0 and arr[mid-1] &lt; target):
+                return mid
+            else:
+                right = mid - 1
+    return 0
+
+if __name__ == "__main__":
+    arr = [int(x) for x in input().split()]
+    target = int(input())
+    res = first_not_smaller(arr, target)
+    print(res)
+```
+
+#### Explanation
+---
+The problem is equivalent to finding the boundary of elements &lt; 2 and elements ≥2 in the sorted array. Because the array is sorted, as the index increases, once we see an element greater than 2, the rest of the array should also be greater than 2. This is a monotonic function. The feasible function here is arr[i] >= 2.
+Now, the problem is reduced to finding the first true element in a boolean array. And we already know how to do this from the Find the First True in a Sorted Boolean Array module.
+
+Time Complexity: O(log(n))
+
+Space Complexity: O(1)
+
+### First occurrence
+---
+Prereq: Vanilla Binary Search and Finding the Boundary with Binary Search
+
+Given a sorted array of integers and a target integer, find the first occurrence of the target and return its index. Return -1 if the target is not in the array.
+
+Input:
+
+arr = [1, 3, 3, 3, 3, 6, 10, 10, 10, 100]
+target = 3
+Output: 1
+
+Explanation: The first occurrence of 3 is at index 1.
+
+Input:
+
+arr = [2, 3, 5, 7, 11, 13, 17, 19]
+target = 6
+Output: -1
+
+Explanation: 6 does not exist in the array.
+
+
+```python
+def find_first_occurrence(arr: list[int], target: int) -> int:
+    left, right = 0, len(arr)-1
+    while left &lt;= right:
+        mid = (left + right) //2
+        if arr[mid] == target:
+            result = mid
+            while (mid > 0 and arr[mid-1] == target):
+                mid -= 1
+                result = mid
+            return result
+        if arr[mid] &lt; target:
+            left = mid +1
+        else:
+            right = mid -1
+    return -1
+
+if __name__ == "__main__":
+    arr = [int(x) for x in input().split()]
+    target = int(input())
+    res = find_first_occurrence(arr, target)
+    print(res)
+```
+#### Explanation
+---
+The problem is equivalent to finding the boundary of elements &lt; 3 and elements >= 3. As we go from the left to the right of the sorted array, once we see an element equal to 3, the rest of the array should also be greater than or equal to 3. The feasible function is arr[i] >= 3.
+
+Now the problem is reduced to finding the first true element in a boolean array. And we already know how to do this from the Find the First True in a Sorted Boolean Array module.
+
+Time Complexity: O(log(n))
+
+Space Complexity: O(1)
+
+Caveat: note that the feasible function checks whether the element is greater than or equal to the target. But the question asks for the index of the first element exactly equal to the target. Our template updates ans = mid whenever arr[mid] >= target. Therefore, we have to make a small modification to the template and move ans = mid to only when arr[mid] == target and not arr[mid] >= target.
+
+### Square Ro0t Estimation
+---
+Prereq: First True in a Sorted Boolean Array
+
+Given an integer, find its square root without using the built-in square root function. Only return the integer part (truncate the decimals).
+
+Input: 16
+
+Output: 4
+
+Input: 8
+
+Output: 2
+
+Explanation: square root of 8 is 2.83..., return the integer part, 2
+```python
+def square_root(n: int) -> int:
+    # WRITE YOUR BRILLIANT CODE HERE
+    return 0
+
+if __name__ == "__main__":
+    n = int(input())
+    res = square_root(n)
+    print(res)
+```
+##### Explanation
+---
+Because we truncate the decimals, the problem is equivalent to finding the largest element in the sorted array whose square is equal to or less than n.
+
+As we go from the left to the right of the sorted array, the square of the value increases monotonically. We can apply a feasible function of i^2 >=n and yet again reduce this problem to Find the First True in a Sorted Boolean Array.
+
+There is a small caveat: if there is no element in the array whose square equals n, then we want to return the largest element that is smaller than the square root of n. In this case, we are actually looking for the last false. We can subtract 1 from the index after we find the first true from binary search.
+
+Time Complexity: O(log(n))
+
+Space Complexity: O(1)
+
+## Implicitly Sorted Array
+---
+### Minimum in Rotated Sorted Array
+---
+Prereq: Vanilla Binary Search and Finding the Boundary with Binary Search
+
+A sorted array of unique integers was rotated at an unknown pivot. For example, [10, 20, 30, 40, 50] becomes [30, 40, 50, 10, 20]. Find the index of the minimum element in this array.
+
+Input: [30, 40, 50, 10, 20]
+
+Output: 3
+
+Explanation: The smallest element is 10, and its index is 3.
+
+Input: [3, 5, 7, 11, 13, 17, 19, 2]
+
+Output: 7
+
+Explanation: The smallest element is 2, and its index is 7.
+```python
+def find_min_rotated(arr: list[int]) -> int:
+    left, right = 0, len(arr) - 1
+    boundary_index = -1
+
+    while left &lt;= right:
+        mid = (left + right) // 2
+        # if &lt;= last element, then belongs to lower half
+        if arr[mid] &lt;= arr[-1]:
+            boundary_index = mid
+            right = mid - 1
+        else:
+            left = mid + 1
+
+    return boundary_index
+
+if __name__ == "__main__":
+    arr = [int(x) for x in input().split()]
+    res = find_min_rotated(arr)
+    print(res)
+```
+#### Explanation
+---
+At first glance, it seems that there's no way to do it in less than linear time because the array is not sorted.
+
+But remember binary search can work beyond sorted arrays, as long as there is a binary decision we can use to shrink the search range.
+
+Let's draw a figure to see if there's any pattern. If we plot the numbers against their index, we get: [BS_min_rotated_array](/images/content/leetcode/BS_min_rotated_array.png)
+Notice the numbers are divided into two sections: numbers larger than the last element of the array and numbers smaller than it. The minimum element is at the boundary between the two sections.
+
+We can apply a feasible function of `&lt;= the last element` and get the boolean array that characterizes the two sections.
+[BS_min_rotated_array 2](/images/content/leetcode/BS_min_rotated_array2.png)
+Now the problem is yet again reduced to finding the first true element in a boolean array. And we already know how to do this from Find the First True in a Sorted Boolean Array module.
+
+Time Complexity: O(log(n))
+
+Space Complexity: O(1)
+### Peak of Mountain Array
+---
+Prerequisite: Vanilla Binary Search and Finding the Boundary with Binary Search
+
+A mountain array is defined as an array that
+
+has at least 3 elements
+has an element with the largest value called "peak", with index k. The array elements strictly increase from the first element to A[k], and then strictly decrease from A[k + 1] to the last element of the array. Thus creating a "mountain" of numbers.
+That is, given `A[0]&lt;...<A[k-1]<A[k]>A[k+1]>...>A[n-1]`, we need to find the index k. Note that the peak element is neither the first nor the lastIndex of the array.
+
+Find the index of the peak element. Assume there is only one peak element.
+
+Input: 0 1 2 3 2 1 0
+
+Output: 3
+
+Explanation: The largest element is 3, and its index is 3.
+```python
+def peak_of_mountain_array(arr: list[int]) -> int:
+    alen = len(arr)
+    left = 0
+    right = alen - 1
+    boundary_index = -1
+
+    while left &lt;= right:
+        mid = (left + right) // 2
+        if arr[mid] > arr[mid + 1]:
+            boundary_index = mid
+            right = mid - 1
+        else:
+            left = mid + 1
+
+    return boundary_index
+
+if __name__ == "__main__":
+    arr = [int(x) for x in input().split()]
+    res = peak_of_mountain_array(arr)
+    print(res)
+```
+#### Explanation
+---
+The array strictly increases until the peak element and then strictly decreases. The monotonicity is a strong sign that we can use binary search to find the peak element.
+
+To use binary search, we need the entire search range to be strictly increasing or decreasing. We need to find the feasible function that returns false for elements up until the peak and true from the peak to the end.
+
+We already know the array strictly decreases from the peak element to the last element. So we can try to use a feasible function of arr[i]> arr[i+1] to return true for elements from the peak to the last element. Once we do that, we realize that it also returns false from the first element to the peak element. We've got our feasible function.
+
+A minor edge case is the last element, as it has no next element. We can pad the array with an imaginary node of negative infinity. In the implementation, we don't actually need to pad the array, as that would incur an O(n) extra cost. We can just check if i+1 is out of bounds and return true if it is since this implies arr[i] is the last element.
+
+[BS_mountain_array](/images/content/leetcode/BS_peak.png)
+Now, the problem is reduced to finding the first true element in a boolean array, and we already know how to do this from the Finding the First True in a Sorted Boolean Array module.
+
+Time Complexity: O(log(n))
+
+Space Complexity: O(1)
+
+## Advanced
+---
+### Summary
+---
+<table>
+  <thead>
+    <tr>
+      <th>Search Type</th>
+      <th>Condition to Update Answer</th>
+      <th>Move Left/Right When Found</th>
+      <th>Use Case / Description</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>First Occurrence</td>
+      <td><code>arr[mid] == target</code></td>
+      <td><code>right = mid - 1</code></td>
+      <td>First index of target in duplicates</td>
+    </tr>
+    <tr>
+      <td>First Not Smaller (Lower Bound)</td>
+      <td><code>arr[mid] >= target</code></td>
+      <td><code>right = mid - 1</code></td>
+      <td>First index where value ≥ target (insertion point)</td>
+    </tr>
+    <tr>
+      <td>Basic Binary Search</td>
+      <td><code>arr[mid] == target</code></td>
+      <td>Return immediately</td>
+      <td>Any occurrence of target</td>
+    </tr>
+    <tr>
+      <td>Square Root Estimation</td>
+      <td><code>mid * mid ≤ target</code></td>
+      <td><code>left = mid + 1</code></td>
+      <td>Find integer sqrt of a number</td>
+    </tr>
+    <tr>
+      <td>Implicitly Sorted Array</td>
+      <td><code>arr[mid] == target</code></td>
+      <td>Use <code>arr[left]</code>, <code>arr[mid]</code>, <code>arr[right]</code> to decide which half to search</td>
+      <td>Search in infinite or unbounded sorted array</td>
+    </tr>
+    <tr>
+      <td>Min in Rotated Sorted Array</td>
+      <td><code>arr[mid] &lt; arr[ans]</code> or <code>arr[mid] &lt; arr[right]</code></td>
+      <td><code>right = mid</code></td>
+      <td>Find minimum in rotated sorted array</td>
+    </tr>
+    <tr>
+      <td>Peak of Mountain Array</td>
+      <td><code>arr[mid] &gt; arr[mid+1]</code></td>
+      <td><code>right = mid</code></td>
+      <td>Find peak index in mountain array</td>
+    </tr>
+  </tbody>
+</table>
+
+### Key Differences
+
+- <strong>Condition to update answer:</strong> What must be true to consider <code>mid</code> as a candidate.
+- <strong>Move left/right when found:</strong> Whether to continue searching left or right after a match.
+- <strong>Use case/description:</strong> The t
+
+### Newspapers
+You've begun your new job to organize newspapers. Each morning, you are to separate the newspapers into smaller piles and assign each pile to a co-worker. This way, your co-workers can read through the newspapers and examine their contents simultaneously.
+
+Each newspaper is marked with a read time to finish all its contents. A worker can read one newspaper at a time, and, when they finish one, they can start reading the next. Your goal is to minimize the amount of time needed for your co-workers to finish all newspapers. Additionally, the newspapers came in a particular order, and you must not disarrange the original ordering when distributing the newspapers. In other words, you cannot pick and choose newspapers randomly from the whole pile to assign to a co-worker, but rather you must take a subsection of consecutive newspapers from the whole pile.
+
+What is the minimum amount of time it would take to have your coworkers go through all the newspapers? That is, if you optimize the distribution of newspapers, what is the longest reading time among all piles?
+
+#### Constraints
+1 `&lt;=` newspapers_read_times.length `&lt;=` 10^5
+
+1 `&lt;=` newspapers_read_times[i] `&lt;=` 10^5
+
+1 `&lt;=` num_coworkers `&lt;=` 10^5
+
+#### Examples
+Example 1:
+Input: newspapers_read_times = [7,2,5,10,8], num_coworkers = 2
+Output: 18
+Explanation:
+Assign first 3 newspapers to one coworker then assign the rest to another. The time it takes for the first 3 newspapers is 7 + 2 + 5 = 14 and for the last 2 is 10 + 8 = 18.
+
+Example 2:
+Input: newspapers_read_times = [2,3,5,7], num_coworkers = 3
+Output: 7
+Explanation:
+Assign [2, 3], [5], and [7] separately to workers. The minimum time is 7.
+
+```python
+def newspapers_split(newspapers_read_times: list[int], num_coworkers: int) -> int:
+    # WRITE YOUR BRILLIANT CODE HERE
+    return 0
+
+if __name__ == "__main__":
+    newspapers_read_times = [int(x) for x in input().split()]
+    num_coworkers = int(input())
+    res = newspapers_split(newspapers_read_times, num_coworkers)
+    print(res)
+```
+#### Solution
+The reason binary search is applicable in this problem is because of the monotonic nature of the problem. What do we mean by monotonic here? If a given time t is feasible for num_coworkers to finish all the newspapers, then any time greater than t will also be feasible. This is because if coworkers can complete reading in a shorter amount of time, they can obviously also complete it if given more time. This forms a monotonic relationship, which is a crucial characteristic for binary search applicability.
+
+Essentially, our problem exhibits two sequences:
+
+A sequence of infeasible times, followed by
+A sequence of feasible times.
+The transition between these two sequences is what we aim to find using binary search.
+
+#### Observations
+The smallest time any coworker would take is equal to the time taken to read the longest newspaper, i.e., max(newspapers_read_times).
+The largest time any coworker would take is if only one person reads all the newspapers, i.e., sum(newspapers_read_times).
+The optimal time lies between these two values.
+#### Feasibility Check: Intuitive Explanation
+The feasibility check is essentially a simulation of how we'd distribute newspapers to coworkers under a hypothetical maximum reading time, mid. At its core, the algorithm emulates a conveyor belt process: imagine each coworker standing ready, and as you pass them newspapers, a timer keeps track of the accumulated reading time. Once a coworker's accumulated time reaches or nearly reaches the mid value and they don't have enough time to read the next newspaper, they step back, and the next coworker steps forward to continue the task.
+
+By cycling through this process, we get an effective gauge on how many coworkers would be needed to cover all newspapers under the stipulated time limit, mid. If the number exceeds our available coworkers, the time limit isn’t viable. If not, it's feasible.
+[BS_newspapers](/images/content/leetcode/BS_newspapers.png)
+Let m represent sum(newspapers_read_times)
+
+Time complexity: O(n log m)
+
+Setting the initial low and high values takes O(n) to find out the maximum value and the sum of newspapers_read_times. Then, performing a binary search is O(log m), and the helper function feasible() that is called inside the binary search loop is O(n). Overall, the binary search process takes O(n log m), which is more significant than O(n), thus the time complexity of our solution is O(n log m).
+
+Space Complexity: O(1)
+
+```python
+def feasible(newspapers_read_times: list[int], num_coworkers: int, limit: int) -> bool:
+    # time to keep track of the current worker's time spent, num_workers to keep track of the number of coworkers used
+    time, num_workers = 0, 0
+    for read_time in newspapers_read_times:
+        # check if current time exceeds the given time limit
+        if time + read_time > limit:
+            time = 0
+            num_workers += 1
+        time += read_time
+    # edge case to check if we needed an extra worker at the end
+    if time != 0:
+        num_workers += 1
+    # check if the number of workers we need is more than what we have
+    return num_workers &lt;= num_coworkers
+
+def newspapers_split(newspapers_read_times: list[int], num_coworkers: int) -> int:
+    low, high = max(newspapers_read_times), sum(newspapers_read_times)
+    ans = -1
+    while low &lt;= high:
+        mid = (low + high) // 2
+        # helper function to check if a time works
+        if feasible(newspapers_read_times, num_coworkers, mid):
+            ans = mid
+            high = mid - 1
+        else:
+            low = mid + 1
+    return ans
+
+if __name__ == "__main__":
+    newspapers_read_times = [int(x) for x in input().split()]
+    num_coworkers = int(input())
+    res = newspapers_split(newspapers_read_times, num_coworkers)
+    print(res)
+```
+
+## Speedrun
+---

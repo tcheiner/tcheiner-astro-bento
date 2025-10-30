@@ -1,0 +1,117 @@
+---
+slug: "2025-09-28"
+title: "Go lang + NeoVim + Kickstart nVim"
+startDate: 2025-09-28
+description: "Go lang development setup with NeoVim and Kickstart nVim configuration."
+# image:
+#   url: "/images/your-image.jpg"
+#   alt: "Image description"
+tags: ["Go", "NeoVim", "Development"]
+# canonical: "https://example.com/original-post"
+---
+
+## Setting Up Go Development with NeoVim
+
+### NeoVim Advantages
+
+- Wide selection of color schemes
+- Lightweight and fast
+
+### Kickstart nvim Configuration
+
+- Single config file at `~/.config/nvim/init.lua`
+
+### Installing Go Support
+
+#### 1. Install Go syntax highlighting
+
+```bash
+nvim
+:TSInstall go
+:TSInstallInfo  # Verify install
+:q!
+```
+
+#### 2. Install Go language server
+
+```bash
+go install golang.org/x/tools/gopls@latest
+```
+
+#### 3. Configure PATH
+
+```bash
+export PATH=$PATH:$(go env GOPATH)/bin
+source ~/.zshrc  # Reload shell
+```
+
+#### 4. Set up LSP in NeoVim
+
+```bash
+nvim ~/.config/nvim/init.lua
+:MasonInstall gopls
+```
+
+Initial impressions are positive, though I recognize no technology is perfect - I'll need to explore Go's limitations further.
+
+## AWS Glue & Jupyter Notebooks
+
+On my todo list:
+
+- Explore AWS Glue integration
+- API deployment from Jupyter Notebooks
+
+## Chatbot Enhancement Analysis
+
+### Current RAG Pipeline
+
+1. **Chunking**: Content from `../src/content/**/*.mdx` gets broken into chunks
+2. **Vectorstore**: Chunks embedded (OpenAI) and stored in FAISS
+3. **Retrieval**: Finds top 5 similar chunks for each question
+4. **Generation**: Chunks sent to GPT-4o-mini with "TC Heiner" persona
+
+### Problem Identified
+
+For prompt "Tell me about your favorite thing you built":
+
+- ❌ Gets: Generic Astro/Wells Fargo content
+- ✅ Should get: ManaBurn, web crawler details
+
+### Root Cause
+
+Similarity search matches generic phrases better than project-specific content.
+
+### Potential Solutions
+
+1. **Content Improvement**:
+   - Add "favorite project" language to ManaBurn docs
+
+2. **Search Parameters**:
+   - Increase `k` from 5 to 8-10
+
+3. **MMR Retrieval**:
+```python
+retriever = vectorstore.as_retriever(
+    search_type="mmr",
+    search_kwargs={
+        "k": 8,
+        "lambda_mult": 0.7,
+        "fetch_k": 20
+    }
+)
+```
+
+4. **Custom Scoring**:
+```python
+def custom_retrieval(question, vectorstore):
+    docs = vectorstore.similarity_search(question, k=15)
+    
+    # Apply score boosts based on project recency
+    for doc in docs:
+        years_ago = get_project_age(doc)
+        if years_ago &lt;= 1: doc.score_boost = 0.3
+        elif years_ago &lt;= 2: doc.score_boost = 0.2
+        elif years_ago &lt;= 3: doc.score_boost = 0.1
+        elif years_ago &lt;= 5: doc.score_boost = 0.05
+        
+    return sorted(docs, key=lambda x: x.score + getattr(x, 'score_boost', 0))[:5]

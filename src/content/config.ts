@@ -79,6 +79,23 @@ const recipesCollection = defineCollection({
   }),
 });
 
+const algomonsterCollection = defineCollection({
+  type: "content",
+  schema: z.object({
+    title: z.string(),
+    startDate: z.date(),
+    description: z.string(),
+    image: z
+      .object({
+        url: z.string(),
+        alt: z.string(),
+      })
+      .optional(),
+    tags: z.array(z.string()).optional(),
+    canonical: z.string().optional(),
+  }),
+});
+
 // Export a single `collections` object to register your collection(s)
 export const collections = {
   projects: projectCollection,
@@ -86,4 +103,5 @@ export const collections = {
   books: bookCollection,
   posts: postCollection,
   recipes: recipesCollection,
+  algomonster: algomonsterCollection,
 };

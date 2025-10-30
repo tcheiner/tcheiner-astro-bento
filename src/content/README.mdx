@@ -40,6 +40,12 @@ This directory contains all content for TC Heiner's portfolio website, organized
 - **Schema**: Complex recipe schema (see template)
 - **Indexed by AI**: ❌ (Personal content, not professional)
 
+### Algomonster (`/algomonster/`)  
+**Algorithms Review**
+- **Naming**: `xx.mdx` or descriptive names
+- **Schema**: `title`, `startDate`, `description`, `image?`, `tags?`
+- **Indexed by AI**: ✅ (Algorithm review)
+
 ## 🛠️ Content Creation Workflow
 
 ### Quick Start
@@ -197,6 +203,85 @@ ls -la src/content/posts/ | tail -10
 - **Experiences**: Job changes, new roles, skill updates
 
 Remember to rebuild FAISS index and redeploy chatbot after significant content changes!
+
+## 🛤️ Adding New Routes/Collections
+
+To add a new content collection and route:
+
+### 1. Define Collection Schema
+Add to `/src/content/config.ts`:
+```javascript
+const newCollection = defineCollection({
+  type: "content",
+  schema: z.object({
+    title: z.string(),
+    startDate: z.date(),
+    description: z.string(),
+    // Add other required fields...
+    tags: z.array(z.string()).optional(),
+  }),
+});
+
+// Export in collections object
+export const collections = {
+  // ... existing collections
+  newcollection: newCollection,
+};
+```
+
+### 2. Create Content Directory
+```bash
+mkdir src/content/newcollection/
+```
+
+### 3. Create Page Routes
+```bash
+mkdir src/pages/newcollection/
+```
+
+Create `/src/pages/newcollection/index.astro`:
+```astro
+---
+import { getCollection } from "astro:content";
+import IndexPageLayout from "../../layouts/IndexPageLayout.astro";
+
+const items = await getCollection('newcollection');
+items.sort((a, b) => new Date(b.data.startDate) - new Date(a.data.startDate));
+---
+
+<IndexPageLayout title="New Collection">
+  &lt;!-- Display logic here -->
+</IndexPageLayout>
+```
+
+Create `/src/pages/newcollection/[...slug].astro` for individual pages:
+```astro
+---
+import { getCollection } from "astro:content";
+import MDXLayout from "../../layouts/MDXLayout.astro";
+
+export async function getStaticPaths() {
+  const items = await getCollection('newcollection');
+  return items.map((item) => ({
+    params: { slug: item.slug },
+    props: { item },
+  }));
+}
+
+const { item } = Astro.props;
+const { Content } = await item.render();
+---
+
+<MDXLayout frontmatter={item.data}>
+  <Content />
+</MDXLayout>
+```
+
+### 4. Validate Setup
+```bash
+node validate-mdx.js  # Check schema compliance
+npm run dev          # Test routes work
+```
 
 ---
 
