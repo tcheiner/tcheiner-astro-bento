@@ -11,8 +11,7 @@ from langchain_openai import OpenAIEmbeddings
 from dotenv import load_dotenv
 
 load_dotenv()
-os.environ['OPENAI_API_KEY'] = '***REMOVED***'
-
+os.environ['OPENAI_API_KEY'] = ''
 question = 'Tell us about your favorite thing you built. Share the technical challenges, your approach, and why you are proud of it.'
 
 def debug_manaburn_scoring():

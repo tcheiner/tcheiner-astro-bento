@@ -17,8 +17,7 @@ from dotenv import load_dotenv
 load_dotenv()
 
 # Set the API key
-os.environ['OPENAI_API_KEY'] = '***REMOVED***'
-
+os.environ['OPENAI_API_KEY'] = ''
 question = 'Tell us about your favorite thing you built. Share the technical challenges, your approach, and why you are proud of it.'
 
 def test_custom_scoring_detailed():

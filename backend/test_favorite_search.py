@@ -5,8 +5,7 @@ from langchain_community.vectorstores import FAISS
 from langchain_openai import OpenAIEmbeddings
 
 # Set the API key
-os.environ['OPENAI_API_KEY'] = '***REMOVED***'
-
+os.environ['OPENAI_API_KEY'] = ''
 question = 'Tell us about your favorite thing you built. Share the technical challenges, your approach, and why you are proud of it.'
 
 try:
