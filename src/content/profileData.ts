@@ -19,7 +19,7 @@ export const PROFILE = {
   shortIntros: [
     "💻 Engineering Leader | Technical Architect | Founding Engineer",
     "☘️ Driven by curiosity and a love for learning",
-    "📚 Lifelong learner | 🎲 Systems thinker | 🌱 Gardener | 🥧 Baker",
+    "📚 Lifelong learner | 🎲 Systems thinker | 🌱 Tinkerer | 🥧 Baker",
   ],
   // "☁️ I can't remember everything I have done, so here it is",
   now: ["Rag trained AI assistant"],
