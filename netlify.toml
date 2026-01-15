@@ -1,3 +1,14 @@
 [build]
-  command = "pnpm run build"
   publish = "dist"
+  command = "npm run build"
+
+[build.environment]
+  NODE_VERSION = "20"
+
+[[redirects]]
+  from = "/*"
+  to = "/404"
+  status = 404
+
+# Environment variables (set in Netlify dashboard)
+# PUBLIC_CHATBOT_API_URL = "https://tcheiner-chatbot.onrender.com/ask"

@@ -130,7 +130,14 @@ handler = Mangum(app)
 
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["http://localhost:4321", "https://localhost:4321", "https://tcheiner.com", "https://www.tcheiner.com"],  # Specific origins only - removed wildcard
+    allow_origins=[
+        "http://localhost:4321",
+        "https://localhost:4321",
+        "https://tcheiner.com",
+        "https://www.tcheiner.com",
+        "https://tcheiner.netlify.app",  # Netlify default subdomain
+        "https://*.netlify.app",  # Netlify deploy previews
+    ],
     allow_credentials=False,
     allow_methods=["GET", "POST", "OPTIONS"],
     allow_headers=["*"],

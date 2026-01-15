@@ -57,9 +57,6 @@ CLAUDE.MD
 # all zip files
 *.zip
 /python
-faiss*
-faiss_index*
-faiss/
 
 # Terraform state files - contain sensitive data
 *.tfstate
