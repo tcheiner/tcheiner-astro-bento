@@ -1,0 +1,22 @@
+services:
+  - type: web
+    name: tcheiner-chatbot
+    runtime: python
+    region: oregon  # Change to your preferred region
+    plan: starter  # Free tier, upgrade to 'standard' for better performance
+    buildCommand: pip install -r requirements-clean.txt
+    startCommand: uvicorn chatbot.main:app --host 0.0.0.0 --port $PORT
+    envVars:
+      - key: OPENAI_API_KEY
+        sync: false  # You'll set this manually in Render dashboard
+      - key: ALLOWED_ORIGINS
+        value: "http://localhost:4321,https://localhost:4321,https://tcheiner.com,https://www.tcheiner.com"
+      - key: MAX_TOKENS
+        value: "600"
+      - key: RETRIEVAL_K
+        value: "5"
+      - key: SCORE_THRESHOLD
+        value: "0.5"
+      - key: RETRIEVAL_STRATEGY
+        value: "default"
+    healthCheckPath: /health

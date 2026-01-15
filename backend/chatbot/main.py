@@ -107,8 +107,8 @@ def _create_qa_chain(openai_key):
     return RetrievalQA.from_chain_type(
         llm=ChatOpenAI(
             model="gpt-4o-mini",  # Use GPT-4o-mini for better quality and cost efficiency
-            temperature=0.3,  # Slightly more creative for natural responses
-            max_tokens=400,   # Increase to 400 tokens for initial response
+            temperature=0.6,  # Balanced for strategic connections without hallucination
+            max_tokens=600,   # Increase to 600 tokens for fuller, more complete responses
             openai_api_key=openai_key
         ),
         retriever=get_vectorstore().as_retriever(
@@ -138,6 +138,11 @@ app.add_middleware(
 
 # Include API routes
 app.include_router(router)
+
+# Root endpoint for health checks
+@app.get("/")
+async def root():
+    return {"status": "TC Heiner Chatbot API", "version": "1.0.0"}
 
 # Log a message when the app starts
 @app.on_event("startup")
