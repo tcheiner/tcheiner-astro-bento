@@ -45,8 +45,8 @@ const ChatbotUI = () => {
     const apiUrl = import.meta.env.PUBLIC_CHATBOT_API_URL;
     const userMessage = input.trim();
 
-    // Expand chatbot on first message
-    if (messages.length === 0) {
+    // Expand chatbot on first message (only on desktop)
+    if (messages.length === 0 && window.innerWidth >= 768) {
       setIsExpanded(true);
     }
 
@@ -242,7 +242,7 @@ const ChatbotUI = () => {
               </div>
             )}
 
-            <div className="flex items-center gap-1 md:gap-2">
+            <div className="flex items-center gap-1.5 md:gap-2 w-full">
               <input
                 type="text"
                 value={input}
@@ -265,7 +265,7 @@ const ChatbotUI = () => {
                     sendMessage();
                   }
                 }}
-                className="bg-yellow-600 text-white px-3 md:px-4 py-2 text-xs md:text-sm rounded-lg hover:bg-yellow-500 focus:outline-none disabled:bg-gray-400 disabled:cursor-pointer flex-shrink-0"
+                className="bg-yellow-600 text-white px-2.5 md:px-4 py-2 text-xs md:text-sm rounded-lg hover:bg-yellow-500 focus:outline-none disabled:bg-gray-400 disabled:cursor-pointer flex-shrink-0 whitespace-nowrap"
                 disabled={false}
               >
                 Send
