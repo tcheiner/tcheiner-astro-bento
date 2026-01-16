@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { FREE_QUESTIONS_LIMIT, FREE_QUESTIONS_WARNING_THRESHOLD } from '../config/chatbot';
 
 type Message = { sender: "user" | "bot"; text: string };
@@ -11,6 +11,22 @@ const ChatbotUI = () => {
   const [questionsUsed, setQuestionsUsed] = useState(0); // Track free questions used
   const [userApiKey, setUserApiKey] = useState(""); // User's own API key
   const [showApiKeyInput, setShowApiKeyInput] = useState(false); // Show API key input
+
+  // Prevent body scroll when chatbot is expanded or open on mobile
+  useEffect(() => {
+    const isMobile = window.innerWidth < 768;
+
+    if (isExpanded || (isOpen && isMobile)) {
+      document.body.style.overflow = 'hidden';
+    } else {
+      document.body.style.overflow = 'unset';
+    }
+
+    // Cleanup on unmount
+    return () => {
+      document.body.style.overflow = 'unset';
+    };
+  }, [isExpanded, isOpen]);
 
   const toggleChatbot = () => setIsOpen(!isOpen);
 
@@ -97,11 +113,25 @@ const ChatbotUI = () => {
 
   return (
     <>
-      {/* Blur backdrop when expanded */}
+      {/* Blur backdrop when expanded - click to minimize */}
       {isOpen && isExpanded && (
         <div
-          className="fixed inset-0 bg-black bg-opacity-50 backdrop-blur-sm z-40"
+          className="fixed inset-0 bg-black bg-opacity-50 backdrop-blur-sm z-40 cursor-pointer"
           onClick={() => setIsExpanded(false)}
+          title="Click to minimize chatbot"
+        />
+      )}
+
+      {/* Semi-transparent backdrop when open (but not expanded) on mobile */}
+      {isOpen && !isExpanded && (
+        <div
+          className="fixed inset-0 bg-transparent z-30 md:hidden"
+          onClick={(e) => {
+            // Only close if clicking outside the chatbot
+            if (e.target === e.currentTarget) {
+              setIsOpen(false);
+            }
+          }}
         />
       )}
 
@@ -144,7 +174,7 @@ const ChatbotUI = () => {
           <div className={`flex-1 overflow-hidden ${
             isExpanded ? 'py-[10%] md:py-[15%] px-2 md:px-4' : 'p-2 md:p-3'
           }`}>
-            <div className={`w-full h-full overflow-y-auto ${
+            <div className={`w-full h-full overflow-y-auto touch-pan-y ${
               isExpanded ? '' : 'h-64 md:h-64'
             }`}>
               {messages.length === 0 ? (
