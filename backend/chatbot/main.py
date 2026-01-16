@@ -6,8 +6,8 @@ from dotenv import load_dotenv
 # Normal imports - no more lazy loading needed with container images
 from langchain_openai import OpenAIEmbeddings, ChatOpenAI
 from langchain_community.vectorstores import FAISS
-from langchain.prompts import PromptTemplate
-from langchain.chains import RetrievalQA
+from langchain_core.prompts import PromptTemplate
+from langchain.chains.retrieval_qa.base import RetrievalQA
 
 from .routes import router
 from .services import query_vectorstore

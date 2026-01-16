@@ -1,5 +1,5 @@
 from pydantic import BaseModel
-from typing import List
+from typing import List, Optional
 
 class QueryRequest(BaseModel):
     question: str
@@ -9,7 +9,7 @@ class QueryResponse(BaseModel):
 
 class AskRequest(BaseModel):
     question: str
-    userApiKey: str = None  # Optional user API key
+    userApiKey: Optional[str] = None  # Optional user API key for paid tier
 
 class AskResponse(BaseModel):
     answer: str

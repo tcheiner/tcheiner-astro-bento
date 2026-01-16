@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { FREE_QUESTIONS_LIMIT, FREE_QUESTIONS_WARNING_THRESHOLD } from '../config/chatbot';
 
 type Message = { sender: "user" | "bot"; text: string };
 
@@ -31,11 +32,11 @@ const ChatbotUI = () => {
     if (!input.trim()) return; // Don't send empty messages
 
     // Check if user has exceeded free questions and no API key provided
-    if (questionsUsed >= 5 && !userApiKey) {
+    if (questionsUsed >= FREE_QUESTIONS_LIMIT && !userApiKey) {
       setShowApiKeyInput(true);
       setMessages((prev) => [...prev,
         { sender: "user", text: input.trim() },
-        { sender: "bot", text: "You've used your 5 free questions! To continue asking about my experience and projects, please provide your own OpenAI API key below." }
+        { sender: "bot", text: `You've used your ${FREE_QUESTIONS_LIMIT} free questions! To continue asking about my experience and projects, please provide your own OpenAI API key below.` }
       ]);
       setInput("");
       return;
@@ -78,10 +79,11 @@ const ChatbotUI = () => {
       setMessages((prev) => [...prev, { sender: "bot", text: data.answer }]);
 
       // Show warning when approaching limit
-      if (!userApiKey && questionsUsed === 3) {
+      if (!userApiKey && questionsUsed === FREE_QUESTIONS_WARNING_THRESHOLD) {
+        const questionsLeft = FREE_QUESTIONS_LIMIT - questionsUsed;
         setMessages((prev) => [...prev, {
           sender: "bot",
-          text: "⚠️ You have 1 free question remaining. After that, you'll need to provide your own OpenAI API key to continue."
+          text: `⚠️ You have ${questionsLeft} free ${questionsLeft === 1 ? 'question' : 'questions'} remaining. After that, you'll need to provide your own OpenAI API key to continue.`
         }]);
       }
 
@@ -147,10 +149,10 @@ const ChatbotUI = () => {
                   </div>
                   <div className="bg-green-50 border border-green-200 rounded-lg p-3">
                     <p className="font-semibold text-green-800 mb-1">🎁 Free Questions</p>
-                    <p className="text-green-700">You get <strong>5 free questions</strong> powered by GPT-4o-mini about me and my work.</p>
+                    <p className="text-green-700">You get <strong>{FREE_QUESTIONS_LIMIT} free questions</strong> powered by GPT-4o-mini about me and my work.</p>
                     <p className="text-green-600 text-xs mt-1">After that, you can use your own OpenAI API key to continue.</p>
                   </div>
-                  <p className="text-gray-500 text-xs">Questions remaining: <strong>{5 - questionsUsed}</strong></p>
+                  <p className="text-gray-500 text-xs">Questions remaining: <strong>{FREE_QUESTIONS_LIMIT - questionsUsed}</strong></p>
                 </div>
               ) : (
                 <div className="p-3">
@@ -205,10 +207,10 @@ const ChatbotUI = () => {
             )}
 
             {/* Question counter and API key status */}
-            {!userApiKey && questionsUsed < 5 && messages.length > 0 && (
+            {!userApiKey && questionsUsed < FREE_QUESTIONS_LIMIT && messages.length > 0 && (
               <div className="mb-2 text-center">
                 <span className="text-xs text-gray-500 bg-gray-100 px-2 py-1 rounded-full">
-                  Free questions: {questionsUsed}/5 used
+                  Free questions: {questionsUsed}/{FREE_QUESTIONS_LIMIT} used
                 </span>
               </div>
             )}
@@ -241,17 +243,17 @@ const ChatbotUI = () => {
                 onChange={(e) => setInput(e.target.value)}
                 onKeyDown={(e) => e.key === "Enter" && sendMessage()}
                 onClick={() => {
-                  if (questionsUsed >= 5 && !userApiKey) {
+                  if (questionsUsed >= FREE_QUESTIONS_LIMIT && !userApiKey) {
                     setShowApiKeyInput(true);
                   }
                 }}
-                placeholder={questionsUsed >= 5 && !userApiKey ? "Add API key to continue..." : "Ask about my experience, skills, projects..."}
-                disabled={questionsUsed >= 5 && !userApiKey}
+                placeholder={questionsUsed >= FREE_QUESTIONS_LIMIT && !userApiKey ? "Add API key to continue..." : "Ask about my experience, skills, projects..."}
+                disabled={questionsUsed >= FREE_QUESTIONS_LIMIT && !userApiKey}
                 className="flex-1 px-3 py-2 text-sm border border-gray-300 rounded-lg focus:outline-none focus:ring focus:ring-blue-300 disabled:bg-gray-100 disabled:cursor-pointer"
               />
               <button
                 onClick={() => {
-                  if (questionsUsed >= 5 && !userApiKey) {
+                  if (questionsUsed >= FREE_QUESTIONS_LIMIT && !userApiKey) {
                     setShowApiKeyInput(true);
                   } else {
                     sendMessage();

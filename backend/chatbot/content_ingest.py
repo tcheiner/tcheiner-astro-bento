@@ -2,7 +2,8 @@ import os
 import glob
 import datetime
 import json
-from typing import List, Dict
+import re
+from typing import List, Dict, Optional
 from langchain_core.documents import Document
 try:
     import markdown
@@ -32,12 +33,31 @@ def update_last_rebuild_time():
         json.dump({'last_rebuild': now}, f)
 
 
-def extract_text_from_md(filepath: str) -> str:
+def extract_frontmatter_slug(content: str) -> Optional[str]:
+    """Extract slug from YAML frontmatter if present."""
+    # Match YAML frontmatter between --- delimiters
+    frontmatter_match = re.match(r'^---\s*\n(.*?)\n---', content, re.DOTALL)
+    if not frontmatter_match:
+        return None
+
+    frontmatter = frontmatter_match.group(1)
+    # Look for slug: "value" or slug: value
+    slug_match = re.search(r'slug:\s*["\']?([^"\'\n]+)["\']?', frontmatter)
+    if slug_match:
+        return slug_match.group(1).strip()
+    return None
+
+
+def extract_text_from_md(filepath: str) -> tuple[str, Optional[str]]:
+    """Extract text content and slug from markdown/MDX file."""
     with open(filepath, 'r', encoding='utf-8') as f:
         content = f.read()
-    # Optionally strip frontmatter and MDX components here
-    # For now, just return the raw text
-    return content
+
+    # Extract slug from frontmatter
+    slug = extract_frontmatter_slug(content)
+
+    # Return raw text and slug
+    return content, slug
 
 
 def extract_text_from_pdf(filepath: str) -> str:
@@ -68,20 +88,31 @@ def load_documents_for_embedding() -> List[Document]:
     files = find_new_content_files(last_rebuild)
     documents = []
     for file in files:
+        text = None
+        slug = None
+
         if file['ext'] in ['md', 'mdx']:
-            text = extract_text_from_md(file['path'])
+            text, slug = extract_text_from_md(file['path'])
         elif file['ext'] == 'pdf':
             text = extract_text_from_pdf(file['path'])
         else:
             continue
+
+        # Build metadata
+        metadata = {
+            'source': file['path'],
+            'type': file['ext'],
+            'modified': file['mtime'].isoformat()
+        }
+
+        # Add slug to metadata if found
+        if slug:
+            metadata['slug'] = slug
+
         documents.append(
             Document(
                 page_content=text,
-                metadata={
-                    'source': file['path'],
-                    'type': file['ext'],
-                    'modified': file['mtime'].isoformat()
-                }
+                metadata=metadata
             )
         )
     return documents
