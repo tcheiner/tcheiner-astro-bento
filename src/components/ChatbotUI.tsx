@@ -12,6 +12,31 @@ const ChatbotUI = () => {
   const [userApiKey, setUserApiKey] = useState(""); // User's own API key
   const [showApiKeyInput, setShowApiKeyInput] = useState(false); // Show API key input
 
+  // Inject custom scrollbar styles
+  useEffect(() => {
+    const style = document.createElement('style');
+    style.innerHTML = `
+      .chatbot-scrollbar::-webkit-scrollbar {
+        width: 8px;
+      }
+      .chatbot-scrollbar::-webkit-scrollbar-track {
+        background: #f3f4f6;
+        border-radius: 4px;
+      }
+      .chatbot-scrollbar::-webkit-scrollbar-thumb {
+        background: #d97706;
+        border-radius: 4px;
+      }
+      .chatbot-scrollbar::-webkit-scrollbar-thumb:hover {
+        background: #b45309;
+      }
+    `;
+    document.head.appendChild(style);
+    return () => {
+      document.head.removeChild(style);
+    };
+  }, []);
+
   // Prevent body scroll when chatbot is expanded or open on mobile
   useEffect(() => {
     const isMobile = window.innerWidth < 768;
@@ -174,9 +199,13 @@ const ChatbotUI = () => {
           <div className={`flex-1 overflow-hidden ${
             isExpanded ? 'py-[10%] md:py-[15%] px-2 md:px-4' : 'p-2 md:p-3'
           }`}>
-            <div className={`w-full h-full overflow-y-auto touch-pan-y ${
+            <div className={`chatbot-scrollbar w-full h-full overflow-y-auto touch-pan-y ${
               isExpanded ? '' : 'h-64 md:h-64'
-            }`}>
+            }`}
+            style={{
+              scrollbarWidth: 'thin',
+              scrollbarColor: '#d97706 #f3f4f6'
+            }}>
               {messages.length === 0 ? (
                 <div className="text-gray-600 text-xs md:text-sm text-center space-y-2 md:space-y-3 p-2 md:p-3">
                   <div className="bg-blue-50 border border-blue-200 rounded-lg p-2 md:p-3">
