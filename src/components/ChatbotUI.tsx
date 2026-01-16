@@ -117,12 +117,18 @@ const ChatbotUI = () => {
       {isOpen && (
         <div className={`fixed bg-white shadow-lg rounded-lg border border-gray-200 z-50 transition-all duration-300 flex flex-col ${
           isExpanded
-            ? 'top-16 right-8 bottom-16 w-[550px] max-w-[70vw]' // Expanded: 40% wider total (384px -> 550px, 50vw -> 70vw)
-            : 'bottom-20 right-4 w-[460px] h-auto' // Compact: 40% wider total (320px -> 460px)
+            ? 'top-4 left-4 right-4 bottom-4 md:top-12 md:left-auto md:right-6 md:bottom-12 md:w-[480px] lg:top-16 lg:right-8 lg:bottom-16 lg:w-[550px]'
+            // Mobile: full screen with small margin
+            // Tablet: 480px width, positioned right
+            // Desktop: 550px width, positioned right
+            : 'bottom-4 left-4 right-4 h-auto max-h-[70vh] md:bottom-20 md:left-auto md:right-4 md:w-[400px] lg:w-[460px]'
+            // Mobile: full width bottom, max 70vh height
+            // Tablet: 400px width, positioned right
+            // Desktop: 460px width, positioned right
         }`}>
-          <div className="bg-yellow-600 text-white p-3 flex justify-between items-center rounded-t-lg">
-            <h3 className="font-bold text-sm">TC Heiner - Ask me anything!</h3>
-            <div className="flex gap-2">
+          <div className="bg-yellow-600 text-white p-2 md:p-3 flex justify-between items-center rounded-t-lg flex-shrink-0">
+            <h3 className="font-bold text-xs sm:text-sm truncate pr-2">TC Heiner - Ask me anything!</h3>
+            <div className="flex gap-1 md:gap-2 flex-shrink-0">
               {isExpanded && (
                 <button
                   onClick={() => setIsExpanded(false)}
@@ -136,33 +142,33 @@ const ChatbotUI = () => {
             </div>
           </div>
           <div className={`flex-1 overflow-hidden ${
-            isExpanded ? 'py-[15%] px-4' : 'p-3'
+            isExpanded ? 'py-[10%] md:py-[15%] px-2 md:px-4' : 'p-2 md:p-3'
           }`}>
             <div className={`w-full h-full overflow-y-auto ${
-              isExpanded ? '' : 'h-64'
+              isExpanded ? '' : 'h-64 md:h-64'
             }`}>
               {messages.length === 0 ? (
-                <div className="text-gray-600 text-sm text-center space-y-3 p-3">
-                  <div className="bg-blue-50 border border-blue-200 rounded-lg p-3">
-                    <p className="font-semibold text-blue-800 mb-2">👋 Hi! I'm TC Heiner</p>
-                    <p className="text-blue-700">Ask me questions about my experiences and past projects here.</p>
+                <div className="text-gray-600 text-xs md:text-sm text-center space-y-2 md:space-y-3 p-2 md:p-3">
+                  <div className="bg-blue-50 border border-blue-200 rounded-lg p-2 md:p-3">
+                    <p className="font-semibold text-blue-800 mb-1 md:mb-2">👋 Hi! I'm TC Heiner's chatbot!</p>
+                    <p className="text-blue-700 text-xs md:text-sm">I have been trained on the text on this website.  To prevent abuse, you can only ask me questions about my experiences and past projects here.</p>
                   </div>
-                  <div className="bg-green-50 border border-green-200 rounded-lg p-3">
+                  <div className="bg-green-50 border border-green-200 rounded-lg p-2 md:p-3">
                     <p className="font-semibold text-green-800 mb-1">🎁 Free Questions</p>
-                    <p className="text-green-700">You get <strong>{FREE_QUESTIONS_LIMIT} free questions</strong> powered by GPT-4o-mini about me and my work.</p>
+                    <p className="text-green-700 text-xs md:text-sm">You get <strong>{FREE_QUESTIONS_LIMIT} free questions</strong> powered by GPT-4o-mini about me and my work.</p>
                     <p className="text-green-600 text-xs mt-1">After that, you can use your own OpenAI API key to continue.</p>
                   </div>
                   <p className="text-gray-500 text-xs">Questions remaining: <strong>{FREE_QUESTIONS_LIMIT - questionsUsed}</strong></p>
                 </div>
               ) : (
-                <div className="p-3">
+                <div className="p-2 md:p-3">
                   {messages.map((msg, index) => (
                     <div
                       key={index}
-                      className={`mb-3 ${msg.sender === "user" ? "text-right" : "text-left"}`}
+                      className={`mb-2 md:mb-3 ${msg.sender === "user" ? "text-right" : "text-left"}`}
                     >
                       <span
-                        className={`inline-block px-3 py-2 rounded-lg text-xs leading-relaxed max-w-[85%] ${
+                        className={`inline-block px-2 md:px-3 py-1.5 md:py-2 rounded-lg text-xs leading-relaxed max-w-[90%] md:max-w-[85%] ${
                           msg.sender === "user"
                             ? "bg-yellow-500 text-white"
                             : "bg-gray-200 text-black whitespace-pre-line"
@@ -180,8 +186,8 @@ const ChatbotUI = () => {
               )}
             </div>
           </div>
-          <div className={`border-t border-gray-200 ${
-            isExpanded ? 'absolute bottom-0 left-0 right-0 p-4' : 'p-3'
+          <div className={`border-t border-gray-200 flex-shrink-0 ${
+            isExpanded ? 'absolute bottom-0 left-0 right-0 p-2 md:p-4' : 'p-2 md:p-3'
           }`}>
             {/* API Key Input */}
             {showApiKeyInput && (
@@ -236,7 +242,7 @@ const ChatbotUI = () => {
               </div>
             )}
 
-            <div className="flex items-center gap-2">
+            <div className="flex items-center gap-1 md:gap-2">
               <input
                 type="text"
                 value={input}
@@ -247,9 +253,9 @@ const ChatbotUI = () => {
                     setShowApiKeyInput(true);
                   }
                 }}
-                placeholder={questionsUsed >= FREE_QUESTIONS_LIMIT && !userApiKey ? "Add API key to continue..." : "Ask about my experience, skills, projects..."}
+                placeholder={questionsUsed >= FREE_QUESTIONS_LIMIT && !userApiKey ? "Add API key..." : "Ask about my experience..."}
                 disabled={questionsUsed >= FREE_QUESTIONS_LIMIT && !userApiKey}
-                className="flex-1 px-3 py-2 text-sm border border-gray-300 rounded-lg focus:outline-none focus:ring focus:ring-blue-300 disabled:bg-gray-100 disabled:cursor-pointer"
+                className="flex-1 min-w-0 px-2 md:px-3 py-2 text-xs md:text-sm border border-gray-300 rounded-lg focus:outline-none focus:ring focus:ring-blue-300 disabled:bg-gray-100 disabled:cursor-pointer"
               />
               <button
                 onClick={() => {
@@ -259,7 +265,7 @@ const ChatbotUI = () => {
                     sendMessage();
                   }
                 }}
-                className="bg-yellow-600 text-white px-4 py-2 text-sm rounded-lg hover:bg-yellow-500 focus:outline-none disabled:bg-gray-400 disabled:cursor-pointer"
+                className="bg-yellow-600 text-white px-3 md:px-4 py-2 text-xs md:text-sm rounded-lg hover:bg-yellow-500 focus:outline-none disabled:bg-gray-400 disabled:cursor-pointer flex-shrink-0"
                 disabled={false}
               >
                 Send
