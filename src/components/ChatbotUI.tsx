@@ -16,8 +16,13 @@ const ChatbotUI = () => {
   useEffect(() => {
     const style = document.createElement('style');
     style.innerHTML = `
+      .chatbot-scrollbar {
+        overflow-y: scroll !important;
+        -webkit-overflow-scrolling: touch;
+      }
       .chatbot-scrollbar::-webkit-scrollbar {
-        width: 8px;
+        width: 10px;
+        -webkit-appearance: none;
       }
       .chatbot-scrollbar::-webkit-scrollbar-track {
         background: #f3f4f6;
@@ -26,9 +31,20 @@ const ChatbotUI = () => {
       .chatbot-scrollbar::-webkit-scrollbar-thumb {
         background: #d97706;
         border-radius: 4px;
+        border: 2px solid #f3f4f6;
       }
       .chatbot-scrollbar::-webkit-scrollbar-thumb:hover {
         background: #b45309;
+      }
+      /* Force scrollbar visibility on mobile */
+      @media (max-width: 767px) {
+        .chatbot-scrollbar::-webkit-scrollbar {
+          width: 12px;
+        }
+        .chatbot-scrollbar::-webkit-scrollbar-thumb {
+          background: #d97706;
+          box-shadow: inset 0 0 6px rgba(0,0,0,0.3);
+        }
       }
     `;
     document.head.appendChild(style);
@@ -199,7 +215,7 @@ const ChatbotUI = () => {
           <div className={`flex-1 overflow-hidden ${
             isExpanded ? 'py-[10%] md:py-[15%] px-2 md:px-4' : 'p-2 md:p-3'
           }`}>
-            <div className={`chatbot-scrollbar w-full h-full overflow-y-auto touch-pan-y ${
+            <div className={`chatbot-scrollbar w-full h-full touch-pan-y ${
               isExpanded ? '' : 'h-64 md:h-64'
             }`}
             style={{
