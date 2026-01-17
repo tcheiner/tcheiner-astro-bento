@@ -197,16 +197,31 @@ Answer:
         for i, source in enumerate(sources, 1):
             url = convert_source_to_url(source['path'], source['slug'])
 
-            # Show matching tags if available
-            if source['matching_tags']:
-                tags_display = ', '.join(source['matching_tags'])
+            # Generate a better display name from the path
+            path = source['path']
+            if 'posts/' in path:
+                display_name = "Blog Post"
+            elif 'projects/' in path:
+                # Extract project name from path
+                filename = path.split('/')[-1].replace('.mdx', '')
+                if 'genai' in filename.lower() or 'image-pipeline' in filename.lower():
+                    display_name = "GenAI Image Pipeline"
+                elif 'chatbot' in filename.lower():
+                    display_name = "AI Chatbot Project"
+                else:
+                    display_name = filename.replace('-', ' ').title()
+            elif 'experiences/' in path:
+                filename = path.split('/')[-1].replace('.mdx', '')
+                if 'manaburn' in filename.lower():
+                    display_name = "ManaBurn Experience"
+                elif 'myndsens' in filename.lower():
+                    display_name = "Myndsens Experience"
+                else:
+                    display_name = filename.replace('-', ' ').title()
             else:
-                tags_display = ', '.join(source['tags'][:5])
+                display_name = source.get('title', 'Reference')
 
-            source_links_parts.append(
-                f"[{i}] [{source['title']}]({url})\n"
-                f"    Tags: {tags_display}"
-            )
+            source_links_parts.append(f"[{i}] [{display_name}]({url})")
 
         source_links = "\n".join(source_links_parts)
 
