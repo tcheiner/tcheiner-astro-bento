@@ -242,12 +242,8 @@ Respond with ONLY valid JSON, no markdown formatting:
             }
 
     def get_rejection_message(self) -> str:
-        """User-friendly rejection message"""
+        """User-friendly rejection message with contact page referral"""
         return (
-            "I can only answer questions relevant to job interviews, such as:\n"
-            "• Technical skills and past projects\n"
-            "• Work experience and achievements\n"
-            "• Behavioral and leadership questions\n"
-            "• Problem-solving approaches and work style\n\n"
-            "Please ask about TC's professional background and capabilities."
+            "I do not have the information to answer that question. "
+            "Please visit the [contact page](/contact) to get in touch directly with TC."
         )
