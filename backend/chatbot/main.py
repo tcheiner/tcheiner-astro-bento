@@ -1,28 +1,61 @@
+"""
+FastAPI Main Application - Multi-Agent Chatbot with Legacy Fallback
+
+ARCHITECTURE:
+    Two systems coexist with feature flag toggle:
+    1. NEW: Multi-agent orchestrator (tag + FAISS + behavioral analysis)
+    2. LEGACY: Single QA chain (backward compatibility)
+
+FEATURE FLAG:
+    USE_MULTI_AGENT environment variable (default: true)
+    - true: Routes through multi-agent orchestrator
+    - false: Uses legacy QA chain
+    - On error: Automatic fallback to legacy system
+
+DEPLOYMENT:
+    - Local: uvicorn chatbot.main:app --reload
+    - Lambda: Mangum handler wraps FastAPI app
+    - Container: All dependencies bundled in Docker image
+"""
+
 import os
+import asyncio
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from dotenv import load_dotenv
 
-# Normal imports - no more lazy loading needed with container images
+# ============================================
+# SHARED DEPENDENCIES (both systems use these)
+# ============================================
 from langchain_openai import OpenAIEmbeddings, ChatOpenAI
 from langchain_community.vectorstores import FAISS
 from langchain_core.prompts import PromptTemplate
 from langchain.chains.retrieval_qa.base import RetrievalQA
-
-from .routes import router
-from .services import query_vectorstore
-from .filters import is_question_about_tc
-from .sources import format_sources_as_links
-from .confidence import calculate_confidence_score
-from .summarization import summarize_response
 from pydantic import BaseModel
 from typing import List
 from mangum import Mangum
 from .models import AskRequest, AskResponse
+from .sources import format_sources_as_links  # Used by both systems
 
+# ============================================
+# LEGACY SYSTEM IMPORTS (backward compatibility)
+# ============================================
+from .routes import router
+from .services import query_vectorstore
+from .filters import is_question_about_tc  # Replaced by filter_classifier_agent
+from .confidence import calculate_confidence_score  # Not used in multi-agent
+from .summarization import summarize_response  # Not used in multi-agent
+
+# ============================================
+# CACHING & CONFIGURATION
+# ============================================
 # Global variables for caching
-_vectorstore = None
-_qa_chain = None
+_vectorstore = None  # Shared by both systems
+_qa_chain = None  # Legacy system only
+_orchestrator = None  # Multi-agent system only
+
+# Feature flag for multi-agent system
+USE_MULTI_AGENT = os.getenv("USE_MULTI_AGENT", "true").lower() == "true"
 
 # Configuration
 def get_openai_api_key():
@@ -97,12 +130,12 @@ def _create_qa_chain(openai_key):
     """Create a new QA chain with the specified OpenAI API key."""
     # Import prompt template from services to ensure consistency
     from .services import prompt_template
-    
+
     prompt = PromptTemplate(
         template=prompt_template,
         input_variables=["context", "question"]
     )
-    
+
     # Create the RetrievalQA chain
     return RetrievalQA.from_chain_type(
         llm=ChatOpenAI(
@@ -121,6 +154,20 @@ def _create_qa_chain(openai_key):
         return_source_documents=True,
         chain_type_kwargs={"prompt": prompt}
     )
+
+
+def get_orchestrator():
+    """Get the multi-agent orchestrator (cached)."""
+    global _orchestrator
+    if _orchestrator is None:
+        try:
+            from chatbot.orchestrator import MultiAgentOrchestrator
+            _orchestrator = MultiAgentOrchestrator()
+            print("Multi-agent orchestrator initialized successfully")
+        except Exception as e:
+            print(f"Warning: Could not initialize multi-agent orchestrator: {e}")
+            return None
+    return _orchestrator
 
 # Create FastAPI app
 app = FastAPI(title="Chatbot Backend", version="1.0.0")
@@ -176,7 +223,51 @@ def ask_options():
     )
 
 @app.post("/ask", response_model=AskResponse)
-def ask_endpoint(request: AskRequest):
+async def ask_endpoint(request: AskRequest):
+    """
+    Main chatbot endpoint - routes to multi-agent system or legacy QA chain
+    """
+
+    # Feature flag: Use multi-agent system or legacy approach
+    if USE_MULTI_AGENT:
+        orchestrator = get_orchestrator()
+        if orchestrator:
+            try:
+                # Use new multi-agent orchestrator
+                result = await orchestrator.process_question(request.question)
+
+                # Add model note
+                model_note = ""
+                if request.userApiKey:
+                    model_note = "\n\n*Response generated using your API key with multi-agent system*"
+                else:
+                    model_note = "\n\n*Free response powered by multi-agent AI system*"
+
+                full_answer = result['answer'] + model_note
+
+                response = AskResponse(
+                    answer=full_answer,
+                    sources=result['sources']
+                )
+
+                # Add CORS headers for browser requests
+                from fastapi import Response
+                return Response(
+                    content=response.model_dump_json(),
+                    media_type="application/json",
+                    headers={
+                        "Access-Control-Allow-Origin": "*",
+                        "Access-Control-Allow-Methods": "POST, OPTIONS",
+                        "Access-Control-Allow-Headers": "Content-Type, Authorization, X-Requested-With"
+                    }
+                )
+
+            except Exception as e:
+                print(f"Multi-agent system error: {e}")
+                # Fall through to legacy system
+                pass
+
+    # Legacy system (fallback or if multi-agent disabled)
     # Content filtering - ensure questions are about TC Heiner
     if not is_question_about_tc(request.question):
         response = AskResponse(
@@ -193,39 +284,39 @@ def ask_endpoint(request: AskRequest):
                 "Access-Control-Allow-Headers": "Content-Type, Authorization, X-Requested-With"
             }
         )
-    
+
     try:
         # Use the QA chain with appropriate API key
         qa_chain = get_qa_chain(request.userApiKey)
         result = qa_chain.invoke({"query": request.question})
         raw_answer = result["result"]
         sources = result["source_documents"]
-        
+
         # Only summarize if response is longer than ~150 tokens (roughly 600 characters)
         api_key = request.userApiKey or OPENAI_API_KEY
         if len(raw_answer) > 600:  # Approximate 150 tokens
             summarized_answer = summarize_response(raw_answer, api_key)
         else:
             summarized_answer = raw_answer
-        
+
         # Format clickable source links
         source_links = format_sources_as_links(sources)
-        
+
         # Add model note only (remove confidence explanation)
         model_note = ""
         if request.userApiKey:
             model_note = "\n\n*Response generated using your API key with GPT-4o-mini*"
         else:
             model_note = "\n\n*Free response powered by GPT-4o-mini*"
-        
+
         # Combine all parts (no confidence note)
         full_answer = summarized_answer + source_links + model_note
-        
+
         response = AskResponse(
-            answer=full_answer, 
+            answer=full_answer,
             sources=[doc.metadata.get("source", "") for doc in sources]
         )
-        
+
     except Exception as e:
         # Handle API key errors gracefully
         error_msg = str(e)
@@ -239,7 +330,7 @@ def ask_endpoint(request: AskRequest):
                 answer=f"I encountered an error processing your question: {error_msg}",
                 sources=[]
             )
-    
+
     # Add CORS headers for browser requests
     from fastapi import Response
     return Response(
