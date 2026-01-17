@@ -123,10 +123,12 @@ class FilterClassifierAgent:
         # - Portfolio and achievements
         # Examples: "What AI projects?", "Tell me about your Python work"
         skills_patterns = [
-            r'\b(what|which|list).*(project|experience|skill|language|framework|tool)\b',
-            r'\b(tell me about|describe).*(work|job|project|role|position)\b',
+            r'\b(what|which|list).*(project|experience|skill|language|framework|tool)',
+            r'\b(tell me about|describe).*(work|job|project|role|position|experience)',
             r'\byour experience with\b',
-            r'\b(show me|give me).*(portfolio|work|project)\b'
+            r'\byour (work|job|project|experience)',
+            r'\b(show me|give me).*(portfolio|work|project)',
+            r'\b(python|javascript|aws|ai|ml|technical)\b.*(project|work|experience)',
         ]
 
         for pattern in skills_patterns:
@@ -148,11 +150,13 @@ class FilterClassifierAgent:
         # - Handling challenges/failures
         # Examples: "How do you handle failure?", "Describe your leadership style"
         behavioral_patterns = [
-            r'\bhow (do you|did you|would you)\b',
-            r'\b(describe|tell me about).*(approach|style|method|process|philosophy)\b',
-            r'\b(conflict|challenge|difficult|failure|mistake).*\b(handle|deal|approach)\b',
-            r'\b(growth|learn|evolve|improve|develop)\b.*\b(you|your|yourself)\b',
-            r'\b(leadership|management|team) style\b'
+            r'\bhow (do you|did you|would you)',
+            r'\b(describe|tell me about).*(approach|style|method|process|philosophy)',
+            r'\b(conflict|challenge|difficult|failure|mistake).*(handle|deal|approach)',
+            r'\b(growth|learn|evolve|improve|develop).*(you|your|yourself|demonstrate)',
+            r'\b(leadership|management|team) style',
+            r'\bexample.*(how you|you demonstrate|your)',
+            r'\b(give me|show me).*(example|instance).*(how|you|your)',
         ]
 
         for pattern in behavioral_patterns:
@@ -168,41 +172,74 @@ class FilterClassifierAgent:
         return None
 
     def _llm_analyze(self, question: str) -> dict:
-        """Fallback to LLM for ambiguous cases"""
+        """
+        Fallback to LLM for ambiguous cases
 
-        prompt = f"""
-        Analyze this question for a job interview chatbot:
-        "{question}"
-
-        Determine:
-        1. Is it relevant to job interviews?
-        2. If yes, is it SKILLS (technical/experience) or BEHAVIORAL (approach/style)?
-
-        RELEVANT:
-        - Technical skills and experience
-        - Past projects and work history
-        - Behavioral and situational questions
-        - Leadership and team management
-        - Problem-solving approaches
-        - Work preferences and values
-
-        IRRELEVANT:
-        - Personal hobbies and family
-        - Off-topic (weather, news, etc.)
-        - Code generation requests
-        - General knowledge queries
-
-        JSON response:
-        {{
-            "relevant": true/false,
-            "type": "SKILLS"/"BEHAVIORAL"/"IRRELEVANT",
-            "confidence": 0.0-1.0,
-            "reason": "brief explanation"
-        }}
+        Handles JSON parsing with markdown code blocks and error recovery
         """
 
-        response = self.llm.invoke(prompt)
-        return json.loads(response.content)
+        prompt = f"""Analyze this question for a job interview chatbot:
+"{question}"
+
+Determine:
+1. Is it relevant to job interviews?
+2. If yes, is it SKILLS (technical/experience) or BEHAVIORAL (approach/style)?
+
+RELEVANT:
+- Technical skills and experience
+- Past projects and work history
+- Behavioral and situational questions
+- Leadership and team management
+- Problem-solving approaches
+- Work preferences and values
+
+IRRELEVANT:
+- Personal hobbies and family
+- Off-topic (weather, news, etc.)
+- Code generation requests
+- General knowledge queries
+
+Respond with ONLY valid JSON, no markdown formatting:
+{{
+    "relevant": true,
+    "type": "SKILLS",
+    "confidence": 0.9,
+    "reason": "brief explanation"
+}}"""
+
+        try:
+            response = self.llm.invoke(prompt)
+            content = response.content.strip()
+
+            # Remove markdown code blocks if present
+            if content.startswith("```"):
+                # Extract JSON from code block
+                lines = content.split('\n')
+                # Skip first line (```json or ```)
+                # Skip last line (```)
+                content = '\n'.join(lines[1:-1])
+
+            # Parse JSON
+            result = json.loads(content)
+
+            # Validate required fields
+            if "relevant" not in result or "type" not in result:
+                raise ValueError("Missing required fields")
+
+            return result
+
+        except Exception as e:
+            # Fallback: If LLM parsing fails, make educated guess
+            print(f"Warning: LLM JSON parsing failed: {e}")
+            print(f"Response content: {response.content[:200]}")
+
+            # Conservative fallback: treat as SKILLS question with low confidence
+            return {
+                "relevant": True,
+                "type": "SKILLS",
+                "confidence": 0.5,
+                "reason": f"LLM parsing failed, defaulting to SKILLS. Error: {str(e)[:100]}"
+            }
 
     def get_rejection_message(self) -> str:
         """User-friendly rejection message"""

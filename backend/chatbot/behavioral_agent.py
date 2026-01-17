@@ -349,8 +349,16 @@ Format as JSON:
 
         response = self.llm.invoke(extraction_prompt)
         try:
-            return json.loads(response.content)
-        except:
+            content = response.content.strip()
+
+            # Remove markdown code blocks if present
+            if content.startswith("```"):
+                lines = content.split('\n')
+                content = '\n'.join(lines[1:-1])
+
+            return json.loads(content)
+        except Exception as e:
+            print(f"Warning: Theme extraction JSON parsing failed: {e}")
             return {"raw_analysis": response.content}
 
     def _synthesize_with_sources(self, question: str, themes: dict, blogs: list) -> dict:
@@ -491,10 +499,18 @@ JSON:
 
         response = self.llm.invoke(verification_prompt)
         try:
-            result = json.loads(response.content)
-            if result['status'] == 'IMPROVE':
+            content = response.content.strip()
+
+            # Remove markdown code blocks if present
+            if content.startswith("```"):
+                lines = content.split('\n')
+                content = '\n'.join(lines[1:-1])
+
+            result = json.loads(content)
+            if result.get('status') == 'IMPROVE' and 'improved_answer' in result:
                 return result['improved_answer']
             else:
                 return answer  # Original is good
-        except:
+        except Exception as e:
+            print(f"Warning: Quality verification JSON parsing failed: {e}")
             return answer  # If parsing fails, return original
