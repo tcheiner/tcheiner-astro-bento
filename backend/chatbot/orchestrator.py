@@ -161,10 +161,13 @@ class MultiAgentOrchestrator:
             context_parts.append(f"[{i}] {content}")
 
             # Track source
+            # Handle both tag results (slug at top level) and FAISS results (slug in metadata)
+            slug = result.get('slug') or result.get('metadata', {}).get('slug', '')
+
             sources.append({
                 'path': result.get('source') or result.get('path'),
                 'title': result.get('title', 'Unknown'),
-                'slug': result.get('slug', ''),
+                'slug': slug,
                 'tags': result.get('tags', []),
                 'matching_tags': result.get('matching_tags', []),
                 'content_type': result.get('content_type', '')
