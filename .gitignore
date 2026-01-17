@@ -65,3 +65,9 @@ CLAUDE.MD
 *.tfvars.json
 .terraform.lock.hcl
 
+# Python cache files
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
