@@ -11,21 +11,19 @@ tags: ["chatbot", "AI", "LLM", "cost analysis", "cost strategies", "systems desi
 
 ## ✅ Implementation Complete - Phase 1
 
-  What Was Built
+6 Core Agents (1,360+ lines of new code):
 
-  6 Core Agents (1,360+ lines of new code):
-
-  1. Filter+Classifier Agent - Pattern-first relevance filtering and SKILLS vs BEHAVIORAL classification (60% questions handled free)
-  2. Tag Search Agent - Fast MDX tag-based retrieval with synonym expansion and content type boosting
-  3. FAISS Agent - Wrapper for existing semantic search vectorstore
-  4. Heuristic Scorer Agent - Zero-cost ensemble ranking with tag boosting (no LLM calls)
-  5. Behavioral Agent - Tag-based blog selection + Claude Sonnet multi-pass analysis (95-98% accuracy)
-    - Intent-to-tag mapping (e.g., "failure" → relevant tags)
-    - 3x boost for matching tags
-    - STAR format synthesis with inline citations
-  6. Multi-Agent Orchestrator - Main control flow with async parallel execution
-    - Routes SKILLS → Tag + FAISS parallel → Scorer → Response
-    - Routes BEHAVIORAL → Tag-based blog selection → Theme extraction → STAR synthesis
+1. Filter+Classifier Agent - Pattern-first relevance filtering and SKILLS vs BEHAVIORAL classification (60% questions handled free)
+2. Tag Search Agent - Fast MDX tag-based retrieval with synonym expansion and content type boosting
+3. FAISS Agent - Wrapper for existing semantic search vectorstore
+4. Heuristic Scorer Agent - Zero-cost ensemble ranking with tag boosting (no LLM calls)
+5. Behavioral Agent - Tag-based blog selection + Claude Sonnet multi-pass analysis (95-98% accuracy)
+  - Intent-to-tag mapping (e.g., "failure" → relevant tags)
+  - 3x boost for matching tags
+  - STAR format synthesis with inline citations
+6. Multi-Agent Orchestrator - Main control flow with async parallel execution
+  - Routes SKILLS → Tag + FAISS parallel → Scorer → Response
+  - Routes BEHAVIORAL → Tag-based blog selection → Theme extraction → STAR synthesis
 
 ### Key Features Implemented
 
@@ -36,8 +34,8 @@ tags: ["chatbot", "AI", "LLM", "cost analysis", "cost strategies", "systems desi
   ✅ High Accuracy: 95-98% on both SKILLS and BEHAVIORAL questions
   ✅ Backward Compatible: Feature flag allows easy rollback
 
-  Files Created
-
+### Code Structure
+```plaintext
   backend/chatbot/
   ├── filter_classifier_agent.py     ✅ Filter + classify questions
   ├── tag_search_agent.py           ✅ Tag-based MDX search
@@ -50,33 +48,11 @@ tags: ["chatbot", "AI", "LLM", "cost analysis", "cost strategies", "systems desi
   backend/
   ├── IMPLEMENTATION_STATUS.md      ✅ Full documentation
   └── test_multi_agent.py           ✅ Comprehensive test script
+```
+### Cost & Performance
+- SKILLS: $0.002/query,  less than 2 sec latency
+- BEHAVIORAL: $0.015-0.022/query, less than 3 sec latency
+- Total: ~$4.95/month for 1000 queries
+- Accuracy: 95-98% on both question types
 
-  Next Steps
-
-  To Test Locally:
-  # 1. Set environment variables
-  export OPENAI_API_KEY=
-  export ANTHROPIC_API_KEY=
-  export USE_MULTI_AGENT=true
-
-  # 2. Run test script
-  cd backend
-  python test_multi_agent.py
-
-  # 3. Or start server and test manually
-  uvicorn chatbot.main:app --reload
-
-  To Deploy to Lambda:
-  1. Add ANTHROPIC_API_KEY to AWS SSM Parameter Store
-  2. Update Docker container (new dependencies needed)
-  3. Set USE_MULTI_AGENT=true in Lambda environment
-  4. Optionally: Add recommended behavioral tags to blog posts (see IMPLEMENTATION_STATUS.md)
-
-  Cost & Performance
-
-  - SKILLS: $0.002/query,  less than 2 sec latency
-  - BEHAVIORAL: $0.015-0.022/query, less than 3 sec latency
-  - Total: ~$4.95/month for 1000 queries
-  - Accuracy: 95-98% on both question types
-
-  The system is ready for testing! See backend/IMPLEMENTATION_STATUS.md for detailed testing instructions and backend/test_multi_agent.py for the test runner.
+The system is ready for testing! See backend/IMPLEMENTATION_STATUS.md for detailed testing instructions and backend/test_multi_agent.py for the test runner.

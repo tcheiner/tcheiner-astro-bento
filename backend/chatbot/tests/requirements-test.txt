@@ -1,0 +1,21 @@
+# Test dependencies for chatbot component tests
+
+# Core testing framework
+pytest>=8.0.0
+pytest-asyncio>=0.23.0
+
+# Optional: Coverage reporting
+pytest-cov>=4.1.0
+
+# Optional: Performance benchmarking
+pytest-benchmark>=4.0.0
+
+# FastAPI testing
+httpx>=0.26.0
+
+# Already in main requirements (listed for reference):
+# fastapi
+# langchain
+# langchain-openai
+# langchain-community
+# faiss-cpu
