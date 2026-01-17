@@ -433,11 +433,31 @@ Response:
         source_links_parts = ["\n\n**Sources (supporting this answer):**"]
         for i, source in enumerate(sources, 1):
             url = convert_source_to_url(source['path'], source['slug'])
-            tags_display = ', '.join(source['matching_tags']) if source['matching_tags'] else ', '.join(source['tags'][:5])
-            source_links_parts.append(
-                f"[{i}] [{source['title']}]({url})\n"
-                f"    Relevant tags: {tags_display}"
-            )
+
+            # Generate display name from path (similar to orchestrator)
+            path = source['path']
+            if 'posts/' in path:
+                display_name = "Blog Post"
+            elif 'projects/' in path:
+                filename = path.split('/')[-1].replace('.mdx', '')
+                if 'genai' in filename.lower() or 'image-pipeline' in filename.lower():
+                    display_name = "GenAI Image Pipeline"
+                elif 'chatbot' in filename.lower():
+                    display_name = "AI Chatbot Project"
+                else:
+                    display_name = filename.replace('-', ' ').title()
+            elif 'experiences/' in path:
+                filename = path.split('/')[-1].replace('.mdx', '')
+                if 'manaburn' in filename.lower():
+                    display_name = "ManaBurn Experience"
+                elif 'myndsens' in filename.lower():
+                    display_name = "Myndsens Experience"
+                else:
+                    display_name = filename.replace('-', ' ').title()
+            else:
+                display_name = source.get('title', 'Reference')
+
+            source_links_parts.append(f'[{i}] <a href="{url}" target="_blank">{display_name}</a>')
 
         source_links = "\n".join(source_links_parts)
 

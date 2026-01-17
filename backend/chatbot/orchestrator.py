@@ -221,7 +221,7 @@ Answer:
             else:
                 display_name = source.get('title', 'Reference')
 
-            source_links_parts.append(f"[{i}] [{display_name}]({url})")
+            source_links_parts.append(f'[{i}] <a href="{url}" target="_blank">{display_name}</a>')
 
         source_links = "\n".join(source_links_parts)
 
