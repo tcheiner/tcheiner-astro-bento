@@ -219,8 +219,7 @@ const ChatbotUI = () => {
               {messages.length === 0 ? (
                 <div className="text-gray-600 text-sm text-center space-y-2 md:space-y-3">
                   <div className="bg-blue-50 border border-blue-200 rounded-lg p-3">
-                    <p className="font-semibold text-blue-800 mb-2 text-sm">👋 Hi! I'm TC Heiner's chatbot!</p>
-                    <p className="text-blue-700 text-sm">I can answer questions about TC's work, projects, and professional experience using information from this website.</p>
+                    <p className="font-semibold text-blue-800 mb-2 text-sm">👋 Hi! I'm TC Heiner's chatbot, here to answer questions about my work and projects.</p>
                   </div>
                   <div className="bg-green-50 border border-green-200 rounded-lg p-3">
                     <p className="font-semibold text-green-800 mb-1 text-sm">🎁 Free Questions</p>

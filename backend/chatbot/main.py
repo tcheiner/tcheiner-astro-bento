@@ -24,6 +24,10 @@ from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from dotenv import load_dotenv
 
+# Load environment variables from .env file FIRST
+# This must happen before any code that reads environment variables
+load_dotenv()
+
 # ============================================
 # SHARED DEPENDENCIES (both systems use these)
 # ============================================
