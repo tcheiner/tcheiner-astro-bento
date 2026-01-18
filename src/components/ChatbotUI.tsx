@@ -12,39 +12,28 @@ const ChatbotUI = () => {
   const [userApiKey, setUserApiKey] = useState(""); // User's own API key
   const [showApiKeyInput, setShowApiKeyInput] = useState(false); // Show API key input
 
-  // Inject custom scrollbar styles
+  // Inject scrollbar styles optimized for iOS and all platforms
   useEffect(() => {
     const style = document.createElement('style');
     style.innerHTML = `
-      .chatbot-scrollbar {
-        overflow-y: scroll !important;
+      .chatbot-body {
+        flex: 1 1 auto;
+        overflow-y: auto;
+        overflow-x: hidden;
         -webkit-overflow-scrolling: touch;
+        overscroll-behavior: contain;
+        touch-action: pan-y;
+        scrollbar-width: thin;
+        scrollbar-color: #d97706 #f3f4f6;
       }
-      .chatbot-scrollbar::-webkit-scrollbar {
-        width: 10px;
-        -webkit-appearance: none;
+
+      .chatbot-body::-webkit-scrollbar {
+        width: 8px;
       }
-      .chatbot-scrollbar::-webkit-scrollbar-track {
-        background: #f3f4f6;
-        border-radius: 4px;
-      }
-      .chatbot-scrollbar::-webkit-scrollbar-thumb {
+
+      .chatbot-body::-webkit-scrollbar-thumb {
         background: #d97706;
         border-radius: 4px;
-        border: 2px solid #f3f4f6;
-      }
-      .chatbot-scrollbar::-webkit-scrollbar-thumb:hover {
-        background: #b45309;
-      }
-      /* Force scrollbar visibility on mobile */
-      @media (max-width: 767px) {
-        .chatbot-scrollbar::-webkit-scrollbar {
-          width: 12px;
-        }
-        .chatbot-scrollbar::-webkit-scrollbar-thumb {
-          background: #d97706;
-          box-shadow: inset 0 0 6px rgba(0,0,0,0.3);
-        }
       }
     `;
     document.head.appendChild(style);
@@ -53,21 +42,40 @@ const ChatbotUI = () => {
     };
   }, []);
 
-  // Prevent body scroll when chatbot is expanded or open on mobile
+  // Prevent body scroll when chatbot is expanded or open on mobile (iOS fix)
   useEffect(() => {
     const isMobile = window.innerWidth < 768;
 
     if (isExpanded || (isOpen && isMobile)) {
       document.body.style.overflow = 'hidden';
+      document.body.style.position = 'fixed'; // iOS fix
+      document.body.style.width = '100%';     // Prevent width change
     } else {
-      document.body.style.overflow = 'unset';
+      document.body.style.overflow = '';
+      document.body.style.position = '';
+      document.body.style.width = '';
     }
 
     // Cleanup on unmount
     return () => {
-      document.body.style.overflow = 'unset';
+      document.body.style.overflow = '';
+      document.body.style.position = '';
+      document.body.style.width = '';
     };
   }, [isExpanded, isOpen]);
+
+  // Handle iOS viewport height changes due to keyboard
+  useEffect(() => {
+    const handleResize = () => {
+      // Update CSS custom property for real viewport height
+      const vh = window.innerHeight * 0.01;
+      document.documentElement.style.setProperty('--vh', `${vh}px`);
+    };
+
+    handleResize();
+    window.addEventListener('resize', handleResize);
+    return () => window.removeEventListener('resize', handleResize);
+  }, []);
 
   const toggleChatbot = () => setIsOpen(!isOpen);
 
@@ -93,7 +101,7 @@ const ChatbotUI = () => {
       setShowApiKeyInput(true);
       setMessages((prev) => [...prev,
         { sender: "user", text: input.trim() },
-        { sender: "bot", text: `You've used your ${FREE_QUESTIONS_LIMIT} free questions! To continue asking about my experience and projects, please provide your own OpenAI API key below.` }
+        { sender: "bot", text: `You've used your ${FREE_QUESTIONS_LIMIT} free questions! To continue asking about my experience and projects, use your OpenAI API key below.` }
       ]);
       setInput("");
       return;
@@ -140,7 +148,7 @@ const ChatbotUI = () => {
         const questionsLeft = FREE_QUESTIONS_LIMIT - questionsUsed;
         setMessages((prev) => [...prev, {
           sender: "bot",
-          text: `⚠️ You have ${questionsLeft} free ${questionsLeft === 1 ? 'question' : 'questions'} remaining. After that, you'll need to provide your own OpenAI API key to continue.`
+          text: `⚠️ You have ${questionsLeft} free ${questionsLeft === 1 ? 'question' : 'questions'} remaining. After that, use your OpenAI API key to continue.`
         }]);
       }
 
@@ -188,14 +196,8 @@ const ChatbotUI = () => {
       {isOpen && (
         <div className={`fixed bg-white shadow-lg rounded-lg border border-gray-200 z-50 transition-all duration-300 flex flex-col ${
           isExpanded
-            ? 'top-4 left-4 right-4 bottom-4 md:top-12 md:left-auto md:right-6 md:bottom-12 md:w-[480px] lg:top-16 lg:right-8 lg:bottom-16 lg:w-[550px]'
-            // Mobile: full screen with small margin
-            // Tablet: 480px width, positioned right
-            // Desktop: 550px width, positioned right
-            : 'bottom-4 left-4 right-4 h-auto max-h-[70vh] md:bottom-20 md:left-auto md:right-4 md:w-[400px] lg:w-[460px]'
-            // Mobile: full width bottom, max 70vh height
-            // Tablet: 400px width, positioned right
-            // Desktop: 460px width, positioned right
+            ? 'inset-4 md:inset-y-12 md:right-6 md:left-auto md:w-[550px]'
+            : 'bottom-4 left-4 right-4 h-[90vh] md:h-auto md:max-h-[70vh] md:bottom-20 md:left-auto md:right-4 md:w-[460px]'
         }`}>
           <div className="bg-yellow-600 text-white p-2 md:p-3 flex justify-between items-center rounded-t-lg flex-shrink-0">
             <h3 className="font-bold text-xs sm:text-sm truncate pr-2">TC Heiner - Ask me anything!</h3>
@@ -212,38 +214,30 @@ const ChatbotUI = () => {
               <button onClick={toggleChatbot} title="Close">✖</button>
             </div>
           </div>
-          <div className={`flex-1 overflow-hidden ${
-            isExpanded ? 'py-[10%] md:py-[15%] px-2 md:px-4' : 'p-2 md:p-3'
-          }`}>
-            <div className={`chatbot-scrollbar w-full h-full touch-pan-y ${
-              isExpanded ? '' : 'h-64 md:h-64'
-            }`}
-            style={{
-              scrollbarWidth: 'thin',
-              scrollbarColor: '#d97706 #f3f4f6'
-            }}>
+          <div className="flex-1 overflow-hidden">
+            <div className="chatbot-body h-full p-2 md:p-3">
               {messages.length === 0 ? (
-                <div className="text-gray-600 text-xs md:text-sm text-center space-y-2 md:space-y-3 p-2 md:p-3">
-                  <div className="bg-blue-50 border border-blue-200 rounded-lg p-2 md:p-3">
-                    <p className="font-semibold text-blue-800 mb-1 md:mb-2">👋 Hi! I'm TC Heiner's chatbot!</p>
-                    <p className="text-blue-700 text-xs md:text-sm">I have been trained on the text on this website.  To prevent abuse, you can only ask me questions about my experiences and past projects here.</p>
+                <div className="text-gray-600 text-sm text-center space-y-2 md:space-y-3">
+                  <div className="bg-blue-50 border border-blue-200 rounded-lg p-3">
+                    <p className="font-semibold text-blue-800 mb-2 text-sm">👋 Hi! I'm TC Heiner's chatbot!</p>
+                    <p className="text-blue-700 text-sm">I can answer questions about TC's work, projects, and professional experience using information from this website.</p>
                   </div>
-                  <div className="bg-green-50 border border-green-200 rounded-lg p-2 md:p-3">
-                    <p className="font-semibold text-green-800 mb-1">🎁 Free Questions</p>
-                    <p className="text-green-700 text-xs md:text-sm">You get <strong>{FREE_QUESTIONS_LIMIT} free questions</strong> powered by GPT-4o-mini about me and my work.</p>
-                    <p className="text-green-600 text-xs mt-1">After that, you can use your own OpenAI API key to continue.</p>
+                  <div className="bg-green-50 border border-green-200 rounded-lg p-3">
+                    <p className="font-semibold text-green-800 mb-1 text-sm">🎁 Free Questions</p>
+                    <p className="text-green-700 text-sm">You get <strong>{FREE_QUESTIONS_LIMIT} free questions</strong> about TC's work.</p>
+                    <p className="text-green-600 text-xs mt-1">After that, use your OpenAI API key to continue.</p>
                   </div>
                   <p className="text-gray-500 text-xs">Questions remaining: <strong>{FREE_QUESTIONS_LIMIT - questionsUsed}</strong></p>
                 </div>
               ) : (
-                <div className="p-2 md:p-3">
+                <>
                   {messages.map((msg, index) => (
                     <div
                       key={index}
-                      className={`mb-2 md:mb-3 ${msg.sender === "user" ? "text-right" : "text-left"}`}
+                      className={`mb-3 ${msg.sender === "user" ? "text-right" : "text-left"}`}
                     >
                       <span
-                        className={`inline-block px-2 md:px-3 py-1.5 md:py-2 rounded-lg text-xs leading-relaxed max-w-[90%] md:max-w-[85%] ${
+                        className={`inline-block px-3 py-2 rounded-lg text-sm leading-relaxed max-w-[85%] ${
                           msg.sender === "user"
                             ? "bg-yellow-500 text-white"
                             : "bg-gray-200 text-black whitespace-pre-line"
@@ -257,13 +251,11 @@ const ChatbotUI = () => {
                       </span>
                     </div>
                   ))}
-                </div>
+                </>
               )}
             </div>
           </div>
-          <div className={`border-t border-gray-200 flex-shrink-0 ${
-            isExpanded ? 'absolute bottom-0 left-0 right-0 p-2 md:p-4' : 'p-2 md:p-3'
-          }`}>
+          <div className="border-t border-gray-200 flex-shrink-0 p-2 md:p-3">
             {/* API Key Input */}
             {showApiKeyInput && (
               <div className="mb-3 p-3 bg-yellow-50 border border-yellow-200 rounded-lg">
@@ -317,7 +309,7 @@ const ChatbotUI = () => {
               </div>
             )}
 
-            <div className="flex items-center gap-1.5 md:gap-2 w-full">
+            <div className="flex items-center gap-2 w-full">
               <input
                 type="text"
                 value={input}
@@ -330,7 +322,7 @@ const ChatbotUI = () => {
                 }}
                 placeholder={questionsUsed >= FREE_QUESTIONS_LIMIT && !userApiKey ? "Add API key..." : "Ask about my experience..."}
                 disabled={questionsUsed >= FREE_QUESTIONS_LIMIT && !userApiKey}
-                className="flex-1 min-w-0 px-2 md:px-3 py-2 text-xs md:text-sm border border-gray-300 rounded-lg focus:outline-none focus:ring focus:ring-blue-300 disabled:bg-gray-100 disabled:cursor-pointer"
+                className="flex-1 min-w-0 px-3 py-2.5 text-sm border border-gray-300 rounded-lg focus:outline-none focus:ring focus:ring-blue-300 disabled:bg-gray-100 disabled:cursor-pointer"
               />
               <button
                 onClick={() => {
@@ -340,7 +332,7 @@ const ChatbotUI = () => {
                     sendMessage();
                   }
                 }}
-                className="bg-yellow-600 text-white px-2.5 md:px-4 py-2 text-xs md:text-sm rounded-lg hover:bg-yellow-500 focus:outline-none disabled:bg-gray-400 disabled:cursor-pointer flex-shrink-0 whitespace-nowrap"
+                className="bg-yellow-600 text-white px-4 py-2.5 text-sm rounded-lg hover:bg-yellow-500 focus:outline-none flex-shrink-0 whitespace-nowrap"
                 disabled={false}
               >
                 Send
