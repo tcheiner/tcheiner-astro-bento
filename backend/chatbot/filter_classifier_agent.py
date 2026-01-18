@@ -231,7 +231,13 @@ Respond with ONLY valid JSON, no markdown formatting:
         except Exception as e:
             # Fallback: If LLM parsing fails, make educated guess
             print(f"Warning: LLM JSON parsing failed: {e}")
-            print(f"Response content: {response.content[:200]}")
+
+            # Only try to print response content if response exists
+            try:
+                if 'response' in locals():
+                    print(f"Response content: {response.content[:200]}")
+            except:
+                pass
 
             # Conservative fallback: treat as SKILLS question with low confidence
             return {
