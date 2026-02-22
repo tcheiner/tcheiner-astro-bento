@@ -1,0 +1,54 @@
+---
+title: "Zed and Claude Skills"
+startDate: 2026-01-21
+description: "2026 Zed and Claude Skills"
+# image:
+#   url: "/images/your-image.jpg"
+#   alt: "Image description"
+tags: ["Zed", "Claude", "2026", "Dev Environment", "AI-Augmented Development"]
+canonical: "https://blog.devgenius.io/the-claude-code-setup-that-won-a-hackathon-a75a161cd41c"  
+---
+
+One thing I did get right was finding all the right sources to keep updated with news I am interested in.  
+
+I do really like the Zed editor, it is really fast.  With good color schemes, not as many plugins as VSCode but I have a feeling a lot of plugins, including JIRA and Atlassian is feeling intense competition as documentation moves from text and UI into a simple parsing of markdown files.  It is a waste of resources to use a LLM to parse markdown files again and again though.
+
+## Setup for Claude Skills
+1. Clone the repository
+2. Copy into your .claude dir
+3. Create a new github project
+4. Initiate Claude Code and try the following commands: /agents, /plugins, /skills and /project-memory
+
+## Code up a WhatsApp Copycat
+- Iteration #1: Expo is outdated.  Update.  Update all documentation (about 10 files)
+- Iteration #2 - 5: Try to update Expo and got confused about all the other supporting libs compatbility until I finally instructed it to just install the latest version of Expo and unanchor all versioning of libraries
+- Iteration #6: Worked but colors are utter crap, requested redesign.
+- Iteration #7: Colors are better but still crap. I went to Material3 Design to design the color scheme and export it.
+- Iteration #8: Colors are much better but is it worth 8 iterations and updating the same 10 files 8 times?  Ran a logging and a security/vulnerability check and it is also utter crap.  All backend features are also stubbed, and yes, I realize I am paying for stubbed data.
+- Iteration #9: Giving up.  I will try again later.
+
+
+## Conclusion
+**Frustrated** and I think it is a waste of time, tokens.  It would be more effective to spend a few hours designing it visually with colors, then design the backend architecture and think through all the functional and nonfunctional design, then writing a concise prompt, with a staggered approach (iteratively testing) and build upon it.
+
+If I was a super fast programmer, this isn't even worth it.
+
+AI is a sword, it has to be wielded properly. It is ideal for prototyping though, and possibly almost ready to just replace engineers but it is still trained on the verbiage that is used to detail the foundations of computer science so unless you are skilled in that verbiage and the tradeoffs of the choices you make, the foundation of your application will be shakey. It also takes experience to know why computer systems are built a certain way (for stability, really). Or, you lose money in the long run because your infrastructure costs catch up.
+But most modern apps do not require that much thought, it is just an app (simple one).
+
+It is all about context.
+
+I do highly encourage all startup people to try to prototype their app with AI, it may or may not be the end of it. It will save all involved parties from burn out.
+
+There is no way anyone without a CS background and/or understanding of how current systems design works will be able to do production ready system that is maintainable with AI.  Keyword being maintainable.  If your app goes viral, and your systems are crashing left and right and you end up paying a fix-it team to come in and shoulder the stress (because that is really what you are paying for, not the work but the stress and the guarantee to make it right no matter what happens), you will wish you had a technical cofounder that you trust that has your back.  
+The way Anthropic engineers do it is through a lot of tweaking - they prompt it a specific way, with a tight iterative process, high availability of tokens (spendy but exponentially less spendy than a technical founder + you don't want to deal with all the baggage of another human being and how they work and how you work with them and all that).
+If you use Deepseek, the data is sent to China.  Same with OpenAI, Anthropic or Gemini.  Whether or not they have the ability to shift through that data for a gem (probably not worth it but the data is able to indicate market trends which is also worth a shit ton).  The funniest part is that you would have paid to tease it out of a LLM, and you wouldn't have realized you paid twice.
+The color scheme, design never works for me out of the box. Loveable does better than most but an AI scientist can tell when a UI is done by an AI - because it uses common libraries and common layouts and common design decisions.  How would an LLM realistically know what colors are modern and trendy and how they go together?  UI/UX is much alike architecting and designing the flow of information so that it is concise and intuitive (to humans).  
+
+The LLMs will consume more tokens to document faulty code for context management than the code (so you can build on it iteratively).  An LLM won't even be able to tell which library versions go with which.  The end, which projected out linearly (probably inaccurate but accurate for short term) is a lot of slop for everyone else to dig through.  Eyes will bleed just reviewing all the extraneous lines.
+Many small steps make progress towards a big one for an AI that can replace the work that engineers do.  Believe it or not, engineers will be much happier when that happens.
+We looking at this through a different lens, through different experiences, with different needs.  Thus... believe it or not, all opinions are valid and true.  AI can replace engineers, AI cannot replace engineers, AI can almost replace a team of engineers, AI is worth it and AI is also not worth it.
+You want to give out equal equity because you want them to have as much skin and motivation as you do.
+Damn, 1000 rubbish cofounders to find one gem is a lot but the hit rate is pretty good all things considering!  Wouldn't it be faster to go to a hackerthon or networking event?  Do a speed dating sort of thing for cofounders?
+
+---
